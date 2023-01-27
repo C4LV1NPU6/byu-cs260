@@ -1,3 +1,5 @@
+README for Startup Web Application assignment, made by Calvin Pugmire (C4LV1NPU6) and ? (rokketranger):
+
 1/23/23 (C4LV1NPU6):
 
 This is the directory for the startup web application.
