@@ -1,3 +1,5 @@
+1/23/23:
+
 This is the directory for the startup web application.
 
 Access in VS code has been achieved.
@@ -7,4 +9,18 @@ Merge change part #2.
 
 GitHub notes: GitHub is a great way to backup my code. Pulling and pushing changes seem to be limited to the console on my computer. The console seems to be the best way for me to deal with the backup/syncing aspect of coding in this class.
 
-Changed Git program. Checking new directory.
+
+1/26/23:
+
+Start up deliverable - specification:
+
+Have you ever wanted to take part in a lightbike battle from the hit movie "Tron: Legacy", or wondered which of your friends you could beat in a head-to-head? The Tron Lightbike Battle application makes it so you and your friends can live out your Grid dreams. Any player can fight any other player in decisive 1v1s. Additionally, each player can easily keep track of their wins, losses, and position on the world-wide scoreboard!
+
+***image here***
+
+Key features:
+-Secure login over HTTPS.
+-Ability to play the Tron Lightbike Battle game with any other user.
+-Ability to see personal match history and number of wins and losses.
+-Ability to see total wins and losses from all users displayed in realtime on a world-wide scoreboard.
+-Personal match history, wins, and losses for all users are persistently stored.
