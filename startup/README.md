@@ -10,6 +10,7 @@ Merge change part #2.
 GitHub notes: GitHub is a great way to backup my code. Pulling and pushing changes seem to be limited to the console on my computer. The console seems to be the best way for me to deal with the backup/syncing aspect of coding in this class.
 
 
+
 1/26/23:
 
 Start up deliverable - specification:
@@ -24,3 +25,15 @@ Key features:
 -Ability to see personal match history and number of wins and losses.
 -Ability to see total wins and losses from all users displayed in realtime on a world-wide scoreboard.
 -Personal match history, wins, and losses for all users are persistently stored.
+
+
+
+1/27/23:
+
+Set up a web server with AWS.
+
+I found it interesting that it costs you the same amount regardless of whether your server is running or not running (at least when using an elastic IP address).
+
+Browser address: http://3.15.70.3
+
+Remote shell command: ssh -i ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/production.pem ubuntu@3.15.70.3
