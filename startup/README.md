@@ -1,4 +1,4 @@
-README for Startup Web Application assignment, made by Calvin Pugmire (C4LV1NPU6) and ? (rokketranger):
+README for Startup Web Application assignment, made by Calvin Pugmire (C4LV1NPU6) and Tachiinii Ranger (rokketranger):
 
 
 
