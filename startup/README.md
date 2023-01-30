@@ -41,3 +41,13 @@ I found it interesting that it costs you the same amount regardless of whether y
 Browser address: http://3.15.70.3
 
 Remote shell command: ssh -i ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/production.pem ubuntu@3.15.70.3
+
+
+
+1/30/23 (C4LV1NPU6):
+
+Set up domain name with AWS.
+
+I found it interesting that my preferred domain name wasn't taken yet.
+
+Domain name: http://cs260game.lightbikebattle.click/
