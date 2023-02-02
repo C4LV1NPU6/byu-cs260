@@ -51,3 +51,13 @@ Set up domain name with AWS.
 I found it interesting that my preferred domain name wasn't taken yet.
 
 Domain name: http://cs260game.lightbikebattle.click/
+
+
+
+2/2/23:
+
+Secured web server communication by configuring Caddy to request a certificate from Let's Encrypt for the domain name.
+
+I found it interesting that the first part of the domain name ("cs260game.") was not included in the web server's hostname.
+
+Host name: https://lightbikebattle.click/
