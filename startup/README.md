@@ -50,7 +50,8 @@ Set up domain name with AWS.
 
 I found it interesting that my preferred domain name wasn't taken yet.
 
-Domain name: http://cs260game.lightbikebattle.click/
+Domain name: http://startup.lightbikebattle.click/
+Domain name 2.0: https://startup.lightbikebattle.click/
 
 
 
