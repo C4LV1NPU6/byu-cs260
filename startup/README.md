@@ -70,7 +70,7 @@ Set up official HTML website.
 
 I found it interesting that I had to change my startup URL from cs260game.lightbikebattle.click to startup.lightbikebattle.click.
 
-Host name: https://lightbikebattle.click/
+Site name: https://lightbikebattle.click/
 
 Website deploy command: ./deployWebsite.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/production.pem -h lightbikebattle.click
 
