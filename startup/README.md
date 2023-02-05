@@ -51,7 +51,6 @@ Set up domain name with AWS.
 I found it interesting that my preferred domain name wasn't taken yet.
 
 Domain name: http://startup.lightbikebattle.click/
-Domain name 2.0: https://startup.lightbikebattle.click/
 
 
 
@@ -59,6 +58,6 @@ Domain name 2.0: https://startup.lightbikebattle.click/
 
 Secured web server communication by configuring Caddy to request a certificate from Let's Encrypt for the domain name.
 
-I found it interesting that the first part of the domain name ("cs260game.") was not included in the web server's hostname.
+I found it interesting that we didn't start with https.
 
-Host name: https://lightbikebattle.click/
+Host name: https://startup.lightbikebattle.click/
