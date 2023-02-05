@@ -74,3 +74,12 @@ Host name: https://lightbikebattle.click/
 
 Website deploy command: ./deployWebsite.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/production.pem -h lightbikebattle.click
 
+
+
+2/6/23 (C4LV1NPU6):
+
+Set up Simon HTML sub-website.
+
+Sub-site name: https://simon.lightbikebattle.click/
+
+Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/production.pem -h lightbikebattle.click -s simon
