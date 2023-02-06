@@ -80,6 +80,8 @@ Website deploy command: ./deployWebsite.sh -k ~/Desktop/finish.delete.Open\ Tabs
 
 Set up Simon HTML sub-website.
 
+I learned how to implement the Simon Game web application using only HTML. This included the layout and functions for the about, home, play, and scores pages. It was a lot of information but I studied it and copied it perfectly.
+
 Sub-site name: https://simon.lightbikebattle.click/
 
 Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/production.pem -h lightbikebattle.click -s simon
