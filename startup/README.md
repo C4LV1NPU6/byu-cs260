@@ -85,3 +85,13 @@ I learned how to implement the Simon Game web application using only HTML. This 
 Sub-site name: https://simon.lightbikebattle.click/
 
 Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/production.pem -h lightbikebattle.click -s simon
+
+
+
+2/10/23 (C4LV1NPU6):
+
+Made CSS Practice project. Can be used in Startup App's website.
+
+I found the typing animation interesting.
+
+CSSP CodePen URL: https://codepen.io/C4LV1NPU6/pen/WNKVodL
