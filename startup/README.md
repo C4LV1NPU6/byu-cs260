@@ -95,3 +95,13 @@ Made CSS Practice project. Can be used in Startup App's website.
 I found the typing animation interesting.
 
 CSSP CodePen URL: https://codepen.io/C4LV1NPU6/pen/WNKVodL
+
+
+
+2/13/23 (C4LV1NPU6):
+
+Made CSS Flex project. Can be used in Startup App's website.
+
+I found it interesting how HTML passes variables to CSS.
+
+CSSF CodePen URL: https://codepen.io/C4LV1NPU6/pen/dyqbwwB
