@@ -105,3 +105,15 @@ Made CSS Flex project. Can be used in Startup App's website.
 I found it interesting how HTML passes variables to CSS.
 
 CSSF CodePen URL: https://codepen.io/C4LV1NPU6/pen/dyqbwwB
+
+
+
+2/15/23 (C4LV1NPU6):
+
+Set up Simon CSS sub-website.
+
+I learned how to implement the Simon Game web application using HTML and CSS. This included the layout and appearances for the about, home, play, and scores pages. It was a lot of information but I studied it and copied it perfectly.
+
+Sub-site name: https://simon.lightbikebattle.click/
+
+Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/production.pem -h lightbikebattle.click -s simon
