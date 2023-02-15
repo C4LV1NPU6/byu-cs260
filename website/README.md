@@ -1,3 +1,3 @@
-# HTML website
+# Production Environment Website
 
-Basic HTML website to serve as the main view of your work in the course.
+Basic website to serve as the main view of your work in the course.
