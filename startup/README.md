@@ -117,3 +117,19 @@ I learned how to implement the Simon Game web application using HTML and CSS. Th
 Sub-site name: https://simon.lightbikebattle.click/
 
 Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/production.pem -h lightbikebattle.click -s simon
+
+
+
+2/20/23 (C4LV1NPU6):
+
+Set up Startup HTML+CSS sub-website.
+
+I learned how to implement the Startup web application using HTML and CSS. This included the layout and appearances for the main game page. It was a lot of information but I used my Codepen prototype so it didn't take super long.
+
+Sub-site name: https://startup.lightbikebattle.click/
+
+Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/,Access\ Info/production.pem -h lightbikebattle.click -s startup
+
+Website deploy command: ./deployWebsite.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/,Access\ Info/production.pem -h lightbikebattle.click
+
+Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/,Access\ Info/production.pem -h lightbikebattle.click -s simon
