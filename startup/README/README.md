@@ -1,4 +1,4 @@
-README for Startup Web Application assignment, made by pair programmers Calvin Pugmire (C4LV1NPU6) and Tachiinii Ranger (rokketranger):
+# README for Startup Web Application assignment, made by pair programmers Calvin Pugmire (C4LV1NPU6) and Tachiinii Ranger (rokketranger):
 
 
 
@@ -42,7 +42,7 @@ The class should have the energy of a start up. We are on the cutting edge of te
 
 
 
-1/23/23 (C4LV1NPU6):
+# 1/23/23 (C4LV1NPU6):
 
 This is the directory for the startup web application.
 
@@ -1233,7 +1233,7 @@ Submit the URL for your GitHub start up repository to the Canvas assignment.
 
 
 
-#1/26/23 (C4LV1NPU6+rokketranger):
+# 1/26/23 (C4LV1NPU6+rokketranger):
 
 Start up deliverable - specification:
 
@@ -1390,7 +1390,7 @@ The idea of microservices naturally evolved into the world of `serverless` funct
 
 
 
-#1/27/23 (C4LV1NPU6):
+# 1/27/23 (C4LV1NPU6):
 
 Set up a web server with AWS.
 
@@ -1479,7 +1479,7 @@ You can pay to lease an unused domain name for a specific period of time. Before
 
 
 
-#1/30/23 (C4LV1NPU6):
+# 1/30/23 (C4LV1NPU6):
 
 Set up domain name with AWS.
 
@@ -1613,7 +1613,7 @@ sudo service caddy restart
 
 
 
-#2/2/23 (C4LV1NPU6):
+# 2/2/23 (C4LV1NPU6):
 
 Secured web server communication by configuring Caddy to request a certificate from Let's Encrypt for the domain name.
 
@@ -2102,7 +2102,48 @@ When you are done submit your CodePen URL, along with a comment about something 
 
 
 
-#2/6/23 (C4LV1NPU6):
+# HTML website
+
+Now that you know how HTML works it is time to put it to use and create your first website. When you are done you will have created the home page for all of the work that you do in this class. To get started take the following steps.
+
+1. Verify that you server is still running and that the default web programming 260 page is being displayed. If it is not then you need to complete, or review, the steps for setting your server.
+
+   ![Default website](htmlDefaultWebpage.jpg)
+
+   ⚠ Do not continue until this works.
+
+1. [Fork this repository](https://github.com/webprogramming260/website-html/fork) and clone it to your development environment. For information about how to fork a GitHub repository read [this documentation](https://docs.github.com/en/get-started/quickstart/fork-a-repo). For information about cloning a repository refer back to the instruction on GitHub.
+1. The repository contains four important files, `index.html`, `index.css`, `profile.png` and `deployWebsite.sh`. `index.html` contains a template HTML document. `deployWebsite.sh` contains a console shell script for deploying a new home page to your website. `index.css` and `profile.png` are files that will be utilized by `index.html` to enhance the look of the home page with styling and an image. Open up your fork of the repository and review these files.
+1. Modify `index.html` to personalize it to yourself. Don't worry about making it look pretty at this point. You are only trying to get the content and structure right. You can come back later and style it with CSS and make it interactive with JavaScript.
+1. Give a brief profile description about yourself.
+1. Include links to the CodePens for your assignments.
+1. Replace the `profile.png` image with an image of yourself. Make sure the image is small (< 100 KB) so that you don't eat up your production server's limited hard drive space. If the file is not a PNG then make sure you change the file name and the `src` attribute in the `img` element.
+1. Review the contents of `deployWebsite.sh` and make sure you understand what it is doing. The bulk of the script is just to read the parameters that are passed to it. The only thing it actually does is call `scp` (secure copy) to copy all files from the current directory to your server's `public_html` directory. The `public_html` directory is the location where Caddy (your web server) looks for static pages to host.
+1. In a console window, change directory to your project directory, run the `deployWebsite.sh` script to push your changes to your deployment environment. This script takes two parameters, the PEM file to allow secure access to your server, and your server's domain name.
+
+   ```sh
+   ./deployWebsite.sh  -k <yourpemkey> -h <yourdomain>
+   ```
+
+   For example,
+
+   ```sh
+   ./deployWebsite.sh  -k ~/keys/production.pem -h funkychickens.click
+   ```
+
+   ⚠ Make sure you run the script in the project directory where the script resides.
+
+1. Open a browser window and verify that your new home page is showing up for your domain. The following is an example of what your website might look like.
+
+   ![Example website](htmlExampleWebsite.jpg)
+
+1. Submit the URL for your website to the Canvas assignment along with something you found interesting about this assignment.
+
+Now, whenever you add a new project to your website you can just update the files contained in this repository and run the deployment script again. This way you can keep your website up to date with your progress through the instruction. If you do this throughout the class you will end up with a great portfolio that you can demonstrate to others.
+
+
+
+# 2/6/23 (C4LV1NPU6):
 
 Set up official HTML website.
 
@@ -2114,7 +2155,72 @@ Website deploy command: ./deployWebsite.sh -k ~/Desktop/finish.delete.Open\ Tabs
 
 
 
-#2/6/23 (C4LV1NPU6):
+# Simon HTML
+
+![Simon](../simon.png)
+
+This deliverable demonstrates the use of basic HTML elements for structure, basic formatting, input, output, links, and drawing.
+
+Because we are not using any CSS for styling we are limited on how visually pleasing our application is. Do not worry about that. At this point we are simply trying to provide structure and content that we will later style and make interactive.
+
+The application has a login (home), game play, high scores, and about page. Each page contains a header that provides navigation between the pages, and a footer that references the source repository.
+
+You can view this application running here: [Example Simon HTML](https://simon-html.cs260.click)
+
+![Simon HTML](simonWebHtml.jpg)
+
+## Study this code
+
+Get familiar with what the example code teaches.
+
+- Clone the repository to your development environment.
+
+  ```sh
+  git clone https://github.com/webprogramming260/simon-html.git
+  ```
+
+- Review the code and get comfortable with everything it represents.
+- View the code in your browser by hosting it using the VS Code Live Server extension.
+- Make modifications to the code as desired. Experiment and see what happens.
+
+## Make your own version
+
+Now it is time to start creating your own version of Simon. The main purpose of this work is to get familiar with building applications using the technology discussed in the course. With that knowledge you can then create something original in your start up project. It is not important for you to spend time exploring alternative designs and architectures for the Simon project, although you are welcome to do so if you would like. The only requirement is that you understand the concepts and reproduce as reasonable copy of Simon. You will do all of your work in a single GitHub repository named `simon`. With each technology you will add more code to your Simon repository. When you are done your Git history should show the entire evolution of your work on your Simon application.
+
+- Create a new repository named `simon` in your GitHub account.
+- Clone the repository to your development environment.
+- In your `simon` directory create your own version of the application. Refer to the example class application repository for guidance. Remember that you do not create an originaloriginal work. Just focus on learning the concepts that the example project provides. However, you will learn more if you type everything out, and not just copy and paste the code.
+- Set the footer link to point to your code repository. (e.g. https://github.com/youraccount/simon)
+- Periodically commit and push your code to your repository as you hit different milestones. (4 commits are required for full credit.)
+- Periodically deploy to your production environment using a copy of the `deployFiles.sh` script found in the [example class application](https://github.com/webprogramming260/simon-html/blob/main/deployFiles.sh). Take some time to understand how the script works. The script does three things. Deletes any previous deployment for simon, copies up all of the files found in the project directory, and makes sure Caddy is hosting the files under the `simon` subdomain of your domain (e.g. simon.yourdomain.click).
+
+  ```sh
+  ./deployFiles.sh -k <yourpemkey> -h <yourdomain> -s simon
+  ```
+
+  For example,
+
+  ```sh
+  ./deployFiles.sh -k ~/keys/production.pem -h yourdomain.click -s simon
+  ```
+
+  ⚠ Make sure you run `deployFiles.sh` from the console in your project directory.
+
+- Update your `start up` repository README.md to record and reflect on what you learned.
+- When you have completed your version. Do a final push of your code and deploy to your production environment using the `deployFiles.sh` script.
+- Make sure your project is visible from your production environment (e.g. https://simon.yourdomain.click).
+- Submit the URL to your production environment for grading using the Canvas assignment page.
+
+## Grading Rubric
+
+- 40% - Multiple HTML pages connected with hyperlinks
+- 40% - Proper use of HTML structural elements, header elements, and doctype
+- 10% - At least four Git commits for the project (Initial, milestone, ..., milestone, final)
+- 10% - Notes in your `start up` repository README.md about what you have learned
+
+
+
+# 2/6/23 (C4LV1NPU6):
 
 Set up Simon HTML sub-website.
 
@@ -3553,7 +3659,7 @@ You did it! This is a significant milestone. Time to grab some friends, show the
 
 
 
-#2/20/23 (C4LV1NPU6+rokketranger):
+# 2/20/23 (C4LV1NPU6+rokketranger):
 
 Set up Startup HTML+CSS sub-website.
 
@@ -4516,7 +4622,7 @@ Don't forget to update your GitHub start up repository README.md with all of the
 
 
 
-#2/22/23 (C4LV1NPU6):
+# 2/22/23 (C4LV1NPU6):
 
 Made JavaScript Functions+Arrows+Arrays+Objects+Classes projects. Arrays can be used in Startup App's website.
 
