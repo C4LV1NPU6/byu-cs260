@@ -1874,7 +1874,7 @@ sudo service caddy restart
 
 To this point you have been accessing your web server using HTTP. If you notice your browser has been yelling at you that your connection is `⚠ Not Secure` from the location bar.
 
-![Non-secure website](../amazonWebServicesRoute53/webServerWithHostname.png)
+![Non-secure website](webServerWithHostname.png)
 
 During the first couple decades of the web, it was pretty common for websites to simply use HTTP (non-secure hypertext transport protocol) since it was difficult, non-performant, and expensive to secure the connection. Additionally, most websites just provided access to documents and so it didn't need to protect user's information. Usually, only websites that were doing commerce needed a secure connection. That all changed when computers got faster and the web moved from simple document servers (Web 1.0) to full on web applications (Web 2.0) that accepted information from users and displayed that information within the application. Without a secure connection anyone that had access to the network traffic, at any point, from the user's computer to the server handling the request could easily capture all the data sent in either direction. Remember when we used the console program `traceroute` to show you how many computers your connection goes through. You definitely do not want those computers to have access to your user's sensitive information.
 
@@ -2561,7 +2561,7 @@ Website deploy command: ./deployWebsite.sh -k ~/Desktop/finish.delete.Open\ Tabs
 
 # Simon HTML
 
-![Simon](../simon.png)
+![Simon](simon.png)
 
 This deliverable demonstrates the use of basic HTML elements for structure, basic formatting, input, output, links, and drawing.
 
@@ -3497,7 +3497,7 @@ Now that you have experience with Bootstrap you can build a simple home page usi
 
 # Simon CSS
 
-![Simon](../simon.png)
+![Simon](simon.png)
 
 This application deliverable demonstrates the use of basic CSS for styling and a responsive design.
 
@@ -4152,7 +4152,7 @@ While not technically required in most cases, it is considered good form to end 
 
 ## Playgrounds
 
-Before we go any further we need a way for you to write and run JavaScript yourself. There are lots of ways to do this, but a few methods are commonly used. The following list, in increasing complexity, describes each method.
+Before we go any further we need a way for you to write and run JavaScript yourself. There are two easy ways to do this.
 
 1. Use an online sandbox like [CodePen](https://codepen.io). With CodePen you can write whatever JavaScript you would like and immediately see the results. Make sure you display the CodePen's Console window if your JavaScript is using the console.log function.
 
@@ -4161,29 +4161,10 @@ Before we go any further we need a way for you to write and run JavaScript yours
 1. Use your browser's debugger. For example, if you open Chrome and press `F12` the debugger will display. Select the `Console` menu option. This will display a JavaScript interpreter where you can write and execute your code.
 
    ![Browser Debugger](browserDebugger.png)
+   
+## Examples
 
-1. Install and use `Node.js`. Node.js is a JavaScript execution application. This will let you run JavaScript outside of a browser. There are three ways you can use Node to run your JavaScript.
-
-   1. Run in interpreter mode. To do this you run `node.js` from the console and type your JavaScript into the interpreter.
-      ```sh
-      ➜  node
-      Welcome to Node.js v16.15.1.
-      Type ".help" for more information.
-      > function join(a, b) {
-         return a + ' ' + b;
-       }
-      >
-      > console.log(join('Hello', 'world'));
-      Hello world
-      ```
-   1. Create a JavaScript file and run it with Node.js by providing the file name as a parameter.
-      ```sh
-      ➜  node index.js
-      Hello world
-      ```
-   1. Open your JavaScript file in Visual Studio Code and execute your code by pressing `F5` and selecting `node.js` as the debugger. You can set breakpoints in the editor window, inspect variables, and view the console output.
-
-      ![Browser Debugger](VSCodeJavaScriptDebugger.png)
+You can see an example of all the JavaScript we talk about in this instruction with this [HTML page](https://htmlpreview.github.io/?https://github.com/webprogramming260/.github/blob/main/profile/javascript/introduction/introduction.html).
 
 
 
@@ -5914,7 +5895,7 @@ This gives you complete control to inspect what the JavaScript code is doing and
 
 # Simon JavaScript
 
-![Simon](../simon.png)
+![Simon](simon.png)
 
 This deliverable demonstrates the use of basic JavaScript for interactivity. This addition makes the application completely functional. The application has a login (home), game play, high scores, and about page. Each page contains a header that provides navigation between the pages, and a footer that references the source repository.
 
