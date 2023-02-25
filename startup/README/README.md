@@ -41,20 +41,6 @@ The class should have the energy of a start up. We are on the cutting edge of te
 
 
 
-
-# 1/23/23 (C4LV1NPU6):
-
-This is the directory for the startup web application.
-
-Access in VS code has been achieved.
-Access in GitHub has been achieved.
-Merge change part #1.
-Merge change part #2.
-
-GitHub notes: GitHub is a great way to backup my code. Pulling and pushing changes seem to be limited to the console on my computer. The console seems to be the best way for me to deal with the backup/syncing aspect of coding in this class.
-
-
-
 # Demonstration
 
 Before we start digging into creating web servers and talking about protocols let's give you a taste of what web programming technologies can do. In this example we display a card with a rotating border. When you click on the card the text changes.
@@ -1076,6 +1062,20 @@ When you are done, provide the URL of your GitHub start up repository, along wit
 
 
 
+
+# 1/23/23 (C4LV1NPU6):
+
+This is the directory for the startup web application.
+
+Access in VS code has been achieved.
+Access in GitHub has been achieved.
+Merge change part #1.
+Merge change part #2.
+
+GitHub notes: GitHub is a great way to backup my code. Pulling and pushing changes seem to be limited to the console on my computer. The console seems to be the best way for me to deal with the backup/syncing aspect of coding in this class.
+
+
+
 # Development and production environments
 
 When working on a commercial web application, it is critical to separate where you `develop` your application, from where the `production` release of your application is made publicly available. Often times there are more environments than this, such as staging, internal testing, and external testing environments. If your company is seeking third party security certification (such as SOC2 compliance) they will require that these environments are strictly separated from each other. A developer will not have access to the production environment in order to prevent a developer from nefariously manipulating an entire company asset. Instead automated integration processes, called continuously integration (`CI`) processes, checkout the application code, lint it, build it, test it, stage it, test it more, and then finally, if everything checks out, pushes the application to the production environment, and notifies the different departments in the company of the release.
@@ -1390,6 +1390,173 @@ The idea of microservices naturally evolved into the world of `serverless` funct
 
 
 
+# Amazon Web Services - EC2
+
+Now that you know all about web servers, it is time for you to rent your own. In theory you could contact your ISP and lease an IP address that you would then associate with your laptop. This would make your laptop into a web server, but this has the downside of requiring your laptop to always be available, have enough bandwidth to support your millions of fans, and creates a significant security risk for your laptop. Instead we want to use a cloud provider that can give you an inexpensive small computer that you can experiment with and throw away any time that you would like. This is actually exactly what many web companies do with their core business and so it should work fine for you.
+
+We are going to use Amazon Web Services (AWS) for your work with in this course. There are lots of other great vendors out there, but AWS is by far the leader in the space and so it is good for you to get experience with them. This will require you to have an [account with AWS](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/). When you create your account make sure you remember your account ID so that you can use it when you log in to the AWS browser console.
+
+## What is this going to cost you?
+
+There is no cost to create an account with AWS, you only pay for what you use, and in many cases they will give you a significant starting credit, and [some services are free](https://aws.amazon.com/free) for a short period of time or monthly usage. The services we are going to use include the following:
+
+| Service        | Purpose                              | Estimated Cost (subject to change)                                                                                     |
+| -------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| EC2            | Server                               | t3.nano $0.0052 an hour ($3.50/month), t3.micro $0.0104 an hour ($7.00/month), t3.small $0.0208 an hour ($14.00/month) |
+| EC2 Elastic IP | Keep your IP address between reboots | First one is free if you keep it associated with a running server. $0.0052 an hour otherwise.                          |
+| Route 53       | Domain name                          | $3/year for `click` TLD. More for others                                                                               |
+| Route 53       | DNS records                          | $0.50 a month for each root domain                                                                                     |
+|                |                                      | Estimated total: `$15` - `$50` for the course. Much cheaper than a textbook.                                           |
+
+As mentioned before, there are lots of ways to get free usage of services. For example, as of when this was written, you can get a 750 hours a month, for the first 12 months, of a Linux t3.micro server instance.
+
+## AWS Credit Grants and AWS Educate Starter Account
+
+AWS has a couple of programs to help students try out their services. If you don't want to supply a credit card you can enroll in a 3rd party administrated program called AWS Educate Starter Account. This program allows you to create an account that comes with a $75 credit and doesn't require a credit card. Alternatively, if you already have an AWS account or want to just get a regular account without the hassle of involving a 3rd party, you can apply for a $100 grant from AWS and apply it to your account.
+
+Refer to [this article](https://it.newschool.edu/services/learning-resources/aws-amazon-web-services/claim-your-aws-educate-grant) for the details on these programs.
+
+## Creating an AWS server instance
+
+Once you have an AWS account it is time to create your web server.
+
+⚠ Note that the AWS interface changes all of the time and so the images given below may not match what you see. However, the concepts they represent should all be there in some shape or form.
+
+1. Open the AWS console in your browser and log in.
+1. Navigate to the EC2 service.
+1. Select the option to `Launch instance`.
+1. Give your instance a meaningful name. Perhaps use a convention such as [owner]-[purpose]-[version].
+
+   ![AWS Instance name](webServerAWSName.jpg)
+
+1. We have created an Amazon Machine Image (AMI) for you to use as the base for your server. It has Ubuntu, Node.js, Caddy Server, and PM2 built right in so that you do not have to install them. Paste this AMI ID (`ami-0809a0cb9b76bf010`) into the search box and press enter.
+
+   ![AWS Instance name](webServerAWSAmi.jpg)
+
+   This should display the information about the class AMI. If the AMI ID matches `ami-0809a0cb9b76bf010` select it.
+
+   ![AWS class AMI](webServerAWS260Ami.jpg)
+
+1. Select t3.nano or t3.micro for the instance type. You can always change this later if your server is running slow and needs more power.
+
+   ![AWS Instance name](webServerAWSType.jpg)
+
+1. Create a new key pair. Make sure you save the key pair to your development environment. This needs to be safe in a place that is not publicly accessible and that you won't accidentally delete or commit to a GitHub repository. You will need this every time you secure shell (ssh) into this server (production environment). Note that you don't have to create a new key pair every time you launch an instance. You can use one that you created previously so that all of the servers you create can be accessed with the same key file.
+
+   ![AWS Instance name](webServerAWSkeyPair.jpg)
+
+1. For the network settings, make sure the `auto-assign public IP` address is enabled. For the `Firewall (security group)` select the option to `Create security group` if this is the first server that you are creating. Allow SSH, HTTP, and HTTPS traffic from anywhere. If you have created a server before then you already have a security group that you can use and you should not clutter up your account with additional ones. In that case use the option to `Select existing security group` and select the name of the exiting security group.
+
+   A security group represents the rules for allowing access to your servers. Security group rules specify both the port that is accessible on your server, and the source IP address that requests are allowed from. For example, you could allow only port 443 (the secure HTTPS port) from your development environment's IP address. However, doing so would mean that your web application would not be available from any other computer. You can learn more about security groups from the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html).
+
+   ![AWS Instance name](webServerAWSNetwork.jpg)
+
+1. In the `Advanced details` change the `Credit specification` to `Unlimited`. This allows your `T class` (throttled class) server to keep using CPU even though it has exceeded its current credit limit. You do incur a minimal charge for when this happens, but the alternative is to always spend more for a larger instance, or to have your server lock up when it hits the limit. For the minimal use that your server will see, you should not normally exceed your limit, but it is nice to not have your server die if you do. Even if you do temporarily exceed the limit the charges will be mere pennies per hour.
+
+   ![Web Server](webServerAWSUnlimited.jpg)
+
+1. Select the option to `Launch instance`.
+
+It will take a couple minutes for the instance to start up, but once it is marked as `running` it is close to being ready. Look at the properties for the instance and copy the public IP address.
+
+Open your browser and paste the public IP address for your server in the location bar along with the prefix `http://`. For example:
+
+```sh
+http://3.22.63.37
+```
+
+If the server has started up then you should see the following. Otherwise wait a little bit and refresh your browser again. If the server is marked as running and it has been longer than 5 minutes then there is a problem.
+
+![Web Server](webServerAWSBrowserResult.png)
+
+If that is what you see then congratulations. You are now running your very own web server that the whole world can see! Time to celebrate with cookies.
+
+## SSH into your server
+
+New let's remote shell into your server and see what is under the hood. Go to your console window and use SSH to shell into the server. You will need to supply the public IP address (copied from the EC2 instance details) and the location of your key pair file that you created/used when you launched your instance. Hopefully you saved that off to a safe location in your development environment, otherwise you will need to terminate your instance and create a new one, with a new key.
+
+```sh
+➜  ssh -i [key pair file] ubuntu@[ip address]
+```
+
+For example,
+
+```sh
+➜  ssh -i ~/keys/production.pem ubuntu@53.104.2.123
+```
+
+⚠ You may get a warning that your key pair file permissions are too open. If so then you can restrict the permissions on your file so that they are not accessible to all uses by running the `chmod` console command:
+
+```sh
+ `chmod  600 [key pair file]`
+```
+
+⚠ As it connects to the server it might will warn you that it hasn't seen this server before. You can confidently say yes since you are sure of the identity of this server.
+
+Once it has connected you are now looking at a console window for the web server that you just launched and you should be in the ubuntu user's home directory. If you run `ls -l` you should see the following.
+
+```sh
+➜  ls -l
+
+total 4
+lrwxrwxrwx 1 ubuntu ubuntu   20 Nov 17 23:03 Caddyfile -> /etc/caddy/Caddyfile
+lrwxrwxrwx 1 ubuntu ubuntu   16 Nov 17 03:42 public_html -> /usr/share/caddy
+drwxrwxr-x 6 ubuntu ubuntu 4096 Nov 30 22:42 services
+```
+
+The `Caddyfile` is the configuration file for your web service gateway. The `public_html` directory contains all of the static files that your are serving up directly through Caddy when using it as a web service. We will cover Caddy configuration in a later instruction. The `services` directory is the place where you are going to install all of your web services once you build them.
+
+Once you are done poking around on your server you can exit the remote shell by running the `exit` command. That is everything. You will only change a few configuration settings on your server in the future. Usually changes to the server are always done using an automated continuous integration process.
+
+## Keeping the same public IP address
+
+You can stop your server at any time. Don't confuse this with terminating your server which completely destroys it. Stopping your server just powers down the device. This is nice because you don't have to pay for it while it is stopped. However, every time you stop and start your server it we will be assigned a new public IP address. It is important to keep the same public IP address so that you, and others, can always browse to the same place, and more importantly so that when you create your domain name you can assign it to an address that never changes.
+
+You have two choices in order to keep the same public IP address.
+
+1. Never stop your server.
+2. Assign an elastic IP address to your server so that it keeps the same address even if you stop it.
+
+Your first elastic IP address is free. However, the catch is that it is only free while the server instance it is assigned to is running. While your server is not running you are charged $0.005/hr. This is the same cost for running a t3.nano server instance. So if you assign an elastic IP address, you don't save any money unless you running a more powerful instance, and are stopping your instance when you, or the TAs, don't need it.
+
+We would suggest that you do both options. Keep your server running and associate an elastic IP. That way if you do need to reboot it for some reason, you will still keep the same IP address and it doesn't cost you anything more either way.
+
+Here is how you [assign an elastic IP address](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html0) to your server instance.
+
+1. Open the AWS console in your browser and log in.
+1. Navigate to the EC2 service.
+1. From the menu on the left select `Network & Security|Elastic IPs`.
+1. Press the `Allocate Elastic IP address` button.
+1. Press the `Allocate` button.
+1. Select the newly displayed allocated address and press the `Actions` button.
+1. Select the `Associate Elastic IP address` option.
+
+   ![Elastic IP create](webServerAWSElasticIPCreate.jpg)
+
+1. Click on the `Instance` box and select your server instance.
+1. Press `Associate`.
+
+Assigning an elastic IP address will change the IP address for your server, but it will not change again until you release the elastic IP address. You do terminate your server and create a new one you can again associate the same elastic IP address with your new server.
+
+Note that your elastic IP address is allocated until your release it, not until you terminate your instance. So make sure you release it when you no longer need it. Otherwise you will get a nasty $3 bill every month.
+
+## What size of server should you use?
+
+The `t3.nano` instance size has just enough memory and CPU to meet the requirements of this course if you are careful. However, if you find that your server is running slowly or erratically, you should consider upgrading to a larger instance size. If you have an elastic IP address you can change your instance size whenever you would like and you won't loose your public IP address. You can even stop your server when no one is using it. This is useful because you don't get charged for your server when it is stopped.
+
+## ☑ Assignment
+
+1. Create your AWS account.
+1. Create an EC2 instance using the class AMI (`ami-0809a0cb9b76bf010`).
+1. Assign an elastic IP address (highly suggested).
+1. Test that you can see the default class web page from a browser using the server's public IP address.
+
+Submit a URL using your web server's public IP address, along with a comment about something you found interesting, to the Canvas assignment.
+
+Don't forget to update your GitHub start up repository README.md with all of the things you learned and want to remember. This might include the IP address of your server and the command to remote shell into your server. Do not include the contents of your PEM file, passwords, or keys in your notes.
+
+
+
 # 1/27/23 (C4LV1NPU6):
 
 Set up a web server with AWS.
@@ -1476,6 +1643,96 @@ As you can see, there is a lot of levels of name caching. This is done for perfo
 ## Buying a domain name
 
 You can pay to lease an unused domain name for a specific period of time. Before the lease expires, you have the right to extend the lease for an additional amount of time. The cost to buy the domain varies from something like $e to $200 a year. Buying, or sub-leasing, an existing domain name from a private party can be very expensive, and so you are better off buying something obscure like `idigfor.gold` (currently available for only $101). This is one reason why companies have such strange names these days.
+
+
+
+# Amazon Web Services - Route 53
+
+Referring to a web server by its IP address, is fine for development, but it is not going to work for most users. Additionally, you want to create a secure (HTTPS) connection to your application, and that is not possible with just an IP address. Instead you want to use a domain name to represent your web application. That way you can make it easy to remember and also secure. In order for you to do this you need to buy a domain name, and then create DNS records with a DNS (Domain Name System) server.
+
+`Route 53` is the AWS service that handles everything DNS related. With Route 53 you can buy a domain name, host your domain on their DNS servers, and create DNS records.
+
+⚠ You should already have an account with AWS from your work to rent a EC2 server instance. If you haven't done that work then go and create your account and server following the previous instruction.
+
+## Purchasing a domain name
+
+AWS provides extensive documentation for all their services. You can find the documentation for [Registering a new domain](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html) on their website. However, you may find the simplified directions below easier to follow, but if you run into trouble, or have additional questions, refer to the official documentation. Remember that you are leasing a domain name for a year, and so make sure it is a name that you would like. Also note that AWS credits do not apply to purchase of domain names.
+
+1. Open the AWS console in your browser and log in.
+1. Navigate to the `Route 53` service.
+1. Select the `Domains > Registered domains` option from the menu on the left.
+1. Push the `Register Domain` option.
+1. Select the TLD that you want. AWS currently offers the `.click` TLD for $3 and `.link` for $5.
+1. Put your desired root domain into the search box and press the `Check` button to see if it is available. Common one or two word phrases are almost always taken. For example, `260.click` is taken, but `webprogramming260.click` is not. Keep searching until you find one you like.
+1. Press `Add to cart`.
+
+   ![AWS Find domain](webServerAWSFindDomain.png)
+
+1. Fill out the contact details. This information is sent to the authorized DNS registrar and is what shows up to the world for your domain name. Once registration is complete you can see this information using the console program `whois`. Make sure you fill in this information correctly. If you are using new contact information that a registry has never seen before it will require you to verify the email address. Follow the steps to verify your address.
+1. Press `Continue`.
+1. Review everything and press `Complete Order`
+
+It may take a while before your purchase is completed, but when it is the Route 53 service dashboard will show that you have a `hosted zone` for your domain name.
+
+## Manage your DNS records
+
+Now that you own a domain name you can use it to create DNS records that will map domain names to IP addresses (A records) or other domain names (CNAME records). For the purposes of this class, you want your root domain name, and any subdomain of your root domain, to map to the IP address of the web server you created previously.
+
+You will need the public IP address for your server. You can get the public IP address by opening the AWS browser console and viewing the details of your server on the EC2 service page.
+
+⚠ Note that the AWS browser console interface changes all of the time and so the directions below may not match exactly, but similar functionality should be there in some shape or form.
+
+1. Open the AWS console in your browser and log in.
+1. Navigate to the `Route 53` service.
+1. Select the `Hosted zones` option from the menu on the left.
+1. You should see your domain name listed here. If it doesn't then the registration did not complete, or it is still pending. In that case go review the information found under `Domains > Pending requests`.
+1. Click on your domain name to view the details. This should display existing DNS records with types such as `NS`, and `SOA`.
+1. First we will create our root domain DNS record. This will associate your domain name with your server's IP address and make it so you can use your domain name in the browser to navigate to your server.
+   1. Press the `Create record` button.
+   1. In the Value box enter the public IP address of your server.
+   1. Press `Create records`
+   1. A new `A` type record should appear in your list of records that represents the root domain name and your server's public IP address.
+1. Next we will create a DNS record that will map to your server for any subdomain of your root domain name. This is made possible because DNS allows you to specify wildcards for a DNS record.
+   1. Press the `Create record` button.
+   1. In the `Record name` box enter the text `*`. This wildcard represents that any subdomain, that is not explicitly defined by another DNS record, will match this record.
+   1. In the `Value` box enter the public IP address of your server.
+   1. Press `Create records`
+   1. A new `A` type record should appear in your list of records that represents the wildcard subdomain name and your server's public IP address.
+
+Your DNS records should look similar to the following when you are done.
+
+![AWS DNS records](webServerAWSDnsRecords.png)
+
+By defining both a record for your root domain and a wildcard record for any subdomain of your root domain you can now navigate to your server with either your domain name or a subdomain. For example, if you purchased the domain name `myfunkychickens.click` you could reach your server by navigating your browser to `myfunkychickens.click`, `simon.myfunkychickens.click`, or `startup.myfunkychickens.click`.
+
+Open your browser and paste your domain in the location bar along with the prefix `http://`. For example:
+
+```sh
+http://myfunkychickens.click
+```
+
+This should show your web server's default page just like it did when you used the IP address.
+
+![Browsing to hostname](webServerWithHostname.png)
+
+Note that your browser will warn you that the website is not secure. We will resolve that in future instruction when we configure Caddy to generate you a website certificate.
+
+## Other record types
+
+The additional `NS` and `SOA` type records that were listed for your domain name are important for working with DNS. These records were created automatically for you when you registered your domain name. The name server (`NS`) record contains the names of the authoritative name servers that authorize you to place DNS records in this DNS server. Those same authoritative name servers are listed with the registrar that you leased your domain name from. That way the authoritative name server can verify that the DNS records and the DNS registration match and are authorized to represent the domain name when defining DNS records. Otherwise a hacker could just add DNS records and take over your domain name.
+
+The start of authority (`SOA`) record provides contact information about the owner of this domain name.
+
+## ☑ Assignment
+
+1. Open the AWS browser console and log in.
+1. Use Route 53 to purchase a domain name.
+1. Set up your DNS records using Route 53. Make sure you have a record representing your root domain name, and a wild card subdomain.
+1. Test that you can access your server using your domain name and any subdomain name.
+
+Submit a URL for web server's domain name, along with a comment about something you found interesting, to the Canvas assignment.
+
+Don't forget to update your GitHub start up repository README.md with all of the things you learned and want to remember.
 
 
 
@@ -1610,6 +1867,153 @@ After saving the Caddy file restart Caddy
 ```
 sudo service caddy restart
 ```
+
+
+
+# HTTPS, TLS, and web certificates
+
+To this point you have been accessing your web server using HTTP. If you notice your browser has been yelling at you that your connection is `⚠ Not Secure` from the location bar.
+
+![Non-secure website](../amazonWebServicesRoute53/webServerWithHostname.png)
+
+During the first couple decades of the web, it was pretty common for websites to simply use HTTP (non-secure hypertext transport protocol) since it was difficult, non-performant, and expensive to secure the connection. Additionally, most websites just provided access to documents and so it didn't need to protect user's information. Usually, only websites that were doing commerce needed a secure connection. That all changed when computers got faster and the web moved from simple document servers (Web 1.0) to full on web applications (Web 2.0) that accepted information from users and displayed that information within the application. Without a secure connection anyone that had access to the network traffic, at any point, from the user's computer to the server handling the request could easily capture all the data sent in either direction. Remember when we used the console program `traceroute` to show you how many computers your connection goes through. You definitely do not want those computers to have access to your user's sensitive information.
+
+## HTTPS and TLS
+
+The secure version of HTTP is called Secure Hypertext Transport Protocol (`HTTPS`). This is basically HTTP with a negotiated secure connection that happens before any data is exchanged. Having a secure connection means that all the data is encrypted using the [TLS protocol](https://developer.mozilla.org/en-US/docs/Web/Security/Transport_Layer_Security). TLS is sometimes referred to by a now unsecure predecessor protocol named SSL. TLS works by negotiating a shared secret that is then used to encrypt data. You can see the actual negotiation that happens by using the console browser based application `curl`, along with the `-v` parameter to see the verbose output of the HTTPS exchange. The `> /dev/null` redirection throws away the actual HTTP response, since we only care about the negotiation, by redirecting the output to the null device.
+
+```sh
+➜  curl -v -s https://byu.edu > /dev/null
+
+*   Trying 128.187.16.184:443...
+* Connected to byu.edu (128.187.16.184) port 443 (#0)
+* ALPN: offers h2
+* ALPN: offers http/1.1
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* (304) (OUT), TLS handshake, Client hello (1):
+} [312 bytes data]
+* (304) (IN), TLS handshake, Server hello (2):
+{ [122 bytes data]
+* (304) (IN), TLS handshake, Unknown (8):
+{ [25 bytes data]
+* (304) (IN), TLS handshake, Certificate (11):
+{ [3211 bytes data]
+* (304) (IN), TLS handshake, CERT verify (15):
+{ [520 bytes data]
+* (304) (IN), TLS handshake, Finished (20):
+{ [52 bytes data]
+* (304) (OUT), TLS handshake, Finished (20):
+} [52 bytes data]
+* SSL connection using TLSv1.3 / AEAD-AES256-GCM-SHA384
+* ALPN: server accepted http/1.1
+* Server certificate:
+*  subject: C=US; ST=Utah; L=Provo; O=Brigham Young University; CN=*.byu.edu
+*  start date: Jan 24 00:00:00 2022 GMT
+*  expire date: Jan 24 23:59:59 2023 GMT
+*  subjectAltName: host "byu.edu" matched cert's "byu.edu"
+*  issuer: C=US; O=DigiCert Inc; CN=DigiCert TLS RSA SHA256 2020 CA1
+*  SSL certificate verify ok.
+```
+
+You can see that the negotiation is fairly complex as it involves multiple steps in the handshake. A core piece of the handshake is the exchange of a web certificate that identifies the domain name of the server creating the secure connection. The browser will compare the certificate domain name to the one represented in the URL and if they don't match, or the certificate is invalid or out of date, it will display a massive warning.
+
+In the example above we asked for `byu.edu` and got a valid certificate for byu.edu and so everything looks great.
+
+## Web certificates
+
+Web certificates are generated by a trusted 3rd party using public/private key encryption. The certificate issuer is responsible for verifying that the certificate owner actually owns the domain name represented by the certificate. Once you have a certificate for your domain name, you can serve the certificate from your web server and then the browser can validate the certificate by using the public keys of the certificate issuer.
+
+Until about 2014 it would cost you hundreds of dollars a year to get a web certificate, and you needed a certificate for every domain and subdomain that you owned. That would cost, even a small company, thousands of dollars a year because the certificates needed to be renewed in order to ensure that it still represented the owner of the domain name and to limit the impact of a stolen certificate.
+
+That all changed when two Mozilla employees created a non-profit called `Let's Encrypt` with the goal of creating trusted web certificates for free. This effectively broke the monopoly that the trusted web certificate issuers had on the industry.
+
+Now using a service like `Let's Encrypt`, and the IETF standard [ACME protocol](https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment) that they pioneered, anyone who owns a domain name, can dynamically generate and renew a certificate for free. This incredible contribution of critical web technology has made the web safer, and more reliable, for everyone.
+
+## Enabling HTTPS
+
+Modern browsers now expect web servers to exclusively use HTTPS for all communication. In fact, the next version of HTTP (v3) only supports secure connections. For this reason, you should always support HTTPS for any web application that you build.
+
+You can obtain, and renew, a web certificate by enabling the ACME protocol for your web server and communicating with Let's Encrypt to generate the needed certificates. This is not difficult to do and may languages such as Rust, Node.js, or Go support this functionality by simply including an additional library.
+
+### Caddy
+
+For our work we are using the web service Caddy to act as a gateway to our different services and to host our static web application files. Caddy has ACME support built into it by default, and so all you need to do is configure Caddy with the domain name for your web server. Here are the steps to take.
+
+⚠ Note that this is one of the few modification that you will manually make to your web server. Most other production changes are completed with automated continuous integration processes.
+
+1. Open a console window.
+1. Use the `ssh` console program to shell into your production environment server.
+
+   ```sh
+   ➜  ssh -i [key pair file] ubuntu@[yourdomainnamehere]
+   ```
+
+   for example,
+
+   ```sh
+   ➜  ssh -i ~/keys/production.pem ubuntu@myfunkychickens.click
+   ```
+
+1. Edit Caddy's configuration (`Caddyfile`) file found in the ubuntu user's home directory. Note that since this file is owned by the root user you need to use `sudo` to elevate your user to have the rights to change the file.
+
+   ```sh
+   ➜  cd ~
+   ➜  sudo vi Caddyfile
+   ```
+
+1. Modify the Caddy rule for handling requests to port 80 (HTTP), to instead handle request for your domain name. By not specifying a port the rule will serve up files using port 443 (HTTPS), and any request to port 80 will automatically redirect the browser to port 443. Replace `:80` with your domain name (e.g. `myfunkychickens.click`).
+
+1. Modify the Caddy rules that route the traffic for the two web applications that we will build. To do this replace the two places where `yourdomain` appears with your domain name (e.g. `myfunkychickens.click`).
+
+1. Review the Caddyfile to make sure it looks right. If your domain name was `myfunkychickens.click` it would look like the following.
+
+   ```sh
+   myfunkychickens.click {
+      root * /usr/share/caddy
+      file_server
+      header Cache-Control no-store
+      header -etag
+      header -server
+      }
+
+
+   startup.myfunkychickens.click {
+      reverse_proxy * localhost:4000
+      header Cache-Control no-store
+      header -server
+      header -etag
+      header Access-Control-Allow-Origin *
+   }
+
+   simon.myfunkychickens.click {
+      reverse_proxy * localhost:3000
+      header Cache-Control no-store
+      header -server
+      header -etag
+      header Access-Control-Allow-Origin *
+   }
+   ```
+
+1. Save the file and exit VI (`:wq`)
+
+1. Restart Caddy so that your changes take effect.
+
+   ```sh
+   sudo service caddy restart
+   ```
+
+If you open your browser and navigate to your domain name you will now see that the browser is displaying a lock icon, using HTTPS, and your certificate has been automatically requested by Caddy and issued by Let's Encrypt.
+
+![Browser with HTTPS](webServerBrowserSecure.png)
+
+## ☑ Assignment
+
+Secure your web server communication by configuring Caddy to request a certificate from Let's Encrypt for you domain name.
+
+Submit a URL for web server's hostname, along with a comment about something you found interesting, to the Canvas assignment.
+
+Don't forget to update your GitHub start up repository README.md with all of the things you learned and want to remember.
 
 
 
@@ -2699,7 +3103,7 @@ Don't forget to update your GitHub start up repository README.md with all of the
 
 
 
-#2/10/23 (C4LV1NPU6):
+# 2/10/23 (C4LV1NPU6):
 
 Made CSS Practice project. Can be used in Startup App's website.
 
@@ -2922,7 +3326,7 @@ Don't forget to update your GitHub start up repository README.md with all of the
 
 
 
-#2/13/23 (C4LV1NPU6):
+# 2/13/23 (C4LV1NPU6):
 
 Made CSS Flex project. Can be used in Startup App's website.
 
@@ -3158,7 +3562,7 @@ Get familiar with what the example code teaches.
 
 
 
-#2/15/23 (C4LV1NPU6):
+# 2/15/23 (C4LV1NPU6):
 
 Set up Simon CSS sub-website.
 
