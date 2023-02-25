@@ -1,4 +1,6 @@
-Unofficial README for Startup Web Application assignment, made by pair programmers Calvin Pugmire (C4LV1NPU6) and Tachiinii Ranger (rokketranger):
+README for Startup Web Application assignment, made by pair programmers Calvin Pugmire (C4LV1NPU6) and Tachiinii Ranger (rokketranger):
+
+This is the short unofficial README. For the full official README see the README directory.
 
 
 
