@@ -5615,6 +5615,16 @@ Don't forget to update your GitHub start up repository README.md with all of the
 
 
 
+# 2/26/23 (C4LV1NPU6):
+
+Made JavaScript DOM project. Can be used in Startup App's website.
+
+I found it interesting that there was no direct reference to using setHTML() for safely injecting HTML.
+
+JavaScript DOM CodePen URL: https://codepen.io/C4LV1NPU6/pen/bGxBgJN
+
+
+
 # Promises
 
 📖 **Suggested reading**:

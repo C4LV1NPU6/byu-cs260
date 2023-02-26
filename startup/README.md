@@ -155,3 +155,13 @@ Made JavaScript Expressions+Rest+Spread+Destructuring+Exceptions projects. Excep
 I found it interesting that an easier way of doing regular expression operations hasn't been made in JavaScript like how it has in other programming languages. I found it interesting (and nice) that JavaScript has a shorthand for doing rest+spread operations. I find it interesting (and handy) that you can use destructuring with rest. I found it interesting (and helpful) that throwing an exception skips the rest of your code so you don't have to do it yourself with an unwieldy set of nested if/else statements.
 
 JavaScript Exceptions CodePen URL: https://codepen.io/C4LV1NPU6/pen/LYJRawg
+
+
+
+2/26/23 (C4LV1NPU6):
+
+Made JavaScript DOM project. Can be used in Startup App's website.
+
+I found it interesting that there was no direct reference to using setHTML() for safely injecting HTML.
+
+JavaScript DOM CodePen URL: https://codepen.io/C4LV1NPU6/pen/bGxBgJN
