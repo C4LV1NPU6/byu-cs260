@@ -1,3 +1,3 @@
-# simon-css
+# simon-javascript
 
-This application deliverable demonstrates the use of basic CSS for styling and a responsive design.
+This deliverable demonstrates the use of basic JavaScript for interactivity.
