@@ -176,4 +176,4 @@ I learned how to implement the Simon Game web application using HTML, CSS, and J
 
 Sub-site name: https://simon.lightbikebattle.click/
 
-Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/production.pem -h lightbikebattle.click -s simon
+Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/,Access\ Info/production.pem -h lightbikebattle.click -s simon
