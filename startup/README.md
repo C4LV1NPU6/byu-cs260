@@ -165,3 +165,15 @@ Made JavaScript DOM project. Can be used in Startup App's website.
 I found it interesting that there was no direct reference to using setHTML() for safely injecting HTML.
 
 JavaScript DOM CodePen URL: https://codepen.io/C4LV1NPU6/pen/bGxBgJN
+
+
+
+2/26/23 (3/3/23) (C4LV1NPU6):
+
+Set up Simon JavaScript sub-website.
+
+I learned how to implement the Simon Game web application using HTML, CSS, and JavaScript. This included the layout, appearances, and functionality for the about, home, play, and scores pages. It was a lot of information but I studied it and copied it perfectly.
+
+Sub-site name: https://simon.lightbikebattle.click/
+
+Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/production.pem -h lightbikebattle.click -s simon
