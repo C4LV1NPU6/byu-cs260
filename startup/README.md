@@ -1,10 +1,10 @@
-README for Startup Web Application assignment, made by pair programmers Calvin Pugmire (C4LV1NPU6) and Tachiinii Ranger (rokketranger):
+# README for Startup Web Application assignment, made by pair programmers Calvin Pugmire (C4LV1NPU6) and Tachiinii Ranger (rokketranger):
 
-This is the short unofficial README. For the full official README see the README directory.
+# This is the short unofficial README. For the full official README see the README directory.
 
 
 
-1/23/23 (C4LV1NPU6):
+## 1/23/23 (C4LV1NPU6):
 
 This is the directory for the startup web application.
 
@@ -17,7 +17,7 @@ GitHub notes: GitHub is a great way to backup my code. Pulling and pushing chang
 
 
 
-1/26/23 (C4LV1NPU6+rokketranger):
+## 1/26/23 (C4LV1NPU6+rokketranger):
 
 Start up deliverable - specification:
 
@@ -34,7 +34,7 @@ Key features:
 
 
 
-1/27/23 (C4LV1NPU6):
+## 1/27/23 (C4LV1NPU6):
 
 Set up a web server with AWS.
 
@@ -46,7 +46,7 @@ Remote shell command: ssh -i ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 
 
 
 
-1/30/23 (C4LV1NPU6):
+## 1/30/23 (C4LV1NPU6):
 
 Set up domain name with AWS.
 
@@ -56,7 +56,7 @@ Domain name: http://startup.lightbikebattle.click/
 
 
 
-2/2/23 (C4LV1NPU6):
+## 2/2/23 (C4LV1NPU6):
 
 Secured web server communication by configuring Caddy to request a certificate from Let's Encrypt for the domain name.
 
@@ -66,7 +66,7 @@ Host name: https://startup.lightbikebattle.click/
 
 
 
-2/6/23 (C4LV1NPU6):
+## 2/6/23 (C4LV1NPU6):
 
 Set up official HTML website.
 
@@ -78,7 +78,7 @@ Website deploy command: ./deployWebsite.sh -k ~/Desktop/finish.delete.Open\ Tabs
 
 
 
-2/6/23 (C4LV1NPU6):
+## 2/6/23 (C4LV1NPU6):
 
 Set up Simon HTML sub-website.
 
@@ -90,7 +90,7 @@ Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/
 
 
 
-2/10/23 (C4LV1NPU6):
+## 2/10/23 (C4LV1NPU6):
 
 Made CSS Practice project. Can be used in Startup App's website.
 
@@ -100,7 +100,7 @@ CSSP CodePen URL: https://codepen.io/C4LV1NPU6/pen/WNKVodL
 
 
 
-2/13/23 (C4LV1NPU6):
+## 2/13/23 (C4LV1NPU6):
 
 Made CSS Flex project. Can be used in Startup App's website.
 
@@ -110,7 +110,7 @@ CSSF CodePen URL: https://codepen.io/C4LV1NPU6/pen/dyqbwwB
 
 
 
-2/15/23 (C4LV1NPU6):
+## 2/15/23 (C4LV1NPU6):
 
 Set up Simon CSS sub-website.
 
@@ -122,7 +122,7 @@ Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/
 
 
 
-2/20/23 (C4LV1NPU6+rokketranger):
+## 2/20/23 (C4LV1NPU6+rokketranger):
 
 Set up Startup HTML+CSS sub-website.
 
@@ -138,7 +138,7 @@ Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/
 
 
 
-2/22/23 (C4LV1NPU6):
+## 2/22/23 (C4LV1NPU6):
 
 Made JavaScript Functions+Arrows+Arrays+Objects+Classes projects. Arrays can be used in Startup App's website.
 
@@ -148,7 +148,7 @@ JavaScript Arrays(+Loops+Conditionals) CodePen URL: https://codepen.io/C4LV1NPU6
 
 
 
-2/25/23 (C4LV1NPU6):
+## 2/25/23 (C4LV1NPU6):
 
 Made JavaScript Expressions+Rest+Spread+Destructuring+Exceptions projects. Exceptions can be used in Startup App's website.
 
@@ -158,7 +158,7 @@ JavaScript Exceptions CodePen URL: https://codepen.io/C4LV1NPU6/pen/LYJRawg
 
 
 
-2/26/23 (C4LV1NPU6):
+## 2/26/23 (C4LV1NPU6):
 
 Made JavaScript DOM project. Can be used in Startup App's website.
 
@@ -168,7 +168,7 @@ JavaScript DOM CodePen URL: https://codepen.io/C4LV1NPU6/pen/bGxBgJN
 
 
 
-2/26/23 (3/3/23) (C4LV1NPU6):
+## 2/26/23 (3/3/23) (C4LV1NPU6):
 
 Set up Simon JavaScript sub-website.
 
