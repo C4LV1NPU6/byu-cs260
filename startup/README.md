@@ -186,7 +186,7 @@ Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/
 
 #### HTML:
 
-<!DOCTYPE html>
+"<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -258,20 +258,20 @@ Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/
       </section>
     </main>
   </body>
-</html>
+</html>"
 
 #### CSS:
 
-* {
+"* {
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
-}
+}"
 
 ### Startup:
 
 #### HTML:
 
-<!DOCTYPE html>
+"<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -305,11 +305,11 @@ Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/
   </script>
 </body>
 
-</html>
+</html>"
 
 #### CSS:
 
-* {
+"* {
   text-align: center;
   font-family: monospace;
   color: #fff;
@@ -409,11 +409,11 @@ button {
   50% {
     border-color: #fff;
   }
-}
+}"
 
 #### JS:
 
-function login() {
+"function login() {
   try {
     arguments = [];
     arguments.push(document.getElementById("username").value);
@@ -451,14 +451,14 @@ function login() {
   } finally {
     return false;
   }
-}
+}"
 
 ### Simon:
 
 #### HTML:
 
 ##### about:
-<!DOCTYPE html>
+"<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -525,10 +525,10 @@ function login() {
       </div>
     </footer>
   </body>
-</html>
+</html>"
 
 ##### index:
-<!DOCTYPE html>
+"<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -591,10 +591,10 @@ function login() {
       </div>
     </footer>
   </body>
-</html>
+</html>"
 
 ##### play:
-<!DOCTYPE html>
+"<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -666,10 +666,10 @@ function login() {
     <!-- Script is located at the bottom because it references HTML elements during initialization -->
     <script src="play.js"></script>
   </body>
-</html>
+</html>"
 
 ##### scores:
-<!DOCTYPE html>
+"<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -735,12 +735,12 @@ function login() {
 
     <script src="scores.js"></script>
   </body>
-</html>
+</html>"
 
 #### CSS:
 
 ##### main:
-body {
+"body {
   display: flex;
   flex-direction: column;
   min-width: 375px;
@@ -896,19 +896,19 @@ footer a {
   main {
     flex: 1 100vh;
   }
-}
+}"
 
 #### JS:
 
 ##### login:
-function login() {
+"function login() {
   const nameEl = document.querySelector("#name");
   localStorage.setItem("userName", nameEl.value);
   window.location.href = "play.html";
-}
+}"
 
 ##### play:
-const btnDescriptions = [
+"const btnDescriptions = [
   {file: 'sound1.mp3', hue: 120},
   {file: 'sound2.mp3', hue: 0},
   {file: 'sound3.mp3', hue: 60},
@@ -1087,10 +1087,10 @@ function delay(milliseconds) {
 
 function loadSound(filename) {
   return new Audio('assets/' + filename);
-}
+}"
 
 ##### scores:
-function loadScores() {
+"function loadScores() {
   let scores = [];
   const scoresText = localStorage.getItem('scores');
   if (scoresText) {
@@ -1124,4 +1124,4 @@ function loadScores() {
   }
 }
 
-loadScores();
+loadScores();"
