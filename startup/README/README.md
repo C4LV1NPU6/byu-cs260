@@ -7003,3 +7003,1989 @@ function loadScores() {
 loadScores();
 ```
 
+
+
+# CodePens:
+
+## html: Introduction:
+
+### HTML:
+```html
+<body>
+  <main>
+    <h1>Sith Legends</h1>
+    <p class="introduction">
+      Have you ever heard of
+      <span class="topic">the tragedy of Darth Plagueis the Wise</span>?
+    </p>
+    <p class="question">Explore the story:</p>
+    <p class="assignment">Learn more <a href="https://www.youtube.com/watch?v=05dT34hGRdg">here</a>.</p>
+  </main>
+</body>
+```
+
+## html: Structure:
+
+### HTML:
+```html
+<body>
+  <p>Body</p>
+  <header>
+    <p>Header - <span>Span</span></p>
+    <nav>Navigation
+      <div>Div</div>
+      <div>Div</div>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <p>Section</p>
+      <ul>
+        <li>List</li>
+        <li>List</li>
+        <li>List</li>
+      </ul>
+    </section>
+    <section>
+      <p>Section</p>
+      <table>
+        <tr>
+          <th>Table</th>
+          <th>Table</th>
+          <th>Table</th>
+        </tr>
+        <tr>
+          <td>table</td>
+          <td>table</td>
+          <td>table</td>
+        </tr>
+      </table>
+    </section>
+    <aside>
+      <p>Aside</p>
+    </aside>
+  </main>
+
+  <footer>
+    <div>Footer - <span>Span</span></div>
+  </footer>
+</body>
+```
+
+### CSS:
+```css
+* {
+  font-family: Arial;
+  border: medium dashed #e3d5c2;
+  padding: 0.25em;
+  margin: 0.25em;
+}
+
+html {
+  border: none;
+}
+
+p {
+  border: none;
+}
+
+span {
+  border: medium dashed #b3a592;
+  margin: 0.25em;
+}
+
+```
+
+## html: Input:
+
+### HTML:
+```html
+<h1>Example inputs</h1 <ul>
+<li>
+  <!-- Includes validation-->
+  <label for="text">Text: </label>
+  <input type="text" id="text" name="varText" placeholder="text here" spellcheck required pattern="[Aa].*" />
+</li>
+<li>
+  <label for="password">Password: </label>
+  <input type="password" id="password" name="varPassword" />
+</li>
+<li>
+  <label for="email">Email: </label>
+  <input type="email" id="email" name="varEmail" />
+</li>
+<li>
+  <label for="textarea">TextArea: </label>
+  <textarea id="textarea" name="varTextarea"></textarea>
+</li>
+<li>
+  <label for="select">Select: </label>
+  <select id="select" name="varSelect">
+    <option>option1</option>
+    <option selected>option2</option>
+    <option>option3</option>
+  </select>
+</li>
+<li>
+  <label for="optgroup">OptGroup: </label>
+  <select id="optgroup" name="varOptGroup">
+    <optgroup label="group1">
+      <option>option1</option>
+      <option selected>option2</option>
+    </optgroup>
+    <optgroup label="group1">
+      <option>option3</option>
+      <option>option4</option>
+    </optgroup>
+  </select>
+</li>
+<li>
+  <fieldset>
+    <legend>checkbox</legend>
+    <label for="checkbox1">checkbox1</label>
+    <input type="checkbox" id="checkbox1" name="varCheckbox" value="checkbox1" checked />
+    <label for="checkbox2">checkbox2</label>
+    <input type="checkbox" id="checkbox2" name="varCheckbox" value="checkbox2" />
+    <label for="checkbox3">checkbox3</label>
+    <input type="checkbox" id="checkbox3" name="varCheckbox" value="checkbox3" />
+  </fieldset>
+</li>
+<li>
+  <fieldset>
+    <legend>radio</legend>
+    <label for="radio1">radio1</label>
+    <input type="radio" id="radio1" name="varRadio" value="radio1" checked />
+    <label for="radio2">radio2</label>
+    <input type="radio" id="radio2" name="varRadio" value="radio2" />
+    <label for="radio3">radio3</label>
+    <input type="radio" id="radio3" name="varRadio" value="radio3" />
+  </fieldset>
+</li>
+<li>
+  <!-- Submit form with POST method and enctype="multipart/form-data" to send file contents. -->
+  <label for="file">File: </label>
+  <input type="file" id="file" name="varFile" accept="image/*" multiple />
+</li>
+<li>
+  <label for="search">Search: </label>
+  <input type="search" id="search" name="varSearch" />
+</li>
+<li>
+  <label for="tel">Tel: </label>
+  <input type="tel" id="tel" name="varTel" />
+</li>
+<li>
+  <label for="url">URL: </label>
+  <input type="url" id="url" name="varUrl" />
+</li>
+<li>
+  <label for="number">Number: </label>
+  <input type="number" name="varNumber" id="number" min="1" max="10" step="1" />
+</li>
+<li>
+  <label for="range">Range: </label>
+  <input type="range" name="varRange" id="range" min="0" max="100" step="1" value="0" />
+  <output id="rangeOutput" for="range">0</output>
+  <!-- Range requires some JavaScript in order to make it work. Ignore this for now. -->
+  <script>
+    const range = document.querySelector('#range');
+    const rangeOutput = document.querySelector('#rangeOutput');
+    range.addEventListener('input', function() {
+      rangeOutput.textContent = range.value;
+    });
+  </script>
+</li>
+<li>
+  <label for="progress">Progress: </label>
+  <progress id="progress" max="100" value="75"></progress>
+</li>
+<li>
+  <label for="meter">Meter: </label>
+  <meter id="meter" min="0" max="100" value="50" low="33" high="66" optimum="50"></meter>
+</li>
+<li>
+  <label for="datetime">DateTime: </label>
+  <input type="datetime-local" name="varDatetime" id="datetime" />
+</li>
+<li>
+  <label for="time">Time: </label>
+  <input type="time" name="varTime" id="time" />
+</li>
+<li>
+  <label for="month">Month: </label>
+  <input type="month" name="varMonth" id="month" />
+</li>
+<li>
+  <label for="week">Week: </label>
+  <input type="week" name="varWeek" id="week" />
+</li>
+<li>
+  <label for="colore">Color: </label>
+  <input type="color" name="varColor" id="color" />
+</li>
+</ul>
+<!-- This doesn't show up to the user, but allows the form to send associated data. -->
+<input type="hidden" id="secretData" name="varSecretData" value="1989 - the web was born" />
+
+<h1>Example Form</h1>
+<form action="submission.html" method="post">
+  <label for="ta">TextArea: </label>
+  <textarea id="ta" name="ta-id">Some text
+  </textarea>
+  <button type="submit">Submit</button>
+</form>
+```
+
+### CSS:
+```css
+* {
+  font-family: Arial;
+}
+li {
+  list-style-type: none;
+  padding: 0.25em 0;
+}
+```
+
+## html: Media:
+
+### HTML:
+```html
+<h2>Image</h2>
+<img alt="Arches" src="https://static.wikia.nocookie.net/spongebob/images/9/96/The_Two_Faces_of_Squidward_174.png" />
+
+<h2>Audio</h2>
+<audio controls src="https://www.myinstants.com/media/sounds/fart-with-reverb.mp3"></audio>
+
+<h2>Video</h2>
+<video controls width="300" <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" />
+</video>
+</section>
+
+<h2>Canvas</h2>
+<canvas id="canvasDemo" width="300" height="200" style="border: 1px solid #000000"></canvas>
+<script>
+  const ctx = document.getElementById('canvasDemo').getContext('2d');
+  ctx.beginPath();
+  ctx.arc(150, 100, 50, 0, 2 * Math.PI);
+  ctx.fillStyle = 'red';
+  ctx.strokeStyle = 'red';
+  ctx.fill();
+  ctx.stroke();
+</script>
+
+<h2>SVG</h2>
+<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" stroke="red" fill="red" style="border: 1px solid #000000">
+  <circle cx="150" cy="100" r="50" />
+</svg>
+```
+
+### CSS:
+```css
+* {
+  font-family: Arial;
+}
+```
+
+## css: Selectors:
+
+### HTML:
+```html
+<body>
+  <h1>Departments</h1>
+  <p>welcome message<p>
+  <section id="physics">
+    <h2>Physics</h2>
+    <p class="introduction">Introduction</p>
+    <p>Text</p>
+    <p class="summary">Summary</p>
+  </section>
+  <section id="chemistry">
+    <h2>Chemistry</h2>
+    <p class="introduction">Introduction</p>
+    <p>Text</p>
+    <p class="summary">Summary</p>
+  </section>
+</body>
+```
+
+### CSS:
+```css
+body {
+  font-family: sans-serif;
+}
+
+h1 {
+  border-bottom: thin black solid;
+}
+
+section {
+  background: #eeeeee;
+  padding: 0.25em;
+  margin-bottom: 0.5em;
+  border-left: solid 1em #eeeeee;  
+}
+
+section h2 {
+  color: #004400;
+}
+
+
+h2 ~ p {
+  padding-left: 0.5em;
+}
+
+
+p.summary {
+  font-weight: bold;
+}
+
+
+section:hover {
+  border-left: solid 1em purple;
+}
+```
+
+## css: Declarations:
+
+### HTML:
+```html
+<body>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <div>
+  </div>
+  <img src="https://images.pexels.com:443/photos/164170/pexels-photo-164170.jpeg" />
+
+</body>
+```
+
+### CSS:
+```css
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+p {
+  color: #3f3f76;
+  columns: 3;
+  column-rule: solid thin black;
+  background: hsl(180, 0%, 90%);
+  box-shadow: 5px 5px 5px gray;
+  font: 1.1em sans-serif;
+  margin: 10px 0;
+  max-width: 7in;
+  padding: 1em 1em;
+  text-align: justify;
+}
+
+div {
+  background: linear-gradient(to bottom, gray, hsl(225deg 100% 50%));
+  width: 2in;
+  height: 2in;
+  border-radius: 50%;
+  opacity: 30%;
+  position: absolute;
+  top: 1in;
+  left: 25vw;
+  z-index: 1000;
+  transform: rotate(0.15turn);
+}
+
+img {
+  filter: grayscale(50%);
+  cursor: grab;
+  width: 4in;
+}
+```
+
+## css: Fonts:
+
+### HTML:
+```html
+<body>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</body>
+```
+
+### CSS:
+```css
+@import url("https://fonts.googleapis.com/css2?family=Rubik Microbe&display=swap");
+
+p:nth-child(1) {
+  font-family: "Rubik Microbe";
+}
+
+@font-face {
+  font-family: "Quicksand";
+  src: url("https://cs260.click/fonts/quicksand.woff2");
+}
+
+p:nth-child(2) {
+  font-family: Quicksand;
+}
+```
+
+## css: Animation:
+
+### HTML:
+```html
+<p>Animate</p>
+```
+
+### CSS:
+```css
+p {
+  text-align: center;
+  font-size: 20vh;
+
+  animation-name: demo;
+  animation-duration: 3s;
+}
+
+@keyframes demo {
+  from {
+    font-size: 0vh;
+  }
+
+  95% {
+    font-size: 21vh;
+  }
+
+  to {
+    font-size: 20vh;
+  }
+}
+```
+
+## demo: CSS animation clouds:
+
+### HTML:
+```html
+<div id="background-wrap">
+    <div class="x1">
+        <div class="cloud"></div>
+    </div>
+
+    <div class="x2">
+        <div class="cloud"></div>
+    </div>
+
+    <div class="x3">
+        <div class="cloud"></div>
+    </div>
+
+    <div class="x4">
+        <div class="cloud"></div>
+    </div>
+
+    <div class="x5">
+        <div class="cloud"></div>
+    </div>
+</div>
+```
+
+### CSS:
+```css
+body {
+	background: #00b4ff;
+	color: #333;
+	font: 100% Arial, Sans Serif;
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+}
+
+#background-wrap {
+    bottom: 0;
+	left: 0;
+	padding-top: 50px;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: -1;
+}
+
+/* KEYFRAMES */
+
+@-webkit-keyframes animateCloud {
+    0% {
+        margin-left: -1000px;
+    }
+    100% {
+        margin-left: 100%;
+    }
+}
+
+@-moz-keyframes animateCloud {
+    0% {
+        margin-left: -1000px;
+    }
+    100% {
+        margin-left: 100%;
+    }
+}
+
+@keyframes animateCloud {
+    0% {
+        margin-left: -1000px;
+    }
+    100% {
+        margin-left: 100%;
+    }
+}
+
+/* ANIMATIONS */
+
+.x1 {
+	-webkit-animation: animateCloud 35s linear infinite;
+	-moz-animation: animateCloud 35s linear infinite;
+	animation: animateCloud 35s linear infinite;
+	
+	-webkit-transform: scale(0.65);
+	-moz-transform: scale(0.65);
+	transform: scale(0.65);
+}
+
+.x2 {
+	-webkit-animation: animateCloud 20s linear infinite;
+	-moz-animation: animateCloud 20s linear infinite;
+	animation: animateCloud 20s linear infinite;
+	
+	-webkit-transform: scale(0.3);
+	-moz-transform: scale(0.3);
+	transform: scale(0.3);
+}
+
+.x3 {
+	-webkit-animation: animateCloud 30s linear infinite;
+	-moz-animation: animateCloud 30s linear infinite;
+	animation: animateCloud 30s linear infinite;
+	
+	-webkit-transform: scale(0.5);
+	-moz-transform: scale(0.5);
+	transform: scale(0.5);
+}
+
+.x4 {
+	-webkit-animation: animateCloud 18s linear infinite;
+	-moz-animation: animateCloud 18s linear infinite;
+	animation: animateCloud 18s linear infinite;
+	
+	-webkit-transform: scale(0.4);
+	-moz-transform: scale(0.4);
+	transform: scale(0.4);
+}
+
+.x5 {
+	-webkit-animation: animateCloud 25s linear infinite;
+	-moz-animation: animateCloud 25s linear infinite;
+	animation: animateCloud 25s linear infinite;
+	
+	-webkit-transform: scale(0.55);
+	-moz-transform: scale(0.55);
+	transform: scale(0.55);
+}
+
+/* OBJECTS */
+
+.cloud {
+	background: #fff;
+	background: -moz-linear-gradient(top,  #fff 5%, #f1f1f1 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(5%,#fff), color-stop(100%,#f1f1f1));
+	background: -webkit-linear-gradient(top,  #fff 5%,#f1f1f1 100%);
+	background: -o-linear-gradient(top,  #fff 5%,#f1f1f1 100%);
+	background: -ms-linear-gradient(top,  #fff 5%,#f1f1f1 100%);
+	background: linear-gradient(top,  #fff 5%,#f1f1f1 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#f1f1f1',GradientType=0 );
+	
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+	border-radius: 100px;
+	
+	-webkit-box-shadow: 0 8px 5px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 8px 5px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 8px 5px rgba(0, 0, 0, 0.1);
+
+	height: 120px;
+	position: relative;
+	width: 350px;
+}
+
+.cloud:after, .cloud:before {
+    background: #fff;
+	content: '';
+	position: absolute;
+	z-indeX: -1;
+}
+
+.cloud:after {
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+	border-radius: 100px;
+
+	height: 100px;
+	left: 50px;
+	top: -50px;
+	width: 100px;
+}
+
+.cloud:before {
+	-webkit-border-radius: 200px;
+	-moz-border-radius: 200px;
+	border-radius: 200px;
+
+	width: 180px;
+	height: 180px;
+	right: 50px;
+	top: -90px;
+}
+```
+
+## demo: CSS bouncing ball:
+
+### HTML:
+```html
+      <div class="bouncing-ball">
+        <div id="ball"></div>
+        <div id="ground"></div>
+        <div id="shadow"></div>
+      </div>
+```
+
+### CSS:
+```css
+.bouncing-ball {
+  position: absolute;
+  top: calc(100vh - 300px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#ground {
+  position: absolute;
+  background: radial-gradient(#656565, #272727);
+  top: 75%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+}
+
+#shadow {
+  position: absolute;
+  top: 85%;
+  left: 50%;
+  margin-left: -1em;
+  width: 2em;
+  height: 1em;
+  background: #333;
+  border-radius: 50%;
+  animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+  0% {
+    width: 2em;
+    margin-left: -1em;
+  }
+  75% {
+    width: 2.5em;
+    margin-left: -1.25em;
+  }
+  100% {
+    width: 3em;
+    margin-left: -1.5em;
+  }
+}
+
+#ball {
+  position: relative;
+  background: linear-gradient(#b10000, 50%, #520000);
+  top: 3em;
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  margin: 0 auto;
+  z-index: 2;
+  animation: bounce 0.5s cubic-bezier(0.63, 0.09, 0.75, 0.46) infinite alternate;
+}
+
+@keyframes bounce {
+  0%,
+  10% {
+    top: 15%;
+    height: 3em;
+    width: 3em;
+  }
+  15% {
+    height: 3.15em;
+    width: 2.9em;
+  }
+  35% {
+    height: 4em;
+    width: 2.5em;
+  }
+  75% {
+    height: 4em;
+    width: 2.5em;
+  }
+  95% {
+    height: 2em;
+    width: 3.5em;
+  }
+  100% {
+    top: 85%;
+    height: 1em;
+    width: 3em;
+  }
+}
+
+```
+
+## css: Display:
+
+### HTML:
+```html
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+</head>
+
+<div class="none">None</div>
+<div class="block">Block</div>
+<div class="inline">Inline1</div>
+<div class="inline">Inline2</div>
+<div class="flex">
+  <div>FlexA</div>
+  <div>FlexB</div>
+  <div>FlexC</div>
+  <div>FlexD</div>
+</div>
+<div class="grid">
+  <div>GridA</div>
+  <div>GridB</div>
+  <div>GridC</div>
+  <div>GridD</div>
+</div>
+```
+
+### CSS:
+```css
+* {
+  border: black solid thin;
+  margin: 0.5em;
+  text-align: center;
+}
+
+.none {
+  display: none;
+}
+
+.block {
+  display: block;
+  color: green;
+}
+
+.inline {
+  display: inline;
+  color: blue;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  color: orange;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  color: purple;
+}
+```
+
+## css: float:
+
+### HTML:
+```html
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+</head>
+
+<body>
+  <aside>Aside</aside>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</body>
+```
+
+### CSS:
+```css
+aside {
+  padding: 3em;
+  margin: 0.5em;
+  border: black solid thin;
+  float: right;
+}
+```
+
+## css: Media orientation:
+
+### HTML:
+```html
+<body>
+  <div>⬆️</div>
+</body>
+```
+
+### CSS:
+```css
+html {
+  height: 100%;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+div {
+  font-size: 50vh;
+}
+
+@media (orientation: portrait) {
+  div {
+    transform: rotate(270deg);
+  }
+}
+```
+
+## css: Media disappear:
+
+### HTML:
+```html
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+  <section>
+    <p>Main content</p>
+  </section>
+  <aside>
+    <p>Aside</p>
+  </aside>
+</body>
+```
+
+### CSS:
+```css
+* {
+  box-sizing: border-box;
+  font-family: sans-serif;
+  margin: 0;
+}
+body {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+section {
+  flex: 2;
+  background: #444;
+  color: white;
+  height: 100%;
+  width: 100%;
+}
+
+aside {
+  background: #cbc;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+}
+
+p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+@media (orientation: portrait) {
+  body {
+    flex-direction: column;
+  }
+}
+
+@media ((orientation: portrait) and (max-height: 500px)) {
+  aside {
+    display: none;
+  }
+}
+```
+
+## css: grid:
+
+### HTML:
+```html
+<div class="container">
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+</div>
+```
+
+### CSS:
+```css
+.container {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: 200px;
+  grid-gap: 1em;
+}
+.card {
+  border: #333 solid thick;
+  border-radius: 1em;
+}
+
+.card:nth-child(odd) {
+  background: hsl(220, 25%, 70%);
+}
+
+.card:nth-child(even) {
+  background: hsl(420, 25%, 70%);
+}
+```
+
+## css: Flex & media query:
+
+### HTML:
+```html
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <header>
+    <h1>CSS flex &amp; media query</h1>
+  </header>
+  <main>
+    <section>
+      <h2>Controls</h2>
+    </section>
+    <section>
+      <h2>Content</h2>
+    </section>
+  </main>
+  <footer>
+    <h2>Footer</h2>
+  </footer>
+
+</body>
+```
+
+### CSS:
+```css
+* {
+  text-align: center;
+  font-family: sans-serif;
+  color: white;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  flex: 0 80px;
+  background: hsl(223, 57%, 38%);
+}
+
+footer {
+  flex: 0 30px;
+  background: hsl(180, 10%, 10%);
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+section h2 {
+  color: black;
+}
+
+section:nth-child(1) {
+  flex: 1;
+  background-color: hsl(180, 10%, 80%);
+}
+section:nth-child(2) {
+  flex: 3;
+  background-color: white;
+}
+
+@media (orientation: portrait) {
+  main {
+    flex-direction: column;
+  }
+}
+
+@media (max-height: 700px) {
+  header {
+    display: none;
+  }
+  footer {
+    display: none;
+  }
+}
+```
+
+## css: Bootstrap:
+
+### HTML:
+```html
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <link href="https://getbootstrap.com/docs/5.1/assets/css/docs.css" rel="stylesheet">
+</head>
+
+<body>
+  <header class="sticky-top">
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="https://getbootstrap.com/">
+          <h1>Bootstap</h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#btn">Button</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#card">Card</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#typography">Typography</a>
+            </li>
+          </ul>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container-fluid">
+
+    <div id="btn" class="demo-box">
+      <h2>Button</h2>
+      <button type="button" class="btn btn-primary">Primary</button>
+      <button type="button" class="btn btn-danger" disabled>Danger</button>
+      <button type="button" class="btn btn-outline-dark">Outline</button>
+      <button type="button" class="btn btn-success" data-bs-toggle="button">Toggle button</button>
+      <a class="btn btn-warning" href="#typography" role="button">Link</a>
+    </div>
+
+    <div id="card" class="demo-box">
+      <h2>Card</h2>
+      <div class="card" style="width:300px">
+        <img class="card-img-top" src="https://picsum.photos/300/200" />
+
+        <div class="card-body">
+          <h5 class="card-title">Card title <span class="badge bg-secondary">New</span></h5>
+          <p class="card-text">Lorem ipsum dolor sit amet, consec adipiscing elit</p>
+          <a href="#" class="btn btn-primary">Details</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="typography" class="demo-box">
+      <div class="container-fluid">
+        <h2>Typography</h2>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In eu mi bibendum neque egestas. Elit eget gravida cum sociis natoque penatibus et magnis dis.</p>
+
+        <p>In arcu cursus euismod quis viverra nibh cras. Sem nulla pharetra diam sit amet nisl suscipit adipiscing. Urna duis convallis convallis tellus id interdum velit laoreet id. Pulvinar elementum integer enim neque volutpat ac tincidunt vitae semper. Nec sagittis aliquam malesuada bibendum arcu vitae elementum. Sit amet purus gravida quis blandit turpis. Justo donec enim diam vulputate ut pharetra sit amet. Volutpat blandit aliquam etiam erat. Nec tincidunt praesent semper feugiat nibh sed pulvinar proin gravida. Varius morbi enim nunc faucibus. Amet purus gravida quis blandit turpis.</p>
+
+        <p>Sit amet justo donec enim diam. Nec dui nunc mattis enim ut tellus elementum. Sed enim ut sem viverra aliquet eget sit amet tellus. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa. Malesuada fames ac turpis egestas integer eget aliquet nibh praesent. Nec ullamcorper sit amet risus. Semper quis lectus nulla at volutpat diam. Sed felis eget velit aliquet. Purus viverra accumsan in nisl nisi scelerisque eu ultrices. Id interdum velit laoreet id donec ultrices tincidunt. Bibendum neque egestas congue quisque egestas diam in arcu cursus. Et ligula ullamcorper malesuada proin libero nunc consequat. Quam lacus suspendisse faucibus interdum posuere lorem ipsum dolor sit. Id porta nibh venenatis cras sed felis eget. Nam libero justo laoreet sit amet. Convallis posuere morbi leo urna molestie. Tincidunt ornare massa eget egestas purus viverra accumsan in nisl. Ipsum suspendisse ultrices gravida dictum fusce ut placerat. Eget duis at tellus at urna condimentum.</p>
+
+        <figure class="text-center">
+          <blockquote class="blockquote">
+            <p>Always bet on JavaScript</p>
+          </blockquote>
+          <figcaption class="blockquote-footer">
+            Brandon Eich (<cite title="Source Title">brendaneich.github.io</cite>)
+          </figcaption>
+        </figure>
+
+        <p>Urna porttitor rhoncus dolor purus non enim praesent. Tempor commodo ullamcorper a lacus vestibulum. Sed turpis tincidunt id aliquet. Eu volutpat odio facilisis mauris sit. Lacus sed turpis tincidunt id aliquet risus feugiat in ante. Velit sed ullamcorper morbi tincidunt ornare massa eget egestas purus. Purus in mollis nunc sed id semper. Vehicula ipsum a arcu cursus vitae congue mauris rhoncus. Sit amet cursus sit amet dictum sit amet justo donec. Integer vitae justo eget magna fermentum iaculis eu. Odio morbi quis commodo odio aenean sed adipiscing. Mauris in aliquam sem fringilla ut. Aliquam faucibus purus in massa tempor nec feugiat nisl pretium. Eget nulla facilisi etiam dignissim diam quis enim. Odio tempor orci dapibus ultrices in iaculis. Elit at imperdiet dui accumsan sit amet nulla facilisi. Ultrices eros in cursus turpis massa tincidunt dui ut ornare. Porta nibh venenatis cras sed felis. Aliquet porttitor lacus luctus accumsan tortor posuere ac ut.</p>
+
+        <p class="text-warning">Vulputate eu scelerisque felis imperdiet proin fermentum. Netus et malesuada fames ac turpis egestas. Neque laoreet suspendisse interdum consectetur. Malesuada proin libero nunc consequat interdum. Suspendisse in est ante in nibh mauris cursus mattis molestie. Mauris commodo quis imperdiet massa tincidunt nunc. Libero volutpat sed cras ornare arcu. Egestas quis ipsum suspendisse ultrices gravida. Accumsan lacus vel facilisis volutpat est velit egestas dui. Sit amet consectetur adipiscing elit pellentesque habitant morbi tristique. Sed cras ornare arcu dui. In mollis nunc sed id semper risus in. Lacus viverra vitae congue eu consequat ac felis donec. Massa tempor nec feugiat nisl.</p>
+
+        <p class="text-dark" style="--bs-text-opacity: .5;">Volutpat commodo sed egestas egestas fringilla phasellus faucibus scelerisque. Ac turpis egestas maecenas pharetra convallis. Parturient montes nascetur ridiculus mus. Dignissim sodales ut eu sem. Tortor dignissim convallis aenean et tortor at. Aliquet bibendum enim facilisis gravida neque convallis a. Suspendisse interdum consectetur libero id faucibus nisl tincidunt eget. Feugiat nisl pretium fusce id velit ut. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Malesuada fames ac turpis egestas. Pulvinar proin gravida hendrerit lectus a. Sed blandit libero volutpat sed cras ornare. Eu augue ut lectus arcu. Suscipit tellus mauris a diam maecenas. Suscipit adipiscing bibendum est ultricies integer quis auctor elit. Nunc congue nisi vitae suscipit tellus mauris a. Aenean sed adipiscing diam donec adipiscing. Convallis convallis tellus id interdum velit laoreet. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Sed felis eget velit aliquet sagittis.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="sticky-bottom">
+    <nav class="navbar bg-light">
+      <div class="container-fluid ">
+        <p class="text-muted">&copy; 2035 - Web Programming 260</p>
+      </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</body>
+```
+
+### CSS:
+```css
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 2rem;
+}
+
+.demo-box {
+  margin: 1rem 0;
+  border: thin solid #dee2e6;
+  border-radius: 0.25rem;
+  padding: 1rem;
+}
+
+.card > img {
+  height: 200px;
+  background: gray;
+}
+```
+
+## JS: Functions:
+
+### JS:
+```js
+function hello1(who1) {
+  return 'hello ' + who1;
+}
+
+console.log(hello1('world'));
+// OUTPUT: hello world
+////////////////////////////////////////////////////////
+function hello2(who2) {
+  who2.count++;
+  console.log('hello ' + who2.name);
+}
+
+hello2({ name: 'world', count: 0 });
+// OUTPUT: hello world
+////////////////////////////////////////////////////////
+function labeler3(value3, title3 = 'title') {
+  console.log(`${title3}=${value3}`);
+}
+
+labeler3();
+// OUTPUT: title=undefined
+
+labeler3('fish');
+// OUTPUT: title=fish
+
+labeler3('fish', 'animal');
+// OUTPUT: animal=fish
+////////////////////////////////////////////////////////
+// Function that takes a function as a parameter
+function doMath4(operation4, a4, b4) {
+  return operation4(a4, b4);
+}
+
+// Anonymous function assigned to a variable
+const add4 = function (a4, b4) {
+  return a4 + b4;
+};
+
+console.log(doMath4(add4, 5, 3));
+// OUTPUT: 8
+
+// Anonymous function assigned to a parameter
+console.log(
+  doMath4(
+    function (a4, b4) {
+      return a4 - b4;
+    },
+    5,
+    3
+  )
+);
+// OUTPUT: 2
+////////////////////////////////////////////////////////
+// Anonymous declaration of the function that is later assigned to a variable
+const add5 = function (a5, b5) {
+  return a5 + b5;
+};
+
+// Function that logs as a side effect of its execution
+function labeler5(label5, value5) {
+  console.log(label5 + '=' + value5);
+}
+
+// Function that takes a function as a parameter and then executes the function as a side effect
+function addAndLabel5(labeler5, label5, adder5, a5, b5) {
+  labeler5(label5, adder5(a5, b5));
+}
+
+// Passing a function to a function
+addAndLabel5(labeler5, 'a+b', add5, 1, 3);
+// OUTPUT: a+b=4
+
+// Function that returns a function
+function labelMaker5(label5) {
+  return function (value5) {
+    console.log(label5 + '=' + value5);
+  };
+}
+
+// Assign a function from the return value of the function
+const nameLabeler5 = labelMaker5('name');
+
+// Calling the returned function
+nameLabeler5('value');
+// OUTPUT: name=value
+////////////////////////////////////////////////////////
+function labeler6(value6) {
+  function stringLabeler6(value6) {
+    console.log('string=' + value6);
+  }
+  function numberLabeler6(value6) {
+    console.log('number=' + value6);
+  }
+
+  if (typeof value6 == 'string') {
+    stringLabeler6(value6);
+  } else if (typeof value6 == 'number') {
+    numberLabeler6(value6);
+  }
+}
+
+labeler6(5);
+// OUTPUT: number=5
+
+labeler6('fish');
+// OUTPUT: string=fish
+```
+
+## JS: Arrow Functions:
+
+### JS:
+```js
+const a1 = [1, 2, 3, 4];
+
+// standard function syntax
+a1.sort(function (a1, b1) {
+  return a1 - b1;
+});
+
+// arrow function syntax
+a1.sort((a1, b1) => a1 - b1);
+////////////////////////////////////////
+() => 3;
+// RETURNS: 3
+
+() => {
+  3;
+};
+// RETURNS: undefined
+
+() => {
+  return 3;
+};
+// RETURNS: 3
+////////////////////////////////////////
+function makeClosure3(a3) {
+  a3 = 'a2';
+  const b3 = 'b2';
+  return () => [a3, b3];
+}
+
+const a3 = 'a';
+const b3 = 'b';
+
+const closure3 = makeClosure3(a3);
+
+console.log(closure3());
+// OUTPUT: ['a2', 'b2']
+
+console.log(a3, b3);
+// OUTPUT: 'a' 'b'
+```
+
+## JS: Objects and Classes:
+
+### JS:
+```js
+const obj1 = new Object();
+
+obj1.c1 = [1, 2, 3];
+obj1.hello1 = function () {
+  console.log('hello');
+};
+///////////////////////////////////////////////////////
+const obj2 = {
+  a2: 3,
+  b2: 'fish',
+};
+
+console.log(Object.entries(obj2));
+// OUTPUT: [['a', 3], ['b', 'fish']]
+console.log(Object.keys(obj2));
+// OUTPUT: ['a', 'b']
+console.log(Object.values(obj2));
+// OUTPUT: [3, 'fish']
+///////////////////////////////////////////////////////
+function Person3(name3) {
+  return {
+    name3: name3,
+    log3: function () {
+      console.log('My name is ' + this.name3);
+    },
+  };
+}
+
+const p3 = new Person3('Eich');
+p3.log3();
+// OUTPUT: My name is Eich
+///////////////////////////////////////////////////////
+class Person4 {
+  name4;
+  
+  constructor(name4) {
+    this.name4 = name4;
+  }
+
+  print4() {
+    return 'My name is ' + this.name4;
+  }
+}
+
+class Employee4 extends Person4 {
+  position4;
+  
+  constructor(name4, position4) {
+    super(name4);
+    this.position4 = position4;
+  }
+
+  print4() {
+    return super.print4() + '. I am a ' + this.position4;
+  }
+}
+
+const p4 = new Person4('Eich');
+console.log(p4.print4());
+// OUTPUT: My name is Eich
+const e4 = new Employee4('Eich', 'programmer');
+console.log(e4.print4());
+// OUTPUT: My name is Eich. I am a programmer
+```
+
+## JS: Regular Expressions:
+
+### JS:
+```js
+const objRegex = new RegExp('ab*', 'i');
+const literalRegex = /ab*/i;
+////////////////////////////////////////////////////////////
+const petRegex = /(dog)|(cat)|(bird)/gim;
+const text = 'Both cats and dogs are pets, but not rocks.';
+
+matches = text.match(petRegex);
+console.log(matches);
+// RETURNS: ['cat', 'dog']
+
+newtext = text.replace(petRegex, 'animal');
+console.log(newtext);
+// RETURNS: Both animals and animals are pets, but not rocks.
+
+test = petRegex.test(text);
+console.log(test);
+// RETURNS: true
+```
+
+## JS: Rest and Spread:
+
+### JS:
+```js
+function hasNumber1(test1, numbers1) {
+  return numbers1.some((i) => i === test1);
+}
+
+const a1 = [1, 2, 3];
+result1 = hasNumber1(2, a1);
+console.log(result1);
+// RETURNS: true
+/////////////////////////////////////////////
+function hasTwo2(a2, b2, c2) {
+  return hasNumber1(2, [a2, b2, c2]);
+}
+
+result2 = hasTwo2(1, 2, 3);
+console.log(result2);
+// RETURNS: true
+/////////////////////////////////////////////
+function hasNumber3(test3, ...numbers3) {
+  return numbers3.some((i) => i === test3);
+}
+
+result3 = hasNumber3(2, 1, 2, 3);
+console.log(result3);
+// RETURNS: true
+//////////////////////////////////////////////
+function person4(firstName4, lastName4) {
+  return { first: firstName4, last: lastName4 };
+}
+
+const p = person4(...['Ryan', 'Dahl']);
+console.log(p);
+// OUTPUT: {first: 'Ryan', last: 'Dahl'}
+```
+
+## JS: Destructuring:
+
+### JS:
+```js
+const a1 = [1, 2, 4, 5];
+
+const [b1, c1] = a1;
+
+console.log(b1, c1);
+// OUTPUT: 1, 2
+///////////////////////////////////////////////////////////
+const [b2, c2, ...others2] = a1;
+
+console.log(b2, c2, others2);
+// OUTPUT: 1, 2, [4,5]
+///////////////////////////////////////////////////////////
+const o3 = { a3: 1, b3: 'animals', c3: ['fish', 'cats'] };
+
+const { a3, c3 } = o3;
+
+console.log(a3, c3);
+// OUTPUT 1, ['fish', 'cats']
+///////////////////////////////////////////////////////////
+const o4 = { a4: 1, b4: 'animals', c4: ['fish', 'cats'] };
+
+const { a4: count4, b4: type4 } = o4;
+
+console.log(count4, type4);
+// OUTPUT 1, animals
+///////////////////////////////////////////////////////////
+const { a5, b5 = 22 } = {};
+const [c5 = 44] = [];
+
+console.log(a5, b5, c5);
+// OUTPUT: undefined, 22, 44
+///////////////////////////////////////////////////////////
+let a6 = 22;
+
+[a6] = [1, 2, 3];
+
+console.log(a6);
+// OUTPUT: 1
+```
+
+## JavaScript: DOM:
+
+### HTML:
+```html
+<body>
+  <h1>JavaScript DOM Table</h1>
+  <p>This demonstrates generating an HTML table completely from JavaScript.</p>
+
+  <ul>
+    <li><button onclick="table()">Seven Summits</button></li>
+    <li>
+      <button onclick="table(UtahCountySevenPeaks)">Seven Peaks</button>
+    </li>
+    <li>
+      <button onclick="table(JazzMusic)">Jazz Music</button>
+    </li>
+  </ul>
+  <div id="output">Welcome to ECMAScript (ES6)</div>
+
+  <script src="table.js"></script>
+</body>
+```
+
+### CSS:
+```css
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#output {
+  font-family: "Courier New", Courier, monospace;
+  color: rgb(185, 185, 185);
+  background: rgb(0, 0, 0);
+  padding: 1em;
+  min-height: 10em;
+}
+
+th {
+  cursor: pointer;
+}
+
+td {
+  min-width: 200px;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style: none;
+  margin: 0.5em;
+}
+
+li button {
+  width: 200px;
+  text-align: left;
+}
+
+button {
+  margin: 0.5em 0;
+  background-color: #0a66c2;
+  border: 0;
+  border-radius: 100px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  min-height: 35px;
+  padding: 0 20px;
+  text-align: center;
+}
+
+button:active {
+  background: #09223b;
+  color: rgb(255, 255, 255, 0.7);
+}
+```
+
+### JS:
+```js
+"use strict";
+
+const SevenSummits = [
+  { name: "Everest", height: 8848, place: "Nepal" },
+  { name: "Aconcagua", height: 6961, place: "Argentina" },
+  { name: "Denali", height: 6194, place: "United States" },
+  { name: "Kilimanjaro", height: 5895, place: "Tanzania" },
+  { name: "Elbrus", height: 5642, place: "Russia" },
+  { name: "Vinson", height: 4892, place: "Antarctica" },
+  { name: "Puncak Jaya", height: 4884, place: "Indonesia" }
+];
+
+const UtahCountySevenPeaks = [
+  { name: "Timpanogos", height: 11750, stars: 4.8 },
+  { name: "Santaquin", height: 10687, stars: 3.8 },
+  { name: "Lone Peak", height: 11253, stars: 5 },
+  { name: "Provo Peak", height: 11068, stars: 4.1 },
+  { name: "Cascade", height: 10908, stars: 3.2 },
+  { name: "Nebo", height: 11928, stars: 4.8 },
+  { name: "Spanish Fork", height: 10192, stars: 3.4 }
+];
+
+const JazzMusic = [
+  { title: "Take Five", artist: "Dave Brubeck", stars: 4.8 },
+  { title: "So What", artist: "Miles Davis", stars: 3.8 },
+  { title: "Take The A Train", artist: "Duke Ellington", stars: 4.2 },
+  { title: "Round Midnight", artist: "Thelonious Monk", stars: 3.1 },
+  { title: "My Favorite Things", artist: "John Coltrane", stars: 3.0 }
+];
+
+let currentData = SevenSummits;
+let sortDirection = 1;
+
+function table(data = SevenSummits) {
+  if (!!data && data.length > 1) {
+    currentData = data;
+    const headers = parseHeader(data);
+    const tableElement = generateTable(headers, data);
+
+    const output = document.getElementById("output");
+
+    removeAllChildNodes(output);
+    output.appendChild(tableElement);
+  } else {
+    outputData("invalid input", data);
+  }
+}
+
+function parseHeader(data) {
+  let headers = [];
+  for (const [key, value] of Object.entries(data[0])) {
+    headers.push({ name: key, type: typeof value });
+  }
+  return headers;
+}
+
+function generateTable(headers, data) {
+  const tableElement = document.createElement("table");
+  tableElement.classList.add("a");
+
+  addTableStyles(headers);
+
+  generateHeader(headers, tableElement);
+  generateRows(data, tableElement);
+
+  return tableElement;
+}
+
+function generateHeader(headers, tableElement) {
+  const rowElement = document.createElement("tr");
+  tableElement.appendChild(rowElement);
+
+  headers.forEach((header) => {
+    const cellElement = document.createElement("th");
+    rowElement.appendChild(cellElement);
+    cellElement.setAttribute("onclick", `sortColumn(this)`);
+    const textNode = document.createTextNode(header.name);
+    cellElement.appendChild(textNode);
+  });
+}
+
+function generateRows(data, tableElement) {
+  data.forEach((dataRow) => {
+    const rowElement = document.createElement("tr");
+    tableElement.appendChild(rowElement);
+    for (const [, value] of Object.entries(dataRow)) {
+      const cellElement = document.createElement("td");
+      rowElement.appendChild(cellElement);
+      const textNode = document.createTextNode(value);
+      cellElement.appendChild(textNode);
+    }
+  });
+}
+
+function addTableStyles(headers) {
+  insertRule("#output table {border-collapse: collapse;}");
+  insertRule("#output th,td {border: solid white thin;padding:.25em;}");
+  insertRule(".selected {background: white; color:black;}");
+  headers.forEach((header, index) => {
+    if (header.type === "number") {
+      insertRule(`#output tr td:nth-child(${index + 1}) {text-align:right;}`);
+    }
+  });
+}
+
+function insertRule(rule) {
+  var sheet = window.document.styleSheets[0];
+  sheet.insertRule(rule, sheet.cssRules.length);
+}
+
+function sortColumn(column) {
+  sortDirection *= -1;
+  const sortBy = column.innerText;
+  const sortedData = currentData.sort(
+    (a, b) => sortDirection * (a[sortBy] > b[sortBy] ? 1 : -1)
+  );
+  table(sortedData);
+}
+
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+
+function outputData(title, data) {
+  const output = document.getElementById("output");
+  output.innerHTML = `<h3>${title}</h3><pre>${JSON.stringify(
+    data,
+    null,
+    2
+  )}</pre>`;
+}
+```
+
+## javaScript: Pizza promise:
+
+### HTML:
+```html
+<body>
+  <h1>Promises</h1>
+  <p>This demonstrates the use of promises to order pizzas.</p>
+
+  <button onclick="pickupPizza()">Pickup Pizza</button>
+
+  <h2>Orders</h2>
+  <ol id="orders"></ol>
+</body>
+```
+
+### CSS:
+```css
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  border-bottom: solid thin black;
+}
+
+li i {
+  color: rgb(2, 0, 148);
+}
+
+li b {
+  color: green;
+}
+
+.failure {
+  color: rgb(128, 0, 0);
+}
+
+button {
+  margin: 0.5em 0;
+  background-color: #0a66c2;
+  border: 0;
+  border-radius: 100px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  min-height: 35px;
+  padding: 0 20px;
+  text-align: center;
+}
+
+button:active {
+  background: #09223b;
+  color: rgb(255, 255, 255, 0.7);
+}
+```
+
+### JS:
+```js
+function pickupPizza() {
+  const order = createOrder();
+
+  // Promise
+  placeOrder(order)
+    .then((order) => makePizza(order))
+    .then((order) => serveOrder(order))
+    .catch((order) => {
+      orderFailure(order);
+    });
+}
+
+function createOrder() {
+  // Make the order and associate it with a new HTML element
+  const id = Math.floor(Math.random() * 10000);
+  const orderElement = document.createElement("li");
+  const order = { element: orderElement, id: id };
+
+  // Insert the order into the HTML list
+  orderElement.innerHTML = `<span>[${order.id}] &#128523; <i>Waiting</i> ...</span>`;
+  const orders = document.getElementById("orders");
+  orders.appendChild(orderElement);
+
+  return order;
+}
+
+function placeOrder(order) {
+  return new Promise((resolve, reject) => {
+    doWork(order, 1000, 3000, resolve, reject, `cashier too busy`);
+  });
+}
+
+function makePizza(order) {
+  return new Promise((resolve, reject) => {
+    doWork(order, 2000, 5000, resolve, reject, `cook burnt pizza`);
+  });
+}
+
+function doWork(order, min, max, resolve, reject, errMsg) {
+  let workTime = Math.random() * (max - min) + min;
+  setTimeout(() => {
+    workTime = Math.round(workTime);
+    if (workTime < max * 0.85) {
+      resolve(order);
+    } else {
+      order.error = errMsg;
+      reject(order);
+    }
+  }, workTime);
+}
+
+function serveOrder(order) {
+  order.element.innerHTML = `<span>[${order.id}] &#127829; <b>Served</b>!</span>`;
+}
+
+function orderFailure(order) {
+  order.element.innerHTML = `<span> [${order.id}] &#128544; <b class='failure'>Failure</b>! ${order.error}</span>`;
+}
+```
+
+## JavaScript: Pizza async/await:
+
+### HTML:
+```html
+<body>
+  <h1>Async/Await</h1>
+  <p>This demonstrates the use of async/await to order pizzas.</p>
+
+  <button onclick="pickupPizza()">Pickup Pizza</button>
+
+  <h2>Orders</h2>
+  <ol id="orders"></ol>
+</body>
+```
+
+### CSS:
+```css
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  border-bottom: solid thin black;
+}
+
+li i {
+  color: rgb(2, 0, 148);
+}
+
+li b {
+  color: green;
+}
+
+.failure {
+  color: rgb(128, 0, 0);
+}
+
+button {
+  margin: 0.5em 0;
+  background-color: #0a66c2;
+  border: 0;
+  border-radius: 100px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  min-height: 35px;
+  padding: 0 20px;
+  text-align: center;
+}
+
+button:active {
+  background: #09223b;
+  color: rgb(255, 255, 255, 0.7);
+}
+```
+
+### JS:
+```js
+async function pickupPizza() {
+  const order = createOrder();
+
+  // async/await
+  try {
+    await placeOrder(order);
+    await makePizza(order);
+    serveOrder(order);
+  } catch (order) {
+    orderFailure(order);
+  }
+}
+
+function createOrder() {
+  // Make the order and associate it with a new HTML element
+  const id = Math.floor(Math.random() * 10000);
+  const orderElement = document.createElement("li");
+  const order = { element: orderElement, id: id };
+
+  // Insert the order into the HTML list
+  orderElement.innerHTML = `<span>[${order.id}] &#128523; <i>Waiting</i> ...</span>`;
+  const orders = document.getElementById("orders");
+  orders.appendChild(orderElement);
+
+  return order;
+}
+
+function placeOrder(order) {
+  return new Promise((resolve, reject) => {
+    doWork(order, 1000, 3000, resolve, reject, `cashier too busy`);
+  });
+}
+
+function makePizza(order) {
+  return new Promise((resolve, reject) => {
+    doWork(order, 2000, 5000, resolve, reject, `cook burnt pizza`);
+  });
+}
+
+function doWork(order, min, max, resolve, reject, errMsg) {
+  let workTime = Math.random() * (max - min) + min;
+  setTimeout(() => {
+    workTime = Math.round(workTime);
+    if (workTime < max * 0.85) {
+      resolve(order);
+    } else {
+      order.error = errMsg;
+      reject(order);
+    }
+  }, workTime);
+}
+
+function serveOrder(order) {
+  order.element.innerHTML = `<span>[${order.id}] &#127829; <b>Served</b>!</span>`;
+}
+
+function orderFailure(order) {
+  order.element.innerHTML = `<span> [${order.id}] &#128544; <b class='failure'>Failure</b>! ${order.error}</span>`;
+}
+```
+
+## :
+
+### HTML:
+```html
+
+```
+
+### CSS:
+```css
+
+```
+
+### JS:
+```js
+
+```
