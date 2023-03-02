@@ -6030,11 +6030,11 @@ You did it! This is a significant milestone. Time to grab some friends, show the
 
 
 
-## Websites:
+# Websites:
 
-### Main:
+## Main:
 
-#### HTML:
+### HTML:
 
 ```html
 <!DOCTYPE html>
@@ -6112,7 +6112,7 @@ You did it! This is a significant milestone. Time to grab some friends, show the
 </html>
 ```
 
-#### CSS:
+### CSS:
 
 
 ```css
@@ -6122,9 +6122,9 @@ You did it! This is a significant milestone. Time to grab some friends, show the
 }
 ```
 
-### Startup:
+## Startup:
 
-#### HTML:
+### HTML:
 
 ```html
 <!DOCTYPE html>
@@ -6164,7 +6164,7 @@ You did it! This is a significant milestone. Time to grab some friends, show the
 </html>
 ```
 
-#### CSS:
+### CSS:
 
 ```css
 * {
@@ -6270,7 +6270,7 @@ button {
 }
 ```
 
-#### JS:
+### JS:
 
 ```js
 function login() {
@@ -6314,11 +6314,11 @@ function login() {
 }
 ```
 
-### Simon:
+## Simon:
 
-#### HTML:
+### HTML:
 
-##### about:
+#### about:
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -6390,7 +6390,7 @@ function login() {
 </html>
 ```
 
-##### index:
+#### index:
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -6458,7 +6458,7 @@ function login() {
 </html>
 ```
 
-##### play:
+#### play:
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -6535,7 +6535,7 @@ function login() {
 </html>
 ```
 
-##### scores:
+#### scores:
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -6606,9 +6606,9 @@ function login() {
 </html>
 ```
 
-#### CSS:
+### CSS:
 
-##### main:
+#### main:
 ```css
 body {
   display: flex;
@@ -6769,9 +6769,9 @@ footer a {
 }
 ```
 
-#### JS:
+### JS:
 
-##### login:
+#### login:
 ```js
 function login() {
   const nameEl = document.querySelector("#name");
@@ -6780,7 +6780,7 @@ function login() {
 }
 ```
 
-##### play:
+#### play:
 ```js
 const btnDescriptions = [
   {file: 'sound1.mp3', hue: 120},
@@ -6964,7 +6964,7 @@ function loadSound(filename) {
 }
 ```
 
-##### scores:
+#### scores:
 ```js
 function loadScores() {
   let scores = [];
