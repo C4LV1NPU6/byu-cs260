@@ -31,9 +31,6 @@ main {
   flex-direction: row;
 }
 
-section h2 {
-}
-
 section:nth-child(1) {
   flex: 1;
   background-color: #222;
@@ -45,6 +42,18 @@ section:nth-child(2) {
 section:nth-child(3) {
   flex: 1;
   background-color: #222;
+}
+
+form {
+  padding-top: 1em;
+}
+input {
+  background: #000;
+  font-size: 18px;
+}
+button {
+  background: #000;
+  font-size: 18px;
 }
 
 @media (orientation: portrait) {
@@ -62,18 +71,17 @@ section:nth-child(3) {
   }
 }
 
-/* DEMO-SPECIFIC STYLES */
-.title {
-  overflow: hidden; /* Ensures the content is not revealed until the animation */
-  border-right: 0.15em solid #fff; /* The typwriter cursor */
-  white-space: nowrap; /* Keeps the content on a single line */
-  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-  letter-spacing: 0.15em; /* Adjust as needed */
-  animation: typing 2.5s steps(var(--sn), end), blink-caret 0.5s step-end 6;
+.text {
+  overflow: hidden;
+  border-right: 0.15em solid #fff;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0.15em;
+  animation: typing var(--tn) steps(var(--sn), end),
+    blink-caret 0.5s step-end var(--en);
   border-color: transparent;
 }
 
-/* The typing effect */
 @keyframes typing {
   from {
     width: 0;
@@ -83,7 +91,6 @@ section:nth-child(3) {
   }
 }
 
-/* The typewriter cursor effect */
 @keyframes blink-caret {
   from,
   to {
