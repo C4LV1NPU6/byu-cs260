@@ -188,7 +188,7 @@ Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/
 
 # Introduction to web programming
 
-![Web programming](../../webprogrammingcover.jpg)
+![Web programming](README/webprogrammingcover.jpg)
 
 Web programming skills are among the most valuable ones that you can learn within the field of computer science. With web programming you can construct applications that are accessible on phones, tablets, desktops, kiosks, car dashboards, and even refrigerators. You can provide data and services to the entire planet. Every business and industry needs what web programming provides. Taking the time to acquire these skills, no matter what career you eventually pursue, will open doors to you that otherwise would be inaccessible.
 
@@ -229,7 +229,7 @@ The class should have the energy of a start up. We are on the cutting edge of te
 
 Before we start digging into creating web servers and talking about protocols let's give you a taste of what web programming technologies can do. In this example we display a card with a rotating border. When you click on the card the text changes.
 
-![Demonstration](essentialsDemo.gif)
+![Demonstration](README/essentialsDemo.gif)
 
 You don't need to worry about the detail about how this all works. The point of this demonstration is just to give you a taste of the amazing things you can do with very little code. However, there are three technologies that make this work: HTML, CSS, and JavaScript.
 
@@ -309,7 +309,7 @@ Having a basic knowledge of the history of web programming helps you to understa
 
 The essential first step to enabling what we now call web programming was the formation of a global communications network that was reliable and publicly available. This was made possible when the United States Department of Defense created the ARPANET as a means of sharing information between universities doing defense related research.
 
-<img src="arpanet1970s.jpg">
+<img src="README/arpanet1970s.jpg">
 
 — ARPANET access points in the 1970s (**Source**: _Wikipedia_)
 
@@ -321,7 +321,7 @@ The management of the Internet is controlled by two major organizations. The Int
 
 ## Hypertext Markup Language (HTML)
 
-<img src="timBernersLee.jpg" width=200 />
+<img src="README/timBernersLee.jpg" width=200 />
 
 > “I just had to take the hypertext idea and connect it to the TCP and DNS ideas and—ta-da!—the World Wide Web.”
 >
@@ -329,7 +329,7 @@ The management of the Internet is controlled by two major organizations. The Int
 
 Starting in 1980, Tim Berners-Lee was working at the research laboratory Cern. He was tasked with building a system that would allow researchers to share documents between remote academic institutions. Realizing that the ARPANET provided the necessary connectivity, he defined the protocols for document sharing that formed the underpinning of what would be termed the World Wide Web. Berners-Lee named the document format the HyperText Markup Language ([HTML](https://en.wikipedia.org/wiki/HTML)) based on inspiration from the digital publishing industry's Standard Generalized Markup Language (SGML). One of the key innovations of HTML was the idea that documents could be interconnected with what he termed hyperlinks to allow immediate access to related documents. In 1990 he put all the pieces together and built the world's first web server on his desktop NeXT computer. You can visit a reproduction of the first web site at [info.cern.ch](http://info.cern.ch/).
 
-<img src="firstWebServer.jpg" />
+<img src="README/firstWebServer.jpg" />
 
 — First web server (**Source**: _Cern_)
 
@@ -361,7 +361,7 @@ Accept: text/html
 
 Cascading Style Sheets ([CSS](https://en.wikipedia.org/wiki/CSS)) was first proposed in 1994 by Håkon Wium Lie, a contemporary of Berners-Lee at CERN, in order to give HTML documents visual styling independent of the content's structure. Before the introduction of CSS, HTML was going down the path of hard coding the visual appearance of the content with HTML elements. This would have resulted in a single visual style for the entire web that was completely defined by the browser vendors.
 
-<img src="hakonLie.jpg" width=200 />
+<img src="README/hakonLie.jpg" width=200 />
 
 > “If we hadn’t developed CSS, we could have ended up with the web being a giant fax machine”
 >
@@ -384,7 +384,7 @@ The ability of CSS to style a web page has increased significantly from its orig
 
 In 1995 Netscape (the maker of the popular browser Navigator) decided to add the ability to script web pages. The initial implementation was led by Brendan Eich and given the name JavaScript. JavaScript turned the previously static web into an interactive experience where a web page could dynamically change based upon a user's interaction.
 
-<img src="brendanEich.jpg" width=200 />
+<img src="README/brendanEich.jpg" width=200 />
 
 > “Always bet on JS”
 >
@@ -487,7 +487,7 @@ If you have never used Discord before you will need to create a free account. Ta
 
 Discord is organized by servers and channels. If you used the above invite link you should already be subscribed to our server. Discord supports text (with the ability to share images) and video chat. You can also share your screen so that you can walk through problems with others.
 
-![Discord](essentialsDiscord.png)
+![Discord](README/essentialsDiscord.png)
 
 ### Questions
 
@@ -563,19 +563,19 @@ Creativity is usually more important than complexity, and basic implementations 
 
 Here is an [example startup application](https://startup.cs260.click) that demonstrates the level of complexity that your application should represent.
 
-![Voter startup](startupExampleVoter.gif)
+![Voter startup](README/startupExampleVoter.gif)
 
 ## Demo day
 
 At the end of class we will conduct a demo day for the best projects. Those selected for the demo day will be awarded additional credit for the exceptional work. The top presenters will be given the coveted Ghirardelli award.
 
-![Ghiradelli](ghirardelli.png)
+![Ghiradelli](README/ghirardelli.png)
 
 
 
 # Let's play Simon
 
-![Simon](simon.png)
+![Simon](README/simon.png)
 
 In 1978 Milton-Bradley, now Hasbro, released an electronic game named [Simon](<https://en.wikipedia.org/wiki/Simon_(game)>). It was cutting edge at the time since there were so few electronic games, and all the cool kids had one. I did not. So now I get my revenge.
 
@@ -627,7 +627,7 @@ The collection of technologies that you use to create or deliver you web applica
 
 Here is what our stack looks like. React for the web framework, talking to Caddy as the web server hosted on AWS, running web services with Node.js, and MongoDB as the database hosted on MongoDB Atlas.
 
-![260 tech stack](essentialsTechStack260.jpg)
+![260 tech stack](README/essentialsTechStack260.jpg)
 
 The key with a tech stack is the realization that there is no one answer, and the answer continually evolves. Usually you will use what the company you work for has invested in. Migrating to a new stack is very expensive and error prone. So learning how to maximize your effectiveness, regardless of the technology, will make you very valuable. Being discontent because the latest new toy is not being used, will usually cause an unnecessary disruption to the team. However, if you can validate that a change in the tech stack with produce significant monetary, performance, or security gains, then you will greatly benefit your team.
 
@@ -635,7 +635,7 @@ The key with a tech stack is the realization that there is no one answer, and th
 
 He is an example of a tech stack from a small web application company. You can see that there are dozens of technologies used to make the application work. When you build a commercial stack you want to be very careful about the pieces you choose. Dependability, support, scalability, performance, and security are all important factors. You also want to consider development productivity factors such as documentation, ease of use, common acceptance, community support, build times, and testing integration.
 
-![Agilix tech stack](essentialsTechStackComplex.jpg)
+![Agilix tech stack](README/essentialsTechStackComplex.jpg)
 
 
 
@@ -649,7 +649,7 @@ Also know as the command line, shell, or terminal, the console window is an esse
 
 There are many console applications that you can chose from. All operating systems come with a default console, but you will probably want to install one in order to get the best experience. Here is an example of [Warp](https://www.warp.dev/) running on a Mac.
 
-<img src="warp.png" >
+<img src="README/warp.png" >
 
 ## Make sure you have a console application
 
@@ -767,17 +767,17 @@ For your work with this instruction I would highly suggest you use two editors. 
 
 ## Visual Studio Code
 
-<img src="essentialsVscodeIcon.png" width=75 />
+<img src="README/essentialsVscodeIcon.png" width=75 />
 
 **Website**: [VS Code](https://code.visualstudio.com/)
 
 Created by Microsoft, Visual Studio Code (VS Code), is free and supported by a large community of open source developers. The [2021 Stack Overflow](https://insights.stackoverflow.com/survey/2021#section-most-popular-technologies-integrated-development-environment) developer survey put VS Code as the number one choice for 71% of professional developers.
 
-![Editor survey](essentialsEditorSurvey.jpg)
+![Editor survey](README/essentialsEditorSurvey.jpg)
 
 VS Code is both simple to use, incredibly flexible, and powerful. At its most basic level it represents files in a given directory on the left and a space on the right for editing files. VS Code then adds excellent git support, auto-formatting, auto-suggestions, and debugging support for JavaScript right out of the box. You can easily install a language server extension most major programming languages that provide coding, building, and debugging support. From there you have your choice of thousands of extensions to add whatever functionality you would like. This includes extensions such as an auto-reloading HTTP server for hosting your project code locally in a browser, an image editor, a spell checker, hex editor, testing frameworks, linters, code prettier, or even docker container management to compartmentalize your development of different projects.
 
-![VS Code](essentialsVSCode.png)
+![VS Code](README/essentialsVSCode.png)
 
 So unless you are already a master of some other development environment, it is highly suggested you go and [install VS Code right now](https://code.visualstudio.com/).
 
@@ -787,7 +787,7 @@ The VS Code Live Server extension is great for building web applications. You ar
 
 To install the Live Server extension, open up VS Code and follow these three steps.
 
-![LiveServer install](essentialsLiveServerInstall.png)
+![LiveServer install](README/essentialsLiveServerInstall.png)
 
 Congratulations! You have joined the 28 million other users already enjoying this extension. You can test it by opening VS Code, creating a new file named `index.html` and pasting `<h1>hello<h1>` into the file. Then save the file and press the `Go Live` button. This will launch your browser and display the rendered `index.html` file. If you make changes to your file and save it, the browser will automatically be updated to display your changes.
 
@@ -797,7 +797,7 @@ The basic support that VS Code offers for working with `git` is sufficient for m
 
 ## VI
 
-![Vi Logo](essentialsVimLogo.png)
+![Vi Logo](README/essentialsVimLogo.png)
 
 VI, or technically vim, is one of the oldest console editors. It is extremely powerful and some incredibly talented software engineers use it as their sole development environment. The reason why you should learn VI is that it is available on every Linux server and can do anything that you will need. With that said it has a bit of an initial learning curve. However, once you have memorized a few basic commands you will be able to get around easily. If you take some time to really learn VI, you might find a new essential tool.
 
@@ -817,7 +817,7 @@ To use VI, open your console and change directory to one that holds some code yo
 vi index.html
 ```
 
-![Vi](essentialsVi.png)
+![Vi](README/essentialsVi.png)
 
 What you will immediately notice is that there is no menu bar or navigation aids. Instead, VI works entirely by keyboard commands. There are two modes in VI, command mode and insert mode. When you open VI, you are in command mode and all of the command keystrokes will work. To edit a document, use the command `i` to enter insert mode. Now your keystrokes will modify the document. To exit insert mode and type commands again, press `ESC`.
 
@@ -856,11 +856,11 @@ The great thing about learning these commands is that you will find that they wo
 
 # Git
 
-<img src="essentialsGitIcon.png" width="75" />
+<img src="README/essentialsGitIcon.png" width="75" />
 
 Incredibly [Linus Torvalds](https://en.wikipedia.org/wiki/Linus_Torvalds), the creator of Linux, was fed up with the proprietary version control software that he was using to track the code for the Linux kernel and so over a weekend he built Git, the world's most popular version control system.
 
-![Linus Torvalds](linusTorvalds.jpg)
+![Linus Torvalds](README/linusTorvalds.jpg)
 
 > “Talk is cheap. Show me the code.”
 >
@@ -1002,7 +1002,7 @@ Now we are back to our latest version.
 
 The following diagram shows how your commits move from your working directory, to staging them for a commit, and then committing them to a repository.
 
-![Git stage](essentialsGitStage.jpg)
+![Git stage](README/essentialsGitStage.jpg)
 
 A commit is a full snapshot of what was staged from your directory at the time of the commit. That means all of the files contained in the commit were reverted when you executed the checkout command. Since we only had one file in our commit, it looks like we are only flipping that file around, but basically you can think of it as a time machine for the entire directory.
 
@@ -1032,7 +1032,7 @@ Git supports the ability to branch your code. This allows you to work on variati
 
 Here is a demonstration of this working on the visualization tool provided by [git-school.github.io](https://git-school.github.io/visualizing-git/).
 
-![Branches](essentialsBranching.gif)
+![Branches](README/essentialsBranching.gif)
 
 ## Commit often
 
@@ -1052,7 +1052,7 @@ However, by using a tool like VS Code you can hide all of the complexity of the 
 
 Here we see VS Code, with the GitLens extension installed, looking at the directory we have been working in. On the left you see all the commits we have previously created. We can edit our `hello.txt` file and VS Code will automatically detect the change and set it up for us to commit. VS Code will even put a marking on the left side of the edited text to show us what line we have changed. We can click on the staged file, in the commit area, and see the differences before we commit. Since they look good, we add a comment, and press commit. The new commit immediately shows up in our list of commits. We can use the visual diff again to click through all of the previous versions.
 
-![VS Code Git](essentialsVSCodeGit.gif)
+![VS Code Git](README/essentialsVSCodeGit.gif)
 
 Underneath the covers, the GitLens extension is running Git commands just like we did on the command line, but using a visual tool makes working with versions much easier. Take some time and play with adding files, modifying them, committing, and diffing. You want to get to the point where this is second nature so that you can easily experiment and make mistakes, knowing that with Git, you can always easily recover.
 
@@ -1060,7 +1060,7 @@ Underneath the covers, the GitLens extension is running Git commands just like w
 
 # GitHub
 
-<img src="essentialsGitHubLogo.png" width="75px"/>
+<img src="README/essentialsGitHubLogo.png" width="75px"/>
 
 📖 **Required reading**:
 
@@ -1088,15 +1088,15 @@ While you can create a repository in your development environment using `git ini
 
 To create a repository in GitHub, log into your account, select the `Repositories` tab, and press `New repository`. You then specify a unique repository name, give a description, indicate that you want it to be public, add a default README.md file, and choose a license.
 
-![GitHub create repository](essentialsGitHubCreateRepo.jpg)
+![GitHub create repository](README/essentialsGitHubCreateRepo.jpg)
 
 Every repository in GitHub has a unique URL assigned to it. Assuming the repository is public, anyone with the URL can clone it to their development environment. A repository clone is an exact copy of the repository including all of the commits, comments, and SHAs. It also configures the clone to know what the remote source is so that you can use Git commands to keep them in sync as changes are made.
 
-![GitHub clone](essentialsGitHubClone.jpg)
+![GitHub clone](README/essentialsGitHubClone.jpg)
 
 You clone a repository by providing the GitHub repository's URL as a parameter to the `git clone` command from in a console window. You can get a copy of the URL from the repository's GitHub page and clicking on the green `Code` button, and then clicking on the copy button next to the HTTPS url.
 
-![GitHub clone URL](essentialsGitUrlButton.jpg)
+![GitHub clone URL](README/essentialsGitUrlButton.jpg)
 
 When you clone a repository it is placed in a subdirectory named with the name of the repository. So make sure you are in the directory where you keep all of your source repositories before you run the command.
 
@@ -1114,7 +1114,7 @@ Receiving objects: 100% (4/4), done.
 
 You can now make changes to the files in the repository and commit those changes. As you create new commits you want to push those changes back up to the GitHub clone of the repository so that the repositories are are in sync with each other. This is done with the `push` Git command. Once you have pushed the new commits then your peers who have cloned the repository can pull the commits down using the `pull` Git command.
 
-![GitHub pull](essentialsGitHubPull.jpg)
+![GitHub pull](README/essentialsGitHubPull.jpg)
 
 The following demonstrates console commands for making a change to the README.md file, committing it, and then pushing it up to GitHub. Of course you can also do this using the Git interface of VS Code.
 
@@ -1137,7 +1137,7 @@ This is the pattern that you want to make a reflexive part of your development p
 
 After pushing changes GitHub, you then view the changes on GitHub with your browser. In the example above, you would see the changes to the `README.md` file. You can also edit and commit changes directly from GitHub. When looking at a repository file on GitHub you will see a little pencil in the top right hand corner of the file. If you press that you will enter edit mode. You use that to modify the file and then commit the changes with an appropriate comment.
 
-![GitHub edit](essentialsGitHubEdit.jpg)
+![GitHub edit](README/essentialsGitHubEdit.jpg)
 
 Now that there is a commit that GitHub has that you do not have in your development environment. If we run the `fetch` Git command, you will get the latest information about the changes on GitHub without actually changing your local repository. We then run the `status` Git command to see the differences between the clones and see that we are missing a commit. You can pull it down using the `pull` Git command. You can also use the Git functionality in VS Code to view the status and sync up your repository.
 
@@ -1250,11 +1250,11 @@ When you are done, provide the URL of your GitHub start up repository, along wit
 
 When working on a commercial web application, it is critical to separate where you `develop` your application, from where the `production` release of your application is made publicly available. Often times there are more environments than this, such as staging, internal testing, and external testing environments. If your company is seeking third party security certification (such as SOC2 compliance) they will require that these environments are strictly separated from each other. A developer will not have access to the production environment in order to prevent a developer from nefariously manipulating an entire company asset. Instead automated integration processes, called continuously integration (`CI`) processes, checkout the application code, lint it, build it, test it, stage it, test it more, and then finally, if everything checks out, pushes the application to the production environment, and notifies the different departments in the company of the release.
 
-![Complex deployment](essentialsDeploymentComplex.jpg)
+![Complex deployment](README/essentialsDeploymentComplex.jpg)
 
 For our work, you will use and manage both your `development` (your personal computer) and `production` (your AWS server) environments. However, you should never consider your production environment as a place to develop, or experiment with, your application. You may shell into the production environment to configure your server or to debug a production problem, but the deployment of your application should happen using an automated CI process. For our CI process, we will use a very simple console shell script.
 
-![Simple deployment](essentialsDeploymentSimple.jpg)
+![Simple deployment](README/essentialsDeploymentSimple.jpg)
 
 ## Deployment
 
@@ -1365,7 +1365,7 @@ When working with assignment that use CodePen to submit your work, you will do t
 1. Save your assignment periodically so that you don't loose any work. In order to keep your CodePen account organized you should consider using pen collections for different technologies.
 1. Submit the pen's URL in Canvas along with a description on some interesting thing that you learned.
 
-![CodePen](codePen.jpg)
+![CodePen](README/codePen.jpg)
 
 In addition to using CodePen to complete assignments, it is a great place to find coding examples. Browsing CodePen will expose you to new ideas from their large community of contributors. You might consider making a daily habit of finding and reviewing a pen. If you find a really interesting pen then share it with others on Discord.
 
@@ -1383,7 +1383,7 @@ Create an elevator pitch for your application. Something that would excite an in
 
 Then sketch out what the application looks like. You can use a tool like [NinjaMock.com](https://ninjamock.com/) to quickly produce a rough layout, or Google docs, or plain old paper works fine too (just take pictures for your submission).
 
-![Ninja Mocks](essentialsNinjaMocks.png)
+![Ninja Mocks](README/essentialsNinjaMocks.png)
 
 Here is an [example design](https://github.com/webprogramming260/startup-example/blob/main/README.md).
 
@@ -1529,7 +1529,7 @@ We can run that web service code, and use the console application `Curl` to make
 
 Since it is so easy to build web services it is common to find multiple web services running on the same computing device. The trick is exposing the multiple services in a way that a connection can be made to each of them. Every network device allows for separate network connections by referring to a unique port number. Each service on the device starts up on a different port. In the example above, the `go` web service was using port 80. So you could just have a user access each service by referring to the port it was launched on. However, this makes it difficult for the user of the services to remember what port matches to which service. To resolve this we introduce a service gateway, or sometimes called a reverse proxy, that is itself a simple web service that listens on the common HTTP port 443. The gateway then looks at the request and maps it to the other services running on a different ports.
 
-![Gateway](webServersGateway.jpg)
+![Gateway](README/webServersGateway.jpg)
 
 Our web server will use the application `Caddy` as the gateway to our services. The details of how Caddy works will be given later.
 
@@ -1580,33 +1580,33 @@ Once you have an AWS account it is time to create your web server.
 1. Select the option to `Launch instance`.
 1. Give your instance a meaningful name. Perhaps use a convention such as [owner]-[purpose]-[version].
 
-   ![AWS Instance name](webServerAWSName.jpg)
+   ![AWS Instance name](README/webServerAWSName.jpg)
 
 1. We have created an Amazon Machine Image (AMI) for you to use as the base for your server. It has Ubuntu, Node.js, Caddy Server, and PM2 built right in so that you do not have to install them. Paste this AMI ID (`ami-0809a0cb9b76bf010`) into the search box and press enter.
 
-   ![AWS Instance name](webServerAWSAmi.jpg)
+   ![AWS Instance name](README/webServerAWSAmi.jpg)
 
    This should display the information about the class AMI. If the AMI ID matches `ami-0809a0cb9b76bf010` select it.
 
-   ![AWS class AMI](webServerAWS260Ami.jpg)
+   ![AWS class AMI](README/webServerAWS260Ami.jpg)
 
 1. Select t3.nano or t3.micro for the instance type. You can always change this later if your server is running slow and needs more power.
 
-   ![AWS Instance name](webServerAWSType.jpg)
+   ![AWS Instance name](README/webServerAWSType.jpg)
 
 1. Create a new key pair. Make sure you save the key pair to your development environment. This needs to be safe in a place that is not publicly accessible and that you won't accidentally delete or commit to a GitHub repository. You will need this every time you secure shell (ssh) into this server (production environment). Note that you don't have to create a new key pair every time you launch an instance. You can use one that you created previously so that all of the servers you create can be accessed with the same key file.
 
-   ![AWS Instance name](webServerAWSkeyPair.jpg)
+   ![AWS Instance name](README/webServerAWSkeyPair.jpg)
 
 1. For the network settings, make sure the `auto-assign public IP` address is enabled. For the `Firewall (security group)` select the option to `Create security group` if this is the first server that you are creating. Allow SSH, HTTP, and HTTPS traffic from anywhere. If you have created a server before then you already have a security group that you can use and you should not clutter up your account with additional ones. In that case use the option to `Select existing security group` and select the name of the exiting security group.
 
    A security group represents the rules for allowing access to your servers. Security group rules specify both the port that is accessible on your server, and the source IP address that requests are allowed from. For example, you could allow only port 443 (the secure HTTPS port) from your development environment's IP address. However, doing so would mean that your web application would not be available from any other computer. You can learn more about security groups from the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html).
 
-   ![AWS Instance name](webServerAWSNetwork.jpg)
+   ![AWS Instance name](README/webServerAWSNetwork.jpg)
 
 1. In the `Advanced details` change the `Credit specification` to `Unlimited`. This allows your `T class` (throttled class) server to keep using CPU even though it has exceeded its current credit limit. You do incur a minimal charge for when this happens, but the alternative is to always spend more for a larger instance, or to have your server lock up when it hits the limit. For the minimal use that your server will see, you should not normally exceed your limit, but it is nice to not have your server die if you do. Even if you do temporarily exceed the limit the charges will be mere pennies per hour.
 
-   ![Web Server](webServerAWSUnlimited.jpg)
+   ![Web Server](README/webServerAWSUnlimited.jpg)
 
 1. Select the option to `Launch instance`.
 
@@ -1620,7 +1620,7 @@ http://3.22.63.37
 
 If the server has started up then you should see the following. Otherwise wait a little bit and refresh your browser again. If the server is marked as running and it has been longer than 5 minutes then there is a problem.
 
-![Web Server](webServerAWSBrowserResult.png)
+![Web Server](README/webServerAWSBrowserResult.png)
 
 If that is what you see then congratulations. You are now running your very own web server that the whole world can see! Time to celebrate with cookies.
 
@@ -1684,7 +1684,7 @@ Here is how you [assign an elastic IP address](https://docs.aws.amazon.com/AWSEC
 1. Select the newly displayed allocated address and press the `Actions` button.
 1. Select the `Associate Elastic IP address` option.
 
-   ![Elastic IP create](webServerAWSElasticIPCreate.jpg)
+   ![Elastic IP create](README/webServerAWSElasticIPCreate.jpg)
 
 1. Click on the `Instance` box and select your server instance.
 1. Press `Associate`.
@@ -1807,7 +1807,7 @@ AWS provides extensive documentation for all their services. You can find the do
 1. Put your desired root domain into the search box and press the `Check` button to see if it is available. Common one or two word phrases are almost always taken. For example, `260.click` is taken, but `webprogramming260.click` is not. Keep searching until you find one you like.
 1. Press `Add to cart`.
 
-   ![AWS Find domain](webServerAWSFindDomain.png)
+   ![AWS Find domain](README/webServerAWSFindDomain.png)
 
 1. Fill out the contact details. This information is sent to the authorized DNS registrar and is what shows up to the world for your domain name. Once registration is complete you can see this information using the console program `whois`. Make sure you fill in this information correctly. If you are using new contact information that a registry has never seen before it will require you to verify the email address. Follow the steps to verify your address.
 1. Press `Continue`.
@@ -1842,7 +1842,7 @@ You will need the public IP address for your server. You can get the public IP a
 
 Your DNS records should look similar to the following when you are done.
 
-![AWS DNS records](webServerAWSDnsRecords.png)
+![AWS DNS records](README/webServerAWSDnsRecords.png)
 
 By defining both a record for your root domain and a wildcard record for any subdomain of your root domain you can now navigate to your server with either your domain name or a subdomain. For example, if you purchased the domain name `myfunkychickens.click` you could reach your server by navigating your browser to `myfunkychickens.click`, `simon.myfunkychickens.click`, or `startup.myfunkychickens.click`.
 
@@ -1854,7 +1854,7 @@ http://myfunkychickens.click
 
 This should show your web server's default page just like it did when you used the IP address.
 
-![Browsing to hostname](webServerWithHostname.png)
+![Browsing to hostname](README/webServerWithHostname.png)
 
 Note that your browser will warn you that the website is not secure. We will resolve that in future instruction when we configure Caddy to generate you a website certificate.
 
@@ -1879,7 +1879,7 @@ Don't forget to update your GitHub start up repository README.md with all of the
 
 # Caddy
 
-![Caddy](caddyLogo.png)
+![Caddy](README/caddyLogo.png)
 
 Caddy is a web service that listens for incoming HTTP requests. Caddy then either serves up the requested static files or routes the request to another web service. This ability to route requests is called a `gateway`, or `reverse proxy`, and allows you to expose multiple web services (i.e. your project services) as a single external web service (i.e. Caddy).
 
@@ -1889,7 +1889,7 @@ For this course, we use Caddy for the following reasons.
 - Caddy serves up all of your static HTML, CSS, and JavaScript files. All of your early application work will be hosted as static files.
 - Caddy acts as a gateway for subdomain requests to your Simon and start up application services. For example, when a request is made to `simon.yourdomain` Caddy will proxy the request to the Simon application running with node.js as an internal web service.
 
-![Caddy](webServersCaddy.jpg)
+![Caddy](README/webServersCaddy.jpg)
 
 Caddy is preinstalled and configured on your server and so you do not need to do anything specifically with it other than configure your root domain name.
 
@@ -1918,7 +1918,7 @@ As part of the installation of Caddy we created two links in the Ubuntu user's h
 
 # Caddy Install
 
-![Caddy](caddyLogo.png)
+![Caddy](README/caddyLogo.png)
 
 Caddy is preinstalled and configured on your server and so you do not need to do anything specifically with it.
 
@@ -2005,7 +2005,7 @@ sudo service caddy restart
 
 To this point you have been accessing your web server using HTTP. If you notice your browser has been yelling at you that your connection is `⚠ Not Secure` from the location bar.
 
-![Non-secure website](webServerWithHostname.png)
+![Non-secure website](README/webServerWithHostname.png)
 
 During the first couple decades of the web, it was pretty common for websites to simply use HTTP (non-secure hypertext transport protocol) since it was difficult, non-performant, and expensive to secure the connection. Additionally, most websites just provided access to documents and so it didn't need to protect user's information. Usually, only websites that were doing commerce needed a secure connection. That all changed when computers got faster and the web moved from simple document servers (Web 1.0) to full on web applications (Web 2.0) that accepted information from users and displayed that information within the application. Without a secure connection anyone that had access to the network traffic, at any point, from the user's computer to the server handling the request could easily capture all the data sent in either direction. Remember when we used the console program `traceroute` to show you how many computers your connection goes through. You definitely do not want those computers to have access to your user's sensitive information.
 
@@ -2136,7 +2136,7 @@ For our work we are using the web service Caddy to act as a gateway to our diffe
 
 If you open your browser and navigate to your domain name you will now see that the browser is displaying a lock icon, using HTTPS, and your certificate has been automatically requested by Caddy and issued by Let's Encrypt.
 
-![Browser with HTTPS](webServerBrowserSecure.png)
+![Browser with HTTPS](README/webServerBrowserSecure.png)
 
 ## ☑ Assignment
 
@@ -2150,7 +2150,7 @@ Don't forget to update your GitHub start up repository README.md with all of the
 
 # Hypertext Markup Language
 
-<img src="htmlLogo.png" width=70/>
+<img src="README/htmlLogo.png" width=70/>
 
 📖 **Suggested reading**:
 
@@ -2192,7 +2192,7 @@ We can continue adding structure to the page with additional elements. Each of t
 
 However, when we `render` the HTML in a browser it would look exactly the same as our original simple text example. The reason for that is that HTML is almost completely about structure. The visual appearance of the web page won't really change until we start styling the page with CSS.
 
-![HTML Hello world](htmlHelloWorld.png)
+![HTML Hello world](README/htmlHelloWorld.png)
 
 ## Attributes
 
@@ -2231,7 +2231,7 @@ HTML defines a header (`<!DOCTYPE html>`) that tells the browser the type and ve
 </html>
 ```
 
-![Intro HTML Example](htmlIntroduction.png)
+![Intro HTML Example](README/htmlIntroduction.png)
 
 Notice that the rendered document has almost no styling. That is because the entire purpose of HTML is to provide content and structure. The layout of the content is left almost entirely up to Cascading Stylesheets (CSS). When styling was introduced with CSS, all of the HTML elements that defined style such as font, strike, and plaintext were deprecated.
 
@@ -2312,7 +2312,7 @@ Understanding when different HTML features were introduced helps you know what h
 
 You can save any HTML file to your computer's disk and then open the file using your browser. You can also open the HTML file in VS Code and use the Live Server extension to display the HTML. Another way to easily play with HTML is to use a sandbox like [CodePen](https://codepen.io). However, when you use CodePen it is not necessary to supply the HTML DocType header or the root `html` element since CodePen already assumes you are providing HTML. Here is our example HTML document rendered in CodePen.
 
-![CodePen HTML introduction](htmlIntroductionCodePen.png)
+![CodePen HTML introduction](README/htmlIntroductionCodePen.png)
 
 ## ☑ Assignment
 
@@ -2383,7 +2383,7 @@ The `footer` has a content division with a single span.
 
 If we rendered this HTML, and added just a bit of styling, so we can see how they related to each other, we would see the following.
 
-![HTML structure](htmlStructure.jpg)
+![HTML structure](README/htmlStructure.jpg)
 
 Properly representing the page structure using the elements is important not only so it makes logical sense to a programmer, but also so that automated tools like search indexing crawlers and accessibility screen readers can correctly interpret the document.
 
@@ -2489,7 +2489,7 @@ Most input elements share some common attributes. These include the following.
 
 The following shows what the inputs look like when rendered. Don't worry about how clunky they look right out of the box. We will fix that when we start styling things with CSS.
 
-![HTML Input](htmlInput.jpg)
+![HTML Input](README/htmlInput.jpg)
 
 ## Validating input
 
@@ -2535,7 +2535,7 @@ In order to support accessibility, you should also include an `alt` attribute th
 />
 ```
 
-![mountain landscape](htmlImage.jpg)
+![mountain landscape](README/htmlImage.jpg)
 
 ### Audio
 
@@ -2544,10 +2544,10 @@ To include an audio file in your content you use the `audio` element and specify
 ⚠ Note that automatically playing audio is strongly discouraged unless you provide a way for the user to opt-in to that behavior.
 
 ```html
-<audio controls src="testAudio.mp3"></audio>
+<audio controls src="README/testAudio.mp3"></audio>
 ```
 
-![Html Audio](htmlAudioImg.jpg)
+![Html Audio](README/htmlAudioImg.jpg)
 
 ### Video
 
@@ -2563,7 +2563,7 @@ To include a video in your content you use the `video` element and specify the `
 </video>
 ```
 
-![HTML video](htmlVideoImg.jpg)
+![HTML video](README/htmlVideoImg.jpg)
 
 ## Internal media
 
@@ -2585,7 +2585,7 @@ SVG is an extremely powerful and widely supported way to render graphics inline 
 </svg>
 ```
 
-![SVG demo](htmlSvg.jpg)
+![SVG demo](README/htmlSvg.jpg)
 
 When combined with JavaScript and CSS you can produce some amazing visualizations. Checkout this [CodePen](https://codepen.io/leesjensen/pen/mdKjMLY) for an example.
 
@@ -2633,7 +2633,7 @@ Now that you know how HTML works it is time to put it to use and create your fir
 
 1. Verify that you server is still running and that the default web programming 260 page is being displayed. If it is not then you need to complete, or review, the steps for setting your server.
 
-   ![Default website](htmlDefaultWebpage.jpg)
+   ![Default website](README/htmlDefaultWebpage.jpg)
 
    ⚠ Do not continue until this works.
 
@@ -2660,7 +2660,7 @@ Now that you know how HTML works it is time to put it to use and create your fir
 
 1. Open a browser window and verify that your new home page is showing up for your domain. The following is an example of what your website might look like.
 
-   ![Example website](htmlExampleWebsite.jpg)
+   ![Example website](README/htmlExampleWebsite.jpg)
 
 1. Submit the URL for your website to the Canvas assignment along with something you found interesting about this assignment.
 
@@ -2670,7 +2670,7 @@ Now, whenever you add a new project to your website you can just update the file
 
 # Simon HTML
 
-![Simon](simon.png)
+![Simon](README/simon.png)
 
 This deliverable demonstrates the use of basic HTML elements for structure, basic formatting, input, output, links, and drawing.
 
@@ -2680,7 +2680,7 @@ The application has a login (home), game play, high scores, and about page. Each
 
 You can view this application running here: [Example Simon HTML](https://simon-html.cs260.click)
 
-![Simon HTML](simonWebHtml.jpg)
+![Simon HTML](README/simonWebHtml.jpg)
 
 ## Study this code
 
@@ -2735,7 +2735,7 @@ Now it is time to start creating your own version of Simon. The main purpose of 
 
 # Cascading Style Sheets
 
-<img src="cssLogo.png" width=70/>
+<img src="README/cssLogo.png" width=70/>
 
 📖 **Suggested reading**: [MDN CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
 
@@ -2756,7 +2756,7 @@ p {
 
 The selector `p` selects all paragraph elements in the HTML document. The four specified declarations then: 1) change the font to use a san-serif font, 2) increase the font size to be twice as big as the default font, 3) change the text color to be navy, and 4) create a gray shadow for the text. The result looks like this.
 
-![CSS simple rule](cssSimpleRule.jpg)
+![CSS simple rule](README/cssSimpleRule.jpg)
 
 ## Associating CSS with HTML
 
@@ -2821,13 +2821,13 @@ span {
 
 In this case, the rules cascade down from the highest nodes in the DOM tree to the lowest level. Any declaration property defined at a lower level will override the higher declaration. You can see this happening if you use the browser's debugger. In Chrome right click on the element and select `inspect`. You can then click on each element in the debugger and see what the value of the color property is. For the case defined above you will see that each of the higher level declarations is crossed out until you get to the style explicitly defined on the element.
 
-![CSS cascade](cssCascading.jpg)
+![CSS cascade](README/cssCascading.jpg)
 
 ## The box model
 
 CSS defines everything as boxes. When you apply styles, you are applying them to a region of the display that is a rectangular box. Within an element's box there are several internal boxes. The innermost box holds the element's content. This is where things like the text or image of an element is displayed. Next comes the padding. The padding will inherit things like the background color. After padding is the border, which has properties like color, thickness and line style. The final box is the margin. The margin is considered external to the actual styling of the box and therefore only represents whitespace. It is important to understand each of these boxes so that you can achieve the desired visual result by applying the proper CSS declaration.
 
-![CSS box model](cssBoxModel.jpg)
+![CSS box model](README/cssBoxModel.jpg)
 
 By default, the width and height of an element is defined by the width and height of the content box. You can change the `box-sizing` CSS property from the default value of `content-box` to `border-box` in order to redefine the width and height to also include the padding and the border. This often makes it easier to style elements when their visual size matches their actual size.
 
@@ -2873,11 +2873,11 @@ The first step in understanding CSS is mastering how to select the elements that
 
 By default every browser defines a base set of styles that it applies to all HTML. This varies slightly from browser to browser, but for the most part our document would render like this using the base browser styles.
 
-![CSS selectors base](cssSelectorBase.jpg)
+![CSS selectors base](README/cssSelectorBase.jpg)
 
 We would like to style our document so that it looks like this when we are done.
 
-![CSS selectors final](cssSelectorFinal.jpg)
+![CSS selectors final](README/cssSelectorFinal.jpg)
 
 ## Element type selector
 
@@ -3174,13 +3174,13 @@ That's every thing we need to do. However, let's made one more addition. It woul
 }
 ```
 
-![CSS animation](cssAnimation.gif)
+![CSS animation](README/cssAnimation.gif)
 
 You can see this animation working with this [CodePen](https://codepen.io/leesjensen/pen/LYrJEwX).
 
 Animation is not just for pushing buttons or making text float around. Here is an example of [animating a watch](https://codepen.io/leesjensen/pen/MWBjXNq) using only HTML and CSS.
 
-![Watch animation](cssAnimationWatch.gif)
+![Watch animation](README/cssAnimationWatch.gif)
 
 CodePen has a lot of CSS animation examples that you can experiment with. Here is a simple one with [floating clouds](https://codepen.io/leesjensen/pen/wvXEaRq) that I found interesting. If you find an interesting one share it with us on Discord.
 
@@ -3232,7 +3232,7 @@ We can use the `@media` selector to tell us which side of the screen (technicall
 
 We can demonstrate the result of applying the media selector by using the browser's debugger and switching into phone and responsive mode. You can also use this [CodePen](https://codepen.io/leesjensen/pen/rNKZOva) and play with it yourself by simply resizing the browser's window.
 
-![CSS Media orientation](cssMediaOrientation.gif)
+![CSS Media orientation](README/cssMediaOrientation.gif)
 
 You can also use media queries to make entire pieces of your application disappear, or move to a different location. For example, if we had an aside that was helpful when the screen is wide, but took up too much room when the screen got narrow, we could use the following media query to make it disappear.
 
@@ -3244,7 +3244,7 @@ You can also use media queries to make entire pieces of your application disappe
 }
 ```
 
-![CSS Media orientation](cssMediaDisappear.gif)
+![CSS Media orientation](README/cssMediaDisappear.gif)
 
 Here is the [CodePen](https://codepen.io/leesjensen/pen/NWzLGmJ) for this example.
 
@@ -3289,7 +3289,7 @@ We finish off the grid configuration by saying that we want all rows to be exact
 
 Here is what the finished product looks like.
 
-![CSS grid](cssGrid.gif)
+![CSS grid](README/cssGrid.gif)
 
 You can experiment with the source on [CodePen](https://codepen.io/leesjensen/pen/GRGXoWP).
 
@@ -3303,7 +3303,7 @@ The `flex` display layout is useful when you want to partition your application 
 
 So we can visualize our design by quickly sketching it out.
 
-![CSS App mock](cssAppMock.jpg)
+![CSS App mock](README/cssAppMock.jpg)
 
 Next we build our structural HTML to match our design.
 
@@ -3401,7 +3401,7 @@ To handle making our header and footer disappear when the screen is to short to 
 
 Here is what the finished application looks like.
 
-![CSS flex](cssFlex.gif)
+![CSS flex](README/cssFlex.gif)
 
 You can experiment with this on [CodePen](https://codepen.io/leesjensen/pen/MWOVYpZ).
 
@@ -3465,13 +3465,13 @@ p {
 
 Open the directory with VS Code and use the Live Server extension to view the HTML in the Chrome browser. In the browser, right click on the text and select `inspect`. This will open the debugger window and display the `Elements` tab. As you move your cursor over the the different elements you will visually see what the padding, borders, and margins are set to. The `Styles` pane shows all of the CSS properties applied to the currently selected element. If you scroll down the the bottom of the styles pane you will see the CSS box. By moving the cursor over the different parts of the CSS box it will highlight the different box parts in the browser window.
 
-![Debugging CSS](debugCssBrowser.jpg)
+![Debugging CSS](README/debugCssBrowser.jpg)
 
 You can change any of the CSS properties, and even add new properties, directly in the debugger. This allows you to see what each property is contributing and change them to see how that impacts the rendering. This is a great way to figure out what CSS works best without having to continually change the CSS file and refresh the browser.
 
 This example has a small problem. Each element has with a blue border and some padding. But the body element does not render any padding at the bottom. Inspecting the body element and looking at the CSS box reveals that the default margin for the elements is pushing the body element down so that the padding overflows into its parent element. We can fix this by setting the margin for elements to be zero.
 
-![Debugging CSS demo](debuggingCssExample.gif)
+![Debugging CSS demo](README/debuggingCssExample.gif)
 
 Experiment with debugging and altering the CSS. Note that you can open up any website and use the debugger to see how they implemented their design and even do temporary alterations to the CSS properties to see how that impacts the display. Debugging other people's code is a great way to learn how to improve your CSS skills.
 
@@ -3483,7 +3483,7 @@ CSS frameworks provide functions and components that commonly appear in web appl
 
 Today, there are lots of different open source CSS frameworks available to choose from. Many of them contain the same types of functionality, but they all bring something a little different to the table.
 
-![css frameworks](cssStateOfCss.jpg)
+![css frameworks](README/cssStateOfCss.jpg)
 
 \- **Source**: [_StateOfCSS CSS framework poll_](https://2021.stateofcss.com/en-US/technologies/css-frameworks)
 
@@ -3560,11 +3560,11 @@ Once you have Bootstrap linked in your HTML files you can begin using the compon
 <button type="button">Plain</button>
 ```
 
-![CSS Bootstrap button](cssBootstrapBtn.png)
+![CSS Bootstrap button](README/cssBootstrapBtn.png)
 
 This [CodePen](https://codepen.io/leesjensen/pen/JjZavjW) demonstrates the use of all the major Bootstrap components. Notice the rich diversity of functionality it provides and that it is fully responsive to changes in the viewport size. The image below only captures a few of the components.
 
-![Bootstrap components](cssBootstrapComponents.png)
+![Bootstrap components](README/cssBootstrapComponents.png)
 
 ## ☑ Assignment
 
@@ -3574,7 +3574,7 @@ Now that you have experience with Bootstrap you can build a simple home page usi
 
 # Simon CSS
 
-![Simon](simon.png)
+![Simon](README/simon.png)
 
 This application deliverable demonstrates the use of basic CSS for styling and a responsive design.
 
@@ -3590,7 +3590,7 @@ As the application gets more complicated we will break up the CSS into individua
 
 You can view this application running here: [Example Simon CSS](https://simon-css.cs260.click)
 
-![Simon CSS](simonCss.jpg)
+![Simon CSS](README/simonCss.jpg)
 
 ## Study this code
 
@@ -3649,7 +3649,7 @@ It is often useful to think of user experience as a story. Consider the backgrou
 
 Consider the tourism application for the city of Philadelphia. They know a user visits the site because they want to have an experience in Philadelphia. The application immediately provides a time relevant proposal for that experience. All the navigation options for having a successful experience (events, food, deals, and trip planning) are immediately accessible. Just looking at the initial imagery conveys the excitement of engaging in the application.
 
-![Design story](designStory.jpg)
+![Design story](README/designStory.jpg)
 
 > Source: [visitphilly](https://www.visitphilly.com/)
 
@@ -3657,43 +3657,43 @@ Consider the tourism application for the city of Philadelphia. They know a user 
 
 Google broke all the rules for web application design when they released their homepage in 1998.
 
-![Simplicity](designSimplicityGoogle.jpg)
+![Simplicity](README/designSimplicityGoogle.jpg)
 
 > Source: Google.com 2022
 
 Previous to that, it was common for app designers to pile everything they could into the initial view of the application. This includes multiple advertisements, navigation options, lots of hyperlinks, and color choices. Here is an example from a competitor around the same time period.
 
-![Simplicity](designSimplicityLycos.jpg)
+![Simplicity](README/designSimplicityLycos.jpg)
 
 > Source: Lycos.com 1999
 
 The key point of this example, is that simplicity attracts user's attention and engages them in the application experience. Building off of Google's positive reaction, other major applications immediately followed their example. Here is the initial experience when visiting facebook's application for the first time. Notice that it simply states the purpose of the application and invites the user to create an account.
 
-![Simplicity](designSimplicityFB.jpg)
+![Simplicity](README/designSimplicityFB.jpg)
 
 > Source: facebook.com
 
 Simplicity doesn't requires a blank page. Simplicity can also be visually stimulating with beautiful imagery and simple navigation options.
 
-![Simplicity](designSimplicityNomadic.jpg)
+![Simplicity](README/designSimplicityNomadic.jpg)
 
 > Source: [Nomadic Tribe](https://nomadictribe.com/)
 
 You can also include significant amounts of content. You just need to keep things focused on a single purpose. For example, creating an account, viewing images, or beginning your travel experience. Below is the Pinterest application landing page. Even though the viewport is cluttered with images, they are all working towards the same purpose of demonstrating the value of the application.
 
-![Simplicity](designSimplicityPinterest.jpg)
+![Simplicity](README/designSimplicityPinterest.jpg)
 
 ## Consistency
 
 There is a tension that exists with web applications between being consistent with how other applications work and being unique so that your experience stands out. What you want to avoid is being so different that a user has to think hard in order to use your application. This is usually avoided by using the standard conventions that a user expects to find on a web application. The following image describes the `standard layout` and navigation controls of an application.
 
-![Holy grail](designConsistencyHolyGrail.jpg)
+![Holy grail](README/designConsistencyHolyGrail.jpg)
 
 What a `standard layout` is defined to be will migrate over time as new trends in application fashion seek to make things look fresh. However, if you follow current trends, your users are more likely to engage in your application.
 
 One easy way to build an application that uses current design trends is to use a web framework that provides standard layouts, colors, and iconography. Here is an example of a template application built using a web framework with just a few minutes of work.
 
-![Frameworks](designConsistencyFramework.jpg)
+![Frameworks](README/designConsistencyFramework.jpg)
 
 ## Navigation
 
@@ -3710,7 +3710,7 @@ A user should never get lost while using your application. To help orient your u
 
 The first step in building your application should be to design an application map that has all the views that you will present to the user. This helps clarify the functional pieces of the application and their relationship to each other. For example, if you were building a music player you might start with a landing page that displays some marketing information and allows the user to create an account or login. If the user is already logged in, then they start with a dashboard that shows recent or suggested songs. From there they can either search the music catalog, navigate to a collection of songs based on a playlist, album, or artist, or go to an individual song.
 
-![Application map](designSitemap.jpg)
+![Application map](README/designSitemap.jpg)
 
 If your application map starts looking like a governmental bureaucracy then you probably want to reconsider the interrelation of functionality. A convoluted application map is a strong indicator that the user experience with be likewise convoluted.
 
@@ -3738,7 +3738,7 @@ You want to partition a large application into functional areas and place links 
 
 One of the first things you should consider as you design your application is the color scheme that you will employ. This usually involves picking a a primary, secondary, and focus color.
 
-<img src="designColorPalette.jpg" width="400" />
+<img src="README/designColorPalette.jpg" width="400" />
 
 > Source: paletton.com
 
@@ -3746,13 +3746,13 @@ There are lots of tools out there that help you create a color scheme. These wil
 
 Some free tools you should explore include [Paletton](https://paletton.com/) and [Adobe](https://color.adobe.com/create/color-wheel).
 
-<img src="designColorTools.jpg" width="400" />
+<img src="README/designColorTools.jpg" width="400" />
 
 > Source: paletton.com
 
 With your core colors selected, you can use different shades of the colors to reduce the starkness of the limited number of colors without turning your application into a rainbow.
 
-<img src="designColorApplication.jpg" width="400" />
+<img src="README/designColorApplication.jpg" width="400" />
 
 Just make sure you stick with your color scheme and even consider it when selecting font colors and images.
 
@@ -3760,18 +3760,18 @@ Just make sure you stick with your color scheme and even consider it when select
 
 A great font will make your application easy on your user's eyes and increase their attention span. Since fonts have been around since the Gutenberg Press, there is some serious history to them. The following shows the different attributes of a font.
 
-![Typography anatomy](designTypographyAnatomy.jpg)
+![Typography anatomy](README/designTypographyAnatomy.jpg)
 
 > Source: material.io
 
 You can classify fonts into the following groups.
 
-| Font Class  | Example                                        | Meaning                             |
-| ----------- | ---------------------------------------------- | ----------------------------------- |
-| San Serif   | ![Font san serif](designFontSanSerif.jpg)      | Only major strokes                  |
-| Serif       | ![Font serif](designFontSerif.jpg)             | Minor strokes off the major strokes |
-| Monospace   | ![Font monospace](designFontMonospace.jpg)     | All letters have the same size      |
-| Handwriting | ![Font handwriting](designFontHandwriting.jpg) | Cursive strokes                     |
+| Font Class  | Example                                               | Meaning                             |
+| ----------- | ----------------------------------------------------- | ----------------------------------- |
+| San Serif   | ![Font san serif](README/designFontSanSerif.jpg)      | Only major strokes                  |
+| Serif       | ![Font serif](README/designFontSerif.jpg)             | Minor strokes off the major strokes |
+| Monospace   | ![Font monospace](README/designFontMonospace.jpg)     | All letters have the same size      |
+| Handwriting | ![Font handwriting](README/designFontHandwriting.jpg) | Cursive strokes                     |
 
 > Source: material.io
 
@@ -3779,17 +3779,17 @@ When picking fonts you usually want to restrict the number of fonts to three or 
 
 If you are looking for royalty free fonts that you can use in your application, you should checkout [Google's open collection](https://fonts.google.com/about) of fonts.
 
-![Google fonts](designFontGoogle.jpg)
+![Google fonts](README/designFontGoogle.jpg)
 
 ## Iconography
 
 Because users will recognize standard icons, you can decrease the learning curve for your application if you use standard web icons to identify common functionality. For example, most users will immediately identify the following three icons as the menu, sharing, and close actions.
 
-![Icon example](designIconExamples.jpg)
+![Icon example](README/designIconExamples.jpg)
 
 Icons not only exploit user recognition, but they also save limited display space, and provide a visually pleasing alternative to text. The important thing is that you pick a set that includes standard icons and that you use them for their intended purpose. Icons become an anti-pattern when they are used to represent something that is contrary to their common usage.
 
-![Icon Google](designIconGoogle.jpg)
+![Icon Google](README/designIconGoogle.jpg)
 
 > Source: material.io
 
@@ -3817,7 +3817,7 @@ Instead you want to specify a maximum width for your paragraphs. Usually a width
 
 The following shows the visual and cognitive impact of different line lengths.
 
-![Line length](designLineLength.jpg)
+![Line length](README/designLineLength.jpg)
 
 ## Internationalization
 
@@ -3825,11 +3825,11 @@ Designing a global international application requires careful consideration from
 
 One of the most important aspects to consider is the translation of textual content and the ability of the user to select their desired language.
 
-![Unicode](designInternationalizationUnicode.jpg)
+![Unicode](README/designInternationalizationUnicode.jpg)
 
 Successful translation also requires the text to be rendered properly. For example, several languages are read from right to left. Therefore the content, and the application itself, must be displayed in that orientation.
 
-![Right to left](designInternationalizationRtl.jpg)
+![Right to left](README/designInternationalizationRtl.jpg)
 
 Likewise the format for displaying dates, times, numbers, and currency varies greatly between nationalities. This includes country specific currency symbols (¥, $, €, or ฿), the order of date fields (MM/DD/YY or DD/MM/YY), and numerical separators (1,000.50 or 1.000,50).
 
@@ -3841,23 +3841,23 @@ Proper international design requires thought across the full technology stack. I
 
 Introducing space around your application content helps to create focus and lessing the effort a user has to exert in order to interpret the presented information.
 
-![Whitespace](designWhitespace.jpg)
+![Whitespace](README/designWhitespace.jpg)
 
 Consider the following example, where whitespace is used to create focus on the brand, imagery, and call to action.
 
-![Whitespace Prototypr](designWhitespacePrototypr.jpg)
+![Whitespace Prototypr](README/designWhitespacePrototypr.jpg)
 
 > Source: Prototypr.org
 
 Here is another example where whitespace brings the user's attention to specific text that teases the user and leads them down to the explanatory text, followed by actions the user can take to learn more.
 
-![Whitespace Sofa](designWhitespaceSofa.jpg)
+![Whitespace Sofa](README/designWhitespaceSofa.jpg)
 
 > Source: MadeBySofa.com
 
 Consider the same content with all of the whitespace removed. This is of course extreme, but it demonstrates the power that whitespace has.
 
-![Whitespace Sofa](designWhitespaceSofaCondensed.jpg)
+![Whitespace Sofa](README/designWhitespaceSofaCondensed.jpg)
 
 ## Interaction
 
@@ -3865,7 +3865,7 @@ Making your application interactive is a powerful way to engage the user and inc
 
 Here is an example of purchasing a car where the user can interactively see what their car will look like based upon their desires.
 
-![BMW build a car](designInteractionBmw.gif)
+![BMW build a car](README/designInteractionBmw.gif)
 
 > Source: bmw.com
 
@@ -3875,13 +3875,13 @@ Interaction makes the application come alive and invests the user in the result 
 
 It is often said that a picture can save a thousand words. Including images in your application can convey deeper understanding, make it more visually appealing, and draw a user into the application. The following example, helps the user know exactly what a product looks like and what it might look like when they use it. The contrast of colors in the image helps the product to pop and further suggest its value.
 
-![Value image](designImageValue.jpg)
+![Value image](README/designImageValue.jpg)
 
 > Source: Burberry.com
 
 Avoid using images that are only used as space fillers. Display space is too limited to waste on an image that doesn't add significant value. For example, the following image dominates the display of a technical article about CORS. However, it was only chosen because it matched the color scheme of the application and the title contains the work `talk` in it, but two people talking trough a tin can has nothing to do with CORS. Now the user has to scroll past the distracting image to get to the content. Instead, either omit the image, or include one that serves to clarify the purpose of CORS. That way your images are visually appealing, and provides information that furthers the story you are trying to tell.
 
-![No value image](designImageNoValue.jpg)
+![No value image](README/designImageNoValue.jpg)
 
 > Source: medium.com
 
@@ -3889,11 +3889,11 @@ Avoid using images that are only used as space fillers. Display space is too lim
 
 Animation can help make your application come alive, but it also helps confirm choices, demonstrate progress, and focus attention.
 
-![Animation icon](designAnimationIcon.gif)
+![Animation icon](README/designAnimationIcon.gif)
 
 However, too much animation can physically make your users sick. Here is an example
 
-![Animation too much](designAnimationTooMuch.gif)
+![Animation too much](README/designAnimationTooMuch.gif)
 
 > Source: fireart.studio
 
@@ -3903,7 +3903,7 @@ You need to consider the impact of the choices that you present to a user. [Hick
 
 For example, the process of building a pizza involves many steps. First you must pick the location you want to order from, then the pizza size, cheese, meats, and veggies. Finally you need to provide payment. Each of those choices require a lot of input from the user, and so limiting the number of choices displayed at one time will help reduce decision fatigue and you will have better odds of them completing the ordering process.
 
-![Decision pizza making](designDecisionFatiguePizza.gif)
+![Decision pizza making](README/designDecisionFatiguePizza.gif)
 
 > Source: Papa Johns
 
@@ -3913,25 +3913,25 @@ Modern devices allow a web application to interact in many sophisticated ways. T
 
 The following shows an application suggesting that the user add the application to the device's home screen. This makes it so a user can access the application without having to navigate to the application's URL.
 
-![Add to home](designDeviceAddToHome.jpg)
+![Add to home](README/designDeviceAddToHome.jpg)
 
 ## Device size and orientation
 
 Properly reorienting and altering the functionality of the application interface based upon the size and orientation of the display is especially important on mobile devices. The following shows an application that provides a course on how to tie knots. The default view for the course shows the video on the left and an interactive transcript on the right.
 
-![Replace](designDeviceRotate.jpg)
+![Replace](README/designDeviceRotate.jpg)
 
 When the device is rotated the application automatically orients itself and moves the interactive transcript below the video in order to maximize the available space. The user can also display the table of contents on the left or the peer chat on the right. Because the device's display is large enough to show the content, even in portrait orientation, the table of contents or chat panes can also occupy a portion of the display. This allows the instructional content to still be visible while the functionality of the other panes are utilized.
 
-![Slide in](designDeviceSlideIn.jpg)
+![Slide in](README/designDeviceSlideIn.jpg)
 
 On a smaller device, such as a mobile phone, the table of contents or chat panes completely replace the content. The user can then click on the `X` icon to return to the instructional content. That ability to restrict the focus to a single functional purpose, maximizes the use of the limited space without losing the context of the content the user is viewing.
 
-![Rotate](designDeviceReplace.jpg)
+![Rotate](README/designDeviceReplace.jpg)
 
 THe following website demonstrates what happens when an application fails to properly adapt to the orientation of the device. When viewed in portrait mode the application only uses a small portion of the display to show a health warning, but when rotated, the warning completely occupies the display. This creates a confusing experience where the original context of the application is obscured, and leaves the user wondering what should be done next.
 
-![Orientation](designDeviceOrientation.jpg)
+![Orientation](README/designDeviceOrientation.jpg)
 
 ## Performance
 
@@ -3942,7 +3942,7 @@ THe following website demonstrates what happens when an application fails to pro
 
 Application performance is an important aspect of your design that often gets overlooked until it is too late. Your application can be visually stunning, have intuitive navigation, and amazing interactivity, but if it takes minutes to load or react the a user's actions, it will completely fail. Many studies have analyzed the relationship between performance and user retention. One [study](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/) showed that as load times increase from one second to five seconds it causes 90% of the users to bounce, or leave, the application.
 
-![Bounce rates](designPerformanceBounceRates.jpg)
+![Bounce rates](README/designPerformanceBounceRates.jpg)
 
 > Source: thinkwithgoogle.com
 
@@ -3950,11 +3950,11 @@ You need to set performance goals for your application and consistently monitor 
 
 The Chrome debugging tools provide a lot of help for diagnosing your application performance. The network tab will show you the size of your application files and the amount of time it takes to transfer them.
 
-![Performance](designPerformanceNetwork.jpg)
+![Performance](README/designPerformanceNetwork.jpg)
 
 You can use the Chrome debugging Lighthouse tool to run an analysis of your application. This will give you an average performance rating based upon the initial load time, longest content paint, and time before the user can interact with the page.
 
-![Performance](designPerformance.jpg)
+![Performance](README/designPerformance.jpg)
 
 ## Short circuit
 
@@ -4018,13 +4018,13 @@ As applications mature it is common for them to grow in complexity as more and m
 
 The following image is from GitHub. An important action that a developer needs to do is create a Personal Access Token in order to work with repositories. However, GitHub has buried the UI for creating the token somewhere in their setting (account, user, and repository) pages. Assuming you are able to find the right setting page, you are then confronted with dozens of setting categories. After clicking through all of these options a user will wonder why such an important activity is buried so deeply in the application.
 
-![complexity wall](designWallsComplexity.png)
+![complexity wall](README/designWallsComplexity.png)
 
 ### Payment
 
 Some walls, such as receiving payment, are unavoidable for the success of the application. However, consideration should be made to move the wall to the point where it is required. Before a user hits a payment wall they should have the opportunity to see the value of what they are purchasing. Even better, is if the user is able to invest significant effort and content to the application before payment is required. For example, the application may allow the user to create a limited number of documents before they have to enter payment information.
 
-![Payment wall](designWallsPayment.png)
+![Payment wall](README/designWallsPayment.png)
 
 > Source: sitepoint.com
 
@@ -4034,7 +4034,7 @@ Once payment is required, the process for entering payment information needs to 
 
 Application failure is a reality that any good application design needs to address. An application that has a reputation of repeatedly presenting the user with a failure wall will have a hard time retaining users. The most basic solution to handling a failure is to present a message to the user apologizing for what went wrong. The user will be slightly less annoyed if you can explain what went wrong, provide a possible remedy, or explain the expected duration of the failure.
 
-![Application failure wall](designWallsFailure.png)
+![Application failure wall](README/designWallsFailure.png)
 
 Alternative solutions for handling failure include providing fallback functionality, automatically notifying the user when the failure has been resolved, or providing a status page where the user can go to see what is being done about the problem.
 
@@ -4048,23 +4048,23 @@ You need to consider both the frequency and complexity of your security wall. If
 
 Here is an example of an application for learning how to code. They need a user's email so that they can store course progress, but they don't even ask for a password because the email address is enough to uniquely identify the user. Authentication occurs when the user provides the security code that is emailed to the address that they provided. From then on the application remembers the email address. If the user accesses the application on a different device then the user just needs to do another once-per-device authentication.
 
-![Registration wall](designWallsRegistration.png)
+![Registration wall](README/designWallsRegistration.png)
 
 > Source: freecodecamp.com
 
 This a much lower wall than an application that requires you to log in repeatedly every 30 minutes.
 
-![Login wall](designWallsLogin.jpg)
+![Login wall](README/designWallsLogin.jpg)
 
 A [CAPTCHA](https://en.wikipedia.org/wiki/CAPTCHA) is a common way to verify that a user is a human. While this may be necessary for the success of your application, it is an example of a wall that provides no value to the user and will always lessen the application experience. This is especially true for a difficult CAPTCHA such as typing in unreadable text, or entering the number of mosquitos displayed in a jungle picture.
 
-![Captcha wall](designWallsSecurity.png)
+![Captcha wall](README/designWallsSecurity.png)
 
 ### Legal
 
 Legal walls usually only protect the application vendor and provide little or no value to the user. GDPR inspired cookie notifications are one example of this.
 
-![Cookie acceptance wall](designWallsLegal.png)
+![Cookie acceptance wall](README/designWallsLegal.png)
 
 Another common example of a legal wall is an application that requires the acceptance of terms and conditions before you can use the application. You want to minimize the impact of legal walls as much as possible since they lessen the user's experience and encourages the user to question why a legal consent is required in the first place.
 
@@ -4130,7 +4130,7 @@ You did it! This is a significant milestone. Time to grab some friends, show the
 
 # JavaScript introduction
 
-<img src="esLogo.png" width=70/>
+<img src="README/esLogo.png" width=70/>
 
 📖 **Suggested reading**:
 
@@ -4205,11 +4205,11 @@ Before we go any further we need a way for you to write and run JavaScript yours
 
 1. Use an online sandbox like [CodePen](https://codepen.io). With CodePen you can write whatever JavaScript you would like and immediately see the results. Make sure you display the CodePen's Console window if your JavaScript is using the console.log function.
 
-   ![Browser Debugger](codePenJavaScriptDebugger.png)
+   ![Browser Debugger](README/codePenJavaScriptDebugger.png)
 
 1. Use your browser's debugger. For example, if you open Chrome and press `F12` the debugger will display. Select the `Console` menu option. This will display a JavaScript interpreter where you can write and execute your code.
 
-   ![Browser Debugger](browserDebugger.png)
+   ![Browser Debugger](README/browserDebugger.png)
    
 ## Examples
 
@@ -5551,7 +5551,7 @@ The browser provides access to the DOM through a global variable name `document`
 
 For everything in an HTML document there is a node in the DOM. This includes elements, attributes, text, comments, and whitespace. All of these nodes form a big tree, with the document node at the top.
 
-<img src="dom.jpg"/>
+<img src="README/dom.jpg"/>
 
 ## Accessing the DOM
 
@@ -5908,11 +5908,11 @@ Take the following steps to see the result of console debugging.
 
 You should see the following result.
 
-![JavaScript console debugging](javascriptDebugConsole.jpg)
+![JavaScript console debugging](README/javascriptDebugConsole.jpg)
 
 You can use the debugger console window to inspect variables without using the console.log function from your code. For example, if you type varCount in the console window it will print out the current value of varCount. You can also execute JavaScript directly in the console window. For example, if you type `varCount = 50` and press `Enter` it will change the current value of varCount.
 
-![JavaScript console debugging variables](javascriptDebugConsoleVars.jpg)
+![JavaScript console debugging variables](README/javascriptDebugConsoleVars.jpg)
 
 ## Browser debugging
 
@@ -5920,11 +5920,11 @@ Console.log debugging is great for times when you just need to quickly see what 
 
 Using the same setup we used for console.log debugging, open up Chrome's browser debugger, but this time select the source tab. This will display the source files that comprise the currently rendered content.
 
-![JavaScript source debugging](javascriptDebugSource.jpg)
+![JavaScript source debugging](README/javascriptDebugSource.jpg)
 
 You can either select `index.js` from the source view on the left, or press `CTRL-P` (on Windows) or `⌘-P` (on Mac) and then select `index.js` from the list that pops up. Then set a breakpoint on line 4 by clicking on the line number on the left of the displayed source code. This makes it so that the execution of code will pause whenever that line is executed. Refreshing the browser window will cause `index.js` to reload and pause on the breakpoint.
 
-![JavaScript breakpoint](javascriptDebugBreakpoint.jpg)
+![JavaScript breakpoint](README/javascriptDebugBreakpoint.jpg)
 
 With the browser paused in the debugger you can move your mouse cursor over a variable to see its value, see what variables are in scope, set watches on variables, or use the console to interact with the code.
 
@@ -5934,7 +5934,7 @@ This gives you complete control to inspect what the JavaScript code is doing and
 
 # Simon JavaScript
 
-![Simon](simon.png)
+![Simon](README/simon.png)
 
 This deliverable demonstrates the use of basic JavaScript for interactivity. This addition makes the application completely functional. The application has a login (home), game play, high scores, and about page. Each page contains a header that provides navigation between the pages, and a footer that references the source repository.
 
@@ -5944,7 +5944,7 @@ The major changes to the application include the introduction of `login.js`, `pl
 
 You can view this application running here: [Example Simon JavaScript](https://simon-javascript.cs260.click)
 
-![Simon JavaScript](simonJavascript.gif)
+![Simon JavaScript](README/simonJavascript.gif)
 
 ## Study this code
 
