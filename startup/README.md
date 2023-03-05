@@ -198,7 +198,7 @@ Web programming skills evolve very quickly. There are some fundamental concepts 
 
 The key to learning how to be an exceptional web programmer rests in you ability to continually improve in four areas.
 
-![learning](essentialsLearning.png)
+![learning](README/essentialsLearning.png)
 
 1. **`Technology`** - You need to know the technology. The better you know it the better you will be able to leverage its abilities and apply it correctly. Knowing who the experts are, and discerning between meaningful technology and fads, driven by marketeers, allows you quickly find the valuable and avoid the distractions. Knowing technology will enable you to find the right tool for the job, maximize its performance, and automate its execution.
 1. **`Art`** - Making a visually attractive web application requires artistic skills. However, there is just as much art in making them usable, efficient, and maintainable. Knowing how to organize and sculpt your code is incredibly artistic. Well designed systems are often referred to as beautiful or elegant, and a reflection of the creativity of their authors.
