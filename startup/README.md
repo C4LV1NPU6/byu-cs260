@@ -6149,27 +6149,41 @@ You did it! This is a significant milestone. Time to grab some friends, show the
 
 <body>
   <header>
-    <h1 class="text" style="--sn: 19; --wn: 13em;">Welcome to the Grid</h1>
+    <h1 class="text" style="--tn: 2.5s; --sn: 19; --en: 6; --wn: 13em;">Welcome to the Grid</h1>
   </header>
+
   <main>
-    <section id="loginform">
+    <section id="logregform">
       <form onsubmit="return login()">
         <div class="form-floating">
-          <input type="username" class="form-control" id="username" placeholder="Username">
+          <input type="username" class="form-control" id="logusername" placeholder="Username">
         </div>
         <div class="form-floating">
-          <input type="password" class="form-control" id="password" placeholder="Password">
+          <input type="password" class="form-control" id="logpassword" placeholder="Password">
         </div>
         <button class="button" type="submit">Login</button>
       </form>
+      <form onsubmit="return register()">
+        <div class="form-floating">
+          <input type="username" class="form-control" id="regusername" placeholder="Username">
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" id="regpassword" placeholder="Password">
+        </div>
+        <button class="button" type="submit">Register</button>
+      </form>
     </section>
   </main>
+
   <footer>
-    <h2 class="text" style="--sn: 31; --wn: 21.2em;">From C4LV1NPU6 and rokketranger</h2>
+    <h2 class="text" style="--tn: 2.5s; --sn: 31; --en: 6; --wn: 21.2em;">From C4LV1NPU6 and rokketranger</h2>
     <a class="text" href="https://github.com/C4LV1NPU6/byu-cs260/tree/main/startup">Source</a>
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
-  </script>
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+  </script> -->
+
+  <script src="index.js"></script>
 </body>
 
 </html>
@@ -6257,7 +6271,8 @@ button {
   white-space: nowrap;
   margin: 0 auto;
   letter-spacing: 0.15em;
-  animation: typing 2.5s steps(var(--sn), end), blink-caret 0.5s step-end 6;
+  animation: typing var(--tn) steps(var(--sn), end),
+    blink-caret 0.5s step-end var(--en);
   border-color: transparent;
 }
 
@@ -6284,44 +6299,112 @@ button {
 ### JS:
 
 ```js
+class User {
+  constructor(username, password) {
+    this.username = username;
+    this.password = password;
+  }
+
+  getUsername() {
+    return this.username;
+  }
+
+  setUsername(username) {
+    this.username = username;
+  }
+
+  getPassword() {
+    return this.password;
+  }
+
+  setPassword(password) {
+    this.password = password;
+  }
+}
+
 function login() {
   try {
     arguments = [];
-    arguments.push(document.getElementById("username").value);
-    arguments.push(document.getElementById("password").value);
 
-    for (let i = 0; i < arguments.length; i++) {
-      if (arguments[i] === "") {
-        throw "Entry needed.";
-      }
+    logregfirst(arguments, "log");
+
+    let user = null;
+    const userCont = localStorage.getItem(arguments[0]);
+    if (userCont) {
+      user = JSON.parse(userCont);
     }
-
-    //get user from database
-    user = true;
 
     if (user === null) {
       throw "User not found.";
     }
 
-    const el = document.getElementById("loginform");
-    const base = el.parentElement;
+    if (user.password !== arguments[1]) {
+      throw "Incorrect password.";
+    }
 
-    base.removeChild(el);
-    base.setHTML(`
-    <section>
-      <h2 class="text" style="--sn: 5; --wn: 3.4em;">Stats</h2>
-    </section>
-    <section>
-      <h2>Arena (to be implemented).</h2>
-    </section>
-    <section>
-      <h2 class="text" style="--sn: 4; --wn: 2.7em;">Chat</h2>
-    </section>`);
+    logreglast();
   } catch (err) {
     console.log(err);
   } finally {
     return false;
   }
+}
+
+function register() {
+  try {
+    arguments = [];
+
+    logregfirst(arguments, "reg");
+
+    let user = null;
+    const userCont = localStorage.getItem(arguments[0]);
+    if (userCont) {
+      user = JSON.parse(userCont);
+    }
+
+    if (user !== null) {
+      throw "User already exists.";
+    }
+
+    user = new User(arguments[0], arguments[1]);
+    localStorage.setItem(arguments[0], JSON.stringify(user));
+
+    logreglast();
+  } catch (err) {
+    console.log(err);
+  } finally {
+    return false;
+  }
+}
+
+function logregfirst(arguments, prefix) {
+  arguments.push(document.getElementById(prefix + "username").value);
+  arguments.push(document.getElementById(prefix + "password").value);
+
+  for (let i = 0; i < arguments.length; i++) {
+    if (arguments[i] === "") {
+      throw "Entry needed.";
+    }
+  }
+}
+
+function logreglast() {
+  const el = document.getElementById("logregform");
+  const base = el.parentElement;
+
+  base.removeChild(el);
+  base.setHTML(`
+    <section>
+      <h2 class="text" style="--tn: 1s; --sn: 5; --en: 3; --wn: 3.4em;">Stats</h2>
+    </section>
+    <section>
+      <h2>Arena (to be implemented).</h2>
+    </section>
+    <section>
+      <h2 class="text" style="--tn: 1s; --sn: 4; --en: 3; --wn: 2.7em;">Chat</h2>
+    </section>`);
+
+  //play game
 }
 ```
 
