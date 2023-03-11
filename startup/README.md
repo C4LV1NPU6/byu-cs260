@@ -194,6 +194,16 @@ Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/
 
 
 
+## 3/11/23 (C4LV1NPU6):
+
+Made WebService Fetch project.
+
+I found it interesting that you can use response.value inside the stringify function instead of having to dig out the value variable afterwards.
+
+WebService Fetch CodePen URL: https://codepen.io/C4LV1NPU6/pen/xxapoKg
+
+
+
 # Class+Reading notes:
 
 
