@@ -170,7 +170,7 @@ JavaScript DOM CodePen URL: https://codepen.io/C4LV1NPU6/pen/bGxBgJN
 
 
 
-## 2/26/23 (3/3/23) (C4LV1NPU6):
+## 2/26/23 (C4LV1NPU6):
 
 Set up Simon JavaScript sub-website.
 
@@ -201,6 +201,18 @@ Made WebService Fetch project.
 I found it interesting that you can use response.value inside the stringify function instead of having to dig out the value variable afterwards.
 
 WebService Fetch CodePen URL: https://codepen.io/C4LV1NPU6/pen/xxapoKg
+
+
+
+## 3/16/23 (C4LV1NPU6):
+
+Set up Simon WebService sub-website.
+
+I learned how to implement the Simon Game web application using HTML, CSS, JavaScript and WebService. This included the layout, appearances, functionality for the about, home, play, and scores pages. It was a lot of information but I studied it and copied it perfectly.
+
+Sub-site name: https://simon.lightbikebattle.click/
+
+Sub-site deploy command: ./deployService.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/,Access\ Info/production.pem -h lightbikebattle.click -s simon
 
 
 
