@@ -1,8 +1,8 @@
 const btnDescriptions = [
-  {file: 'sound1.mp3', hue: 120},
-  {file: 'sound2.mp3', hue: 0},
-  {file: 'sound3.mp3', hue: 60},
-  {file: 'sound4.mp3', hue: 240},
+  { file: 'sound1.mp3', hue: 120 },
+  { file: 'sound2.mp3', hue: 0 },
+  { file: 'sound3.mp3', hue: 60 },
+  { file: 'sound4.mp3', hue: 240 },
 ];
 
 class Button {
@@ -10,7 +10,6 @@ class Button {
     this.el = el;
     this.hue = description.hue;
     this.sound = loadSound(description.file);
-    this.sound.playbackRate = 2.0;
     this.paint(25);
   }
 
@@ -19,18 +18,19 @@ class Button {
     this.el.style.backgroundColor = background;
   }
 
-  async press(playSound) {
+  async press(volume) {
     this.paint(50);
-    if (playSound) {
-      await new Promise((resolve) => {
-        this.sound.onended = resolve;
-        this.sound.play();
-      });
-    } else {
-      await delay(100);
-    }
+    await this.play(volume);
     this.paint(25);
-    await delay(100);
+  }
+
+  // Work around Safari's rule to only play sounds if given permission.
+  async play(volume = 1.0) {
+    this.sound.volume = volume;
+    await new Promise((resolve) => {
+      this.sound.onended = resolve;
+      this.sound.play();
+    });
   }
 }
 
@@ -61,7 +61,7 @@ class Game {
   async pressButton(button) {
     if (this.allowPlayer) {
       this.allowPlayer = false;
-      await this.buttons.get(button.id).press(true);
+      await this.buttons.get(button.id).press(1.0);
 
       if (this.sequence[this.playerPlaybackPos].el.id === button.id) {
         this.playerPlaybackPos++;
@@ -69,13 +69,13 @@ class Game {
           this.playerPlaybackPos = 0;
           this.addButton();
           this.updateScore(this.sequence.length - 1);
-          await this.playSequence(500);
+          await this.playSequence();
         }
         this.allowPlayer = true;
       } else {
         this.saveScore(this.sequence.length - 1);
         this.mistakeSound.play();
-        await this.buttonDance();
+        await this.buttonDance(2);
       }
     }
   }
@@ -87,7 +87,7 @@ class Game {
     this.updateScore('--');
     await this.buttonDance(1);
     this.addButton();
-    await this.playSequence(500);
+    await this.playSequence();
     this.allowPlayer = true;
   }
 
@@ -95,12 +95,11 @@ class Game {
     return localStorage.getItem('userName') ?? 'Mystery player';
   }
 
-  async playSequence(delayMs = 0) {
-    if (delayMs > 0) {
-      await delay(delayMs);
-    }
+  async playSequence() {
+    await delay(500);
     for (const btn of this.sequence) {
-      await btn.press(true);
+      await btn.press(1.0);
+      await delay(100);
     }
   }
 
@@ -114,10 +113,10 @@ class Game {
     scoreEl.textContent = score;
   }
 
-  async buttonDance(laps = 5) {
+  async buttonDance(laps = 1) {
     for (let step = 0; step < laps; step++) {
       for (const btn of this.buttons.values()) {
-        await btn.press(false);
+        await btn.press(0.0);
       }
     }
   }
@@ -127,25 +126,37 @@ class Game {
     return buttons[Math.floor(Math.random() * this.buttons.size)];
   }
 
-  saveScore(score) {
+  async saveScore(score) {
     const userName = this.getPlayerName();
+    const date = new Date().toLocaleDateString();
+    const newScore = { name: userName, score: score, date: date };
+
+    try {
+      const response = await fetch('/api/score', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(newScore),
+      });
+
+      // Store what the service gave us as the high scores
+      const scores = await response.json();
+      localStorage.setItem('scores', JSON.stringify(scores));
+    } catch {
+      // If there was an error then just track scores locally
+      this.updateScoresLocal(newScore);
+    }
+  }
+
+  updateScoresLocal(newScore) {
     let scores = [];
     const scoresText = localStorage.getItem('scores');
     if (scoresText) {
       scores = JSON.parse(scoresText);
     }
-    scores = this.updateScores(userName, score, scores);
-
-    localStorage.setItem('scores', JSON.stringify(scores));
-  }
-
-  updateScores(userName, score, scores) {
-    const date = new Date().toLocaleDateString();
-    const newScore = {name: userName, score: score, date: date};
 
     let found = false;
     for (const [i, prevScore] of scores.entries()) {
-      if (score > prevScore.score) {
+      if (newScore > prevScore.score) {
         scores.splice(i, 0, newScore);
         found = true;
         break;
@@ -160,7 +171,7 @@ class Game {
       scores.length = 10;
     }
 
-    return scores;
+    localStorage.setItem('scores', JSON.stringify(scores));
   }
 }
 
@@ -169,7 +180,6 @@ const game = new Game();
 function delay(milliseconds) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      console.log('delay completed');
       resolve(true);
     }, milliseconds);
   });
