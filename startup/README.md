@@ -216,6 +216,18 @@ Sub-site deploy command: ./deployService.sh -k ~/Desktop/finish.delete.Open\ Tab
 
 
 
+## 3/21/23 (C4LV1NPU6):
+
+Set up Simon DataBase sub-website.
+
+I learned how to implement the Simon Game web application using HTML, CSS, JavaScript, WebService and DataBase. This included the layout, appearances, functionality and storage for the about, home, play, and scores pages. It was a lot of information but I studied it and copied it perfectly.
+
+Sub-site name: https://simon.lightbikebattle.click/
+
+Sub-site deploy command: ./deployService.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/,Access\ Info/production.pem -h lightbikebattle.click -s simon
+
+
+
 # Class+Reading notes:
 
 
