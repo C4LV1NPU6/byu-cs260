@@ -5,9 +5,13 @@ const userName = process.env.MONGOUSER;
 const password = process.env.MONGOPASSWORD;
 const hostname = process.env.MONGOHOSTNAME;
 
+if (!userName) {
+  throw Error("Database not configured. Set environment variables");
+}
+
 async function main() {
   // Connect to the database cluster
-  const url = `mongodb+srv://cs260:cs260password@cluster0.vhafu2r.mongodb.net/bnb`;
+  const url = `mongodb+srv://${userName}:${password}@${hostname}`;
   const client = new MongoClient(url);
   const collection = client.db('rental').collection('house');
 
