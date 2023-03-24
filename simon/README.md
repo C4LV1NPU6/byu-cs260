@@ -1,3 +1,3 @@
-# simon-db
+# simon-login
 
-This deliverable demonstrates using a database service, MongoDB, to persistently save data.
+This deliverable demonstrates authenticating users and storing credentials and authentication tokens in MongoDB.
