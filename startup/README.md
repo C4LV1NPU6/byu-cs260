@@ -228,6 +228,18 @@ Sub-site deploy command: ./deployService.sh -k ~/Desktop/finish.delete.Open\ Tab
 
 
 
+## 3/23/23 (C4LV1NPU6):
+
+Set up Simon login sub-website.
+
+I learned how to implement the login functionality for the Simon Game web application. This included the layout, appearance, functionality and storage of users for the game's login functionality. It was a lot of information but I studied it and copied it perfectly.
+
+Sub-site name: https://simon.lightbikebattle.click/
+
+Sub-site deploy command: ./deployService.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/,Access\ Info/production.pem -h lightbikebattle.click -s simon
+
+
+
 # Class+Reading notes:
 
 
