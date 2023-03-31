@@ -252,6 +252,16 @@ Sub-site deploy command: ./deployService.sh -k ~/Desktop/finish.delete.Open\ Tab
 
 
 
+## 3/30/23 (C4LV1NPU6):
+
+Made React Reactivity project. Can be used in Startup App's website.
+
+I find it interesting that we're using React instead of JS.
+
+React Reactivity CodePen URL: https://codepen.io/C4LV1NPU6/pen/XWPwYPP
+
+
+
 # Class+Reading notes:
 
 
