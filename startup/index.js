@@ -63,11 +63,34 @@ apiRouter.get('/user/:username', async (req, res) => {
   const user = await DB.getUser(req.params.username);
   if (user) {
     const token = req?.cookies.token;
-    res.send({ username: user.username, authenticated: token === user.token });
+    res.send({ username: user.username, authenticated: token === user.token, 
+      wins: user.wins, losses: user.losses, hosting: user.hosting});
     return;
   }
   res.status(404).send({ msg: 'Unknown' });
 });
+
+
+
+apiRouter.post('/auth/join', async (req, res) => {
+  const host = await DB.getUser(req.body.host);
+  if (host) {
+    if (host.game === host.username) {
+      const user = await DB.updateUser(req.body.username, null, null, req.body.host);
+      res.send({ id: host._id });
+      return;
+    }
+  }
+  res.status(401).send({ msg: 'Not hosting' });
+});
+
+apiRouter.post('/auth/host', async (req, res) => {
+  const user = await DB.updateUser(req.body.username, null, null, req.body.host);
+  res.send({ id: user._id });
+  return;
+});
+
+
 
 // secureApiRouter verifies credentials for endpoints
 var secureApiRouter = express.Router();
@@ -81,19 +104,6 @@ secureApiRouter.use(async (req, res, next) => {
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
-});
-
-// GetScores
-secureApiRouter.get('/scores', async (req, res) => {
-  const scores = await DB.getHighScores();
-  res.send(scores);
-});
-
-// SubmitScore
-secureApiRouter.post('/score', async (req, res) => {
-  await DB.addScore(req.body);
-  const scores = await DB.getHighScores();
-  res.send(scores);
 });
 
 // Default error handler

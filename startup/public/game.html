@@ -13,12 +13,14 @@
   </header>
 
   <main>
-    <!-- <section>
-      <h2 class="text" style="--tn: 1s; --sn: 5; --en: 3; --wn: 3.4em;">Stats \n 0 : 0</h2>
-    </section> -->
+    <section id="stats">
+      <h2 class="text" style="--tn: 1s; --sn: 5; --en: 3; --wn: 3.4em;">Stats</h2>
+      <h2 class="text" id="wins" style="--tn: 1s; --sn: 5; --en: 3; --wn: 3.4em;">Wins: </h2>
+      <h2 class="text" id="losses" style="--tn: 1s; --sn: 5; --en: 3; --wn: 3.4em;">Losses: </h2>
+    </section>
     <section id="game">
       <div class="form-floating">
-        <h2 class="text" id="userName" style="--tn: 2.5s; --sn: 19; --en: 6; --wn: 13em;"></h2>
+        <h2 class="text" id="userName"></h2>
       </div>
       <div class="form-floating">
         <canvas id="arena" width="800" height="800">
@@ -27,9 +29,13 @@
         <button type="button" class="btn btn-primary" onclick="logout()">Logout</button>
       </div>
     </section>
-    <!-- <section>
+    <section id="chat">
       <h2 class="text" style="--tn: 1s; --sn: 4; --en: 3; --wn: 2.7em;">Chat</h2>
-    </section> -->
+      <div class="form-floating">
+        <input type="chat" class="form-control" id="chat" placeholder="Chat">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="sendMsg()">Send</button>
+    </section>
   </main>
 
   <footer>

@@ -12,7 +12,7 @@
   if (!authenticated) {
     logreg();
   } else {
-    game();
+    menu();
   }
 })();
 
@@ -29,8 +29,8 @@ function logreg() {
   window.location.href = 'logreg.html';
 }
 
-function game() {
-  window.location.href = 'game.html';
+function menu() {
+  window.location.href = 'menu.html';
 }
 
 async function loginUser() {
@@ -58,11 +58,6 @@ async function loginOrCreate(endpoint) {
 
   if (response?.status === 200) {
     localStorage.setItem('userName', userName);
-    game();
-  } else {
-    const modalEl = document.querySelector('#msgModal');
-    modalEl.querySelector('.modal-body').textContent = `⚠ Error: ${body.msg}`;
-    const msgModal = new bootstrap.Modal(modalEl, {});
-    msgModal.show();
+    menu();
   }
 }

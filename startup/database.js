@@ -14,7 +14,6 @@ const url = `mongodb+srv://${userName}:${password}@${hostname}`;
 
 const client = new MongoClient(url);
 const userCollection = client.db('lightbikebattle').collection('user');
-const scoreCollection = client.db('lightbikebattle').collection('score');
 
 function getUser(username) {
   return userCollection.findOne({ username: username });
@@ -34,30 +33,42 @@ async function createUser(username, password) {
     token: uuid.v4(),
     wins: 0,
     losses: 0,
+    game: "",
   };
   await userCollection.insertOne(user);
 
   return user;
 }
 
-function addScore(score) {
-  scoreCollection.insertOne(score);
-}
+async function updateUser(username, wins, losses, game) {
+  const user0 = getUser(username);
 
-function getHighScores() {
-  const query = {};
-  const options = {
-    sort: { score: -1 },
-    limit: 10,
+  if (wins === null) {
+    wins = user0.wins;
+  }
+  if (losses === null) {
+    losses = user0.losses;
+  }
+  if (game === null) {
+    game = user0.game;
+  }
+
+  const user = {
+    username: user0.username,
+    password: user0.password,
+    token: user0.token,
+    wins: wins,
+    losses: losses,
+    game: game,
   };
-  const cursor = scoreCollection.find(query, options);
-  return cursor.toArray();
+  await userCollection.findOneAndReplace({username: user.username}, {user});
+
+  return user;
 }
 
 module.exports = {
   getUser,
   getUserByToken,
   createUser,
-  addScore,
-  getHighScores,
+  updateUser,
 };
