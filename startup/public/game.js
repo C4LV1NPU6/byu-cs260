@@ -310,4 +310,4 @@ initialize();
 //NOTES:
 //all changes should be made in game.js and peerProxy.js (as far as I know)
 //try not to restructure everything (I really like the current organization)
-//use Simon code, TAs, other students, and internet for help
+//use me, Simon code (play.js+peerProxy.js), TAs, other students, and internet for help
