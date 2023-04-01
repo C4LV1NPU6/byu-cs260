@@ -262,6 +262,16 @@ React Reactivity CodePen URL: https://codepen.io/C4LV1NPU6/pen/XWPwYPP
 
 
 
+## 4/1/23 (C4LV1NPU6):
+
+Made React CLI project. Can be used in Startup App's website.
+
+I found it interesting how editable the React CLI is.
+
+Basic commands: npm start, npm run build.
+
+
+
 # Class+Reading notes:
 
 
