@@ -1,3 +1,7 @@
+user = {};
+
+player = {};
+
 blue = {
   type: "blue",
   width: 8,
@@ -65,42 +69,6 @@ game = {
 
   resetCanvas: function () {
     context.clearRect(0, 0, canvas.width, canvas.height);
-  },
-
-  // Functionality for peer communication using WebSocket
-
-  configureWebSocket() {
-    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    this.socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
-    /*this.socket.onopen = (event) => {
-      this.displayMsg('system', 'game', 'connected');
-    };
-    this.socket.onclose = (event) => {
-      this.displayMsg('system', 'game', 'disconnected');
-    };*/
-    this.socket.onmessage = async (event) => {
-      const msg = JSON.parse(await event.data.text());
-      /*if (msg.type === GameEndEvent) {
-        this.displayMsg('player', msg.from, `scored ${msg.value.score}`);
-      } else if (msg.type === GameStartEvent) {
-        this.displayMsg('player', msg.from, `started a new game`);
-      }*/
-    };
-  },
-
-  displayMsg(cls, from, msg) {
-    const chatText = document.querySelector('#player-messages');
-    chatText.innerHTML =
-      `<div class="event"><span class="${cls}-event">${from}</span> ${msg}</div>` + chatText.innerHTML;
-  },
-
-  broadcastEvent(from, type, value) {
-    const event = {
-      from: from,
-      type: type,
-      value: value,
-    };
-    this.socket.send(JSON.stringify(event));
   }
 };
 
@@ -194,34 +162,39 @@ keys = {
   right: [39],
 
   start_game: [13],
+  pause_game: [27]/*,
 
   e_up: [87],
   e_down: [83],
   e_left: [65],
-  e_right: [68]
+  e_right: [68]*/
 };
 
 addEventListener(
   "keydown",
   function (e) {
     lastKey = keys.getKey(e.keyCode);
-    if (
-      ["up", "down", "left", "right"].indexOf(lastKey) >= 0 &&
-      lastKey != inverseDirection(blue, "up", "down", "left", "right")
+    if (['start_game'].indexOf(lastKey) >= 0 && game.over) {
+      game.start();
+      broadcastEvent(user.username, user.game, 'start_game', null);
+    }
+    if (['pause_game'].indexOf(lastKey) >= 0) {
+      game.pause();
+      broadcastEvent(user.username, user.game, 'pause_game', null);
+    }
+    if (player === blue &&
+      ['up', 'down', 'left', 'right'].indexOf(lastKey) >= 0 &&
+      lastKey != inverseDirection(blue, 'up', 'down', 'left', 'right')
     ) {
       blue.current_direction = lastKey;
+      broadcastEvent(user.username, user.game, lastKey, null);
     }
-    if (
-      ["e_up", "e_down", "e_left", "e_right"].indexOf(lastKey) >= 0 &&
-      lastKey != inverseDirection(red, "e_up", "e_down", "e_left", "e_right")
+    if (player === red &&
+      ['up', 'down', 'left', 'right'].indexOf(lastKey) >= 0 &&
+      lastKey != inverseDirection(red, 'up', 'down', 'left', 'right')
     ) {
       red.current_direction = lastKey;
-    }
-    if (["start_game"].indexOf(lastKey) >= 0 && game.over) {
-      game.start();
-    }
-    if (e.key === "Escape") {
-      game.pause();
+      broadcastEvent(user.username, user.game, lastKey, null);
     }
   },
   false
@@ -253,14 +226,13 @@ function inverseDirection(cycle, u, d, l, r) {
   }
 }
 
-
 async function initialize() {
   user = await getUser(localStorage.getItem('userName'));
 
   if (user.username === user.game) {
-    //user is assigned to blue
+    player = blue;
   } else {
-    //user is assigned to red
+    player = red;
   }
 
   document.querySelector('#userName').textContent = user.username;
@@ -272,6 +244,8 @@ async function initialize() {
   context = canvas.getContext("2d");
   setInterval(loop, 100);
   lastKey = null;
+
+  configureWebSocket();
 }
 
 async function getUser(username) {
@@ -285,9 +259,9 @@ async function getUser(username) {
 
 function loop() {
   if (game.over === false) {
-    cycle.move(blue, red, "up", "down", "left", "right");
+    cycle.move(blue, red, 'up', 'down', 'left', 'right');
     cycle.draw(blue);
-    cycle.move(red, blue, "e_up", "e_down", "e_left", "e_right");
+    cycle.move(red, blue, 'up', 'down', 'left', 'right');
     cycle.draw(red);
   }
 }
@@ -301,13 +275,63 @@ function logout() {
 
 initialize();
 
+
+
 //TODO: 
-//assign player to blue or red
-//make keystrokes send messages to other player
-//make keystroke receptions for other player
-//remove arrow key controls for other player
-//change peerProxy.js so messages only go to+from one other player
+//change peerProxy.js so messages only go to+from one other player (finish+test multiplayer)
+//implement score and chat
+//make it look fancy
 //NOTES:
 //all changes should be made in game.js and peerProxy.js (as far as I know)
 //try not to restructure everything (I really like the current organization)
-//use me, Simon code (play.js+peerProxy.js), TAs, other students, and internet for help
+//use me, my messages, Simon code (play.js+peerProxy.js), TAs, other students, and internet for help
+
+
+
+// Functionality for peer communication using WebSocket
+
+function configureWebSocket() {
+  const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+  socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+  socket.onopen = (event) => {
+    //displayMsg('system', 'game', 'connected');
+  };
+  socket.onclose = (event) => {
+    //displayMsg('system', 'game', 'disconnected');
+  };
+  socket.onmessage = async (event) => {
+    const msg = JSON.parse(await event.data.text());
+    if (msg.type === 'gameStart') {
+      game.start();
+    }
+    if (msg.type === 'gamePause') {
+      game.pause();
+    }
+    if (player === blue &&
+      ['up', 'down', 'left', 'right'].indexOf(msg.type) >= 0
+    ) {
+      red.current_direction = msg.type;
+    }
+    if (player === red &&
+      ['up', 'down', 'left', 'right'].indexOf(msg.type) >= 0
+    ) {
+      blue.current_direction = msg.type;
+    }
+  };
+}
+
+function broadcastEvent(from, type, value) {
+  const event = {
+    from: from,
+    to: to,
+    type: type,
+    value: value,
+  };
+  this.socket.send(JSON.stringify(event));
+}
+
+/*function displayMsg(cls, from, msg) {
+  const chatText = document.querySelector('#player-messages');
+  chatText.innerHTML =
+    `<div class="event"><span class="${cls}-event">${from}</span> ${msg}</div>` + chatText.innerHTML;
+}*/
