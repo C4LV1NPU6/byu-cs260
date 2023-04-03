@@ -1,3 +1,3 @@
-# simon-websocket
+# simon-react
 
-This deliverable demonstrates peer to peer communication using WebSocket.
+This deliverable demonstrates using a web framework.
