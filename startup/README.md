@@ -272,6 +272,16 @@ Basic commands: npm start, npm run build.
 
 
 
+## 4/3/23 (C4LV1NPU6):
+
+Made React Router project. Can be used in Startup App's website.
+
+I found it interesting how React does not have a standard router package.
+
+React Reactivity CodePen URL: https://codepen.io/C4LV1NPU6/pen/BaOXvdx
+
+
+
 # Class+Reading notes:
 
 
