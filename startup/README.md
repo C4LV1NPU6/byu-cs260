@@ -282,6 +282,18 @@ React Reactivity CodePen URL: https://codepen.io/C4LV1NPU6/pen/BaOXvdx
 
 
 
+## 4/3/23 (C4LV1NPU6):
+
+Set up Simon React sub-website.
+
+I learned how to implement the React functionality for the Simon Game web application. This included the layout, appearance and functionality for all of the game's features. It was a lot of information but I studied, executed and copied it perfectly.
+
+Sub-site name: https://simon.lightbikebattle.click/
+
+Sub-site deploy command: ./deployReact.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/,Access\ Info/production.pem -h lightbikebattle.click -s simon
+
+
+
 # Class+Reading notes:
 
 
