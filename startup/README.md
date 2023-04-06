@@ -298,7 +298,7 @@ Sub-site deploy command: ./deployReact.sh -k ~/Desktop/finish.delete.Open\ Tabs/
 
 Set up Startup Service sub-website.
 
-I learned how to further implement my Startup web application using endpoints, Node.js, MongoDB and webSockets. Implemented the login/register -> lobby selection -> game pages and their functionality. Implemented persistent storage for users/accounts. Implemented peer-to-peer communication via 1v1 multiplayer. It was fun but it took me a very long time. The chat and stats aren't finished but the rubric requirements that they fulfill are already fulfilled by the user/account storage and multiplayer peer communication.
+I learned how to further implement my Startup web application using services, node.js, mongodb, authentication, and webSockets. Implemented the login/register -> lobby selection -> game pages and their functionality. Implemented persistent storage for users/accounts. Implemented peer-to-peer communication via 1v1 multiplayer. It was fun but it took me a very long time (30 hours). The chat and stats aren't finished but the rubric requirements that they fulfill are already fulfilled by the user/account storage and the multiplayer peer communication.
 
 Sub-site name: https://startup.lightbikebattle.click/
 
