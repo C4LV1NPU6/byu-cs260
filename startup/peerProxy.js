@@ -16,14 +16,16 @@ class PeerProxy {
     // Keep track of all the connections so we can forward messages
     let connections = [];
 
-    wss.on('connection', (ws) => {
-      const connection = { id: uuid.v4(), alive: true, ws: ws };
+    wss.on('connection', (ws, game) => {
+      const connection = { id: uuid.v4(), alive: true, ws: ws, game: game.url };
+
       connections.push(connection);
 
       // Forward messages to everyone except the sender
       ws.on('message', function message(data) {
         connections.forEach((c) => {
-          if (c.id !== connection.id) {
+          if (c.game === connection.game && c.id !== connection.id) {
+            debugger;
             c.ws.send(data);
           }
         });

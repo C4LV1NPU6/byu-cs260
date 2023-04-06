@@ -15,7 +15,7 @@ const url = `mongodb+srv://${userName}:${password}@${hostname}`;
 const client = new MongoClient(url);
 const userCollection = client.db('lightbikebattle').collection('user');
 
-function getUser(username) {
+async function getUser(username) {
   return userCollection.findOne({ username: username });
 }
 
@@ -41,7 +41,7 @@ async function createUser(username, password) {
 }
 
 async function updateUser(username, wins, losses, game) {
-  const user0 = getUser(username);
+  const user0 = await getUser(username);
 
   if (wins === null) {
     wins = user0.wins;
@@ -61,7 +61,7 @@ async function updateUser(username, wins, losses, game) {
     losses: losses,
     game: game,
   };
-  await userCollection.findOneAndReplace({username: user.username}, {user});
+  await userCollection.findOneAndReplace({username: user.username}, user);
 
   return user;
 }

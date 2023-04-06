@@ -53,7 +53,8 @@ apiRouter.post('/auth/login', async (req, res) => {
 });
 
 // DeleteAuth token if stored in cookie
-apiRouter.delete('/auth/logout', (_req, res) => {
+apiRouter.delete('/auth/logout/:username', async (_req, res) => {
+  const user = await DB.updateUser(_req.params.username, null, null, "");
   res.clearCookie(authCookieName);
   res.status(204).end();
 });
@@ -64,13 +65,11 @@ apiRouter.get('/user/:username', async (req, res) => {
   if (user) {
     const token = req?.cookies.token;
     res.send({ username: user.username, authenticated: token === user.token, 
-      wins: user.wins, losses: user.losses, hosting: user.hosting});
+      wins: user.wins, losses: user.losses, game: user.game});
     return;
   }
   res.status(404).send({ msg: 'Unknown' });
 });
-
-
 
 apiRouter.post('/auth/join', async (req, res) => {
   const host = await DB.getUser(req.body.host);
@@ -89,8 +88,6 @@ apiRouter.post('/auth/host', async (req, res) => {
   res.send({ id: user._id });
   return;
 });
-
-
 
 // secureApiRouter verifies credentials for endpoints
 var secureApiRouter = express.Router();
