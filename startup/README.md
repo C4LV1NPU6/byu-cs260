@@ -298,7 +298,7 @@ Sub-site deploy command: ./deployReact.sh -k ~/Desktop/finish.delete.Open\ Tabs/
 
 Set up Startup Service sub-website.
 
-I learned how to further implement my Startup web application using services, node.js, mongodb, authentication, and webSockets. Implemented the login/register -> lobby selection -> game pages and their functionality. Implemented persistent storage for users/accounts. Implemented peer-to-peer communication via 1v1 multiplayer. It was fun but it took me a very long time (30 hours). The chat and stats aren't finished but the rubric requirements that they fulfill are already fulfilled by the user/account storage and the multiplayer peer communication. Important note: when you are finished playing you MUST use the logout button or else the database information holding what lobby you're in won't be updated/removed.
+I learned how to further implement my Startup web application using services, node.js, mongodb, authentication, and webSockets. Implemented the login/register -> lobby selection -> game pages and their functionality. Implemented persistent storage for users/accounts. Implemented peer-to-peer communication via 1v1 multiplayer. It was fun but it took me a very long time (30 hours). The chat and stats aren't finished but the rubric requirements that they fulfill are already fulfilled by the user/account storage and the multiplayer peer communication. Important note: when you are finished playing you MUST use the logout button or else the database information holding what lobby you're in won't be updated/removed, if you forget by accident you just need to do a quick log-back-in-and-out (clicking the logout button always sets your current lobby to null).
 
 Sub-site name: https://startup.lightbikebattle.click/
 
