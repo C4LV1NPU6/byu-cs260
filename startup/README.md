@@ -1,4 +1,4 @@
-# README for Startup Web Application assignment, made by pair programmers Calvin Pugmire (C4LV1NPU6) and Tachiinii Ranger (rokketranger):
+# README for Startup Web Application assignment, made by Calvin Pugmire (C4LV1NPU6):
 
 
 
@@ -19,7 +19,7 @@ GitHub is a great way to backup my code. Pulling and pushing changes seem to be 
 
 
 
-## 1/26/23 (C4LV1NPU6+rokketranger):
+## 1/26/23 (C4LV1NPU6):
 
 Start up deliverable - specification:
 
@@ -124,7 +124,7 @@ Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/
 
 
 
-## 2/20/23 (C4LV1NPU6+rokketranger):
+## 2/20/23 (C4LV1NPU6):
 
 Set up Startup HTML+CSS sub-website.
 
@@ -182,7 +182,7 @@ Sub-site deploy command: ./deployFiles.sh -k ~/Desktop/finish.delete.Open\ Tabs/
 
 
 
-## 3/10/23 (C4LV1NPU6+rokketranger):
+## 3/10/23 (C4LV1NPU6):
 
 Set up Startup HTML+CSS+JavaScript sub-website.
 
@@ -291,6 +291,18 @@ I learned how to implement the React functionality for the Simon Game web applic
 Sub-site name: https://simon.lightbikebattle.click/
 
 Sub-site deploy command: ./deployReact.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/,Access\ Info/production.pem -h lightbikebattle.click -s simon
+
+
+
+## 4/6/23 (C4LV1NPU6):
+
+Set up Startup Service sub-website.
+
+I learned how to further implement my Startup web application using endpoints, Node.js, MongoDB and webSockets. Implemented the login/register -> lobby selection -> game pages and their functionality. Implemented persistent storage for users/accounts. Implemented peer-to-peer communication via 1v1 multiplayer. It was fun but it took me a very long time. The chat and stats aren't finished but the rubric requirements that they fulfill are already fulfilled by the user/account storage and multiplayer peer communication.
+
+Sub-site name: https://startup.lightbikebattle.click/
+
+Sub-site deploy command: ./deployService.sh -k ~/Desktop/finish.delete.Open\ Tabs/,schoolwork/CS\ 260/,Access\ Info/production.pem -h lightbikebattle.click -s startup
 
 
 
@@ -6288,7 +6300,7 @@ You did it! This is a significant milestone. Time to grab some friends, show the
   </main>
 
   <footer>
-    <h2 class="text" style="--tn: 2.5s; --sn: 31; --en: 6; --wn: 21.2em;">From C4LV1NPU6 and rokketranger</h2>
+    <h2 class="text" style="--tn: 2.5s; --sn: 31; --en: 6; --wn: 21.2em;">From C4LV1NPU6</h2>
     <a class="text" href="https://github.com/C4LV1NPU6/byu-cs260/tree/main/startup">Source</a>
   </footer>
 
