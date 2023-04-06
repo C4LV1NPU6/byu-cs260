@@ -15,12 +15,16 @@ const url = `mongodb+srv://${userName}:${password}@${hostname}`;
 const client = new MongoClient(url);
 const userCollection = client.db('lightbikebattle').collection('user');
 
-async function getUser(username) {
+function getUser(username) {
   return userCollection.findOne({ username: username });
 }
 
 function getUserByToken(token) {
   return userCollection.findOne({ token: token });
+}
+
+function getLobbyCount(game) {
+  return userCollection.count({ game: game });
 }
 
 async function createUser(username, password) {
@@ -69,6 +73,7 @@ async function updateUser(username, wins, losses, game) {
 module.exports = {
   getUser,
   getUserByToken,
+  getLobbyCount,
   createUser,
   updateUser,
 };

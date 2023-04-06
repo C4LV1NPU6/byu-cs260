@@ -18,7 +18,6 @@ class PeerProxy {
 
     wss.on('connection', (ws, game) => {
       const connection = { id: uuid.v4(), alive: true, ws: ws, game: game.url };
-
       connections.push(connection);
 
       // Forward messages to everyone except the sender

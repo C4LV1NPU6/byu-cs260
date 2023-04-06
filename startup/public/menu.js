@@ -17,6 +17,13 @@ async function joinOrHost(endpoint) {
   if (host === "") {
     return;
   }
+
+  const response0 = await fetch(`/api/lobbycount/${host}`);
+  const body0 = await response0.json();
+  if (body0.lobbyCount >= 2) {
+    return;
+  }
+
   const response = await fetch(endpoint, {
     method: 'post',
     body: JSON.stringify({ username: localStorage.getItem('userName'), host: host }),
@@ -34,3 +41,34 @@ async function joinOrHost(endpoint) {
 function game() {
   window.location.href = 'game.html';
 }
+
+function logout() {
+  fetch(`/api/auth/logout/${localStorage.getItem('userName')}`, {
+    method: 'delete',
+  }).then(() => (window.location.href = '/'));
+  localStorage.deleteItem('userName');
+  //TODO: run this function when user leaves.?
+}
+
+function displayPicture(data) {
+  const containerEl = document.querySelector("#lobby");
+
+  const width = containerEl.offsetWidth;
+  const height = containerEl.offsetHeight;
+
+  const imgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${width}x${height}&data=${data.url}`;
+  const imgEl = document.createElement("img");
+  imgEl.setAttribute("src", imgUrl);
+  containerEl.appendChild(imgEl);
+}
+  
+function callService(url, displayCallback) {
+  fetch(url)
+    .then((response) => response)
+    .then((data) => {
+      displayCallback(data);
+    });
+}
+
+const random = Math.floor(Math.random() * 1000);
+callService(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${localStorage.getItem('userName')}`, displayPicture);

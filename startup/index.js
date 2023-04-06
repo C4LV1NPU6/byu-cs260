@@ -71,6 +71,15 @@ apiRouter.get('/user/:username', async (req, res) => {
   res.status(404).send({ msg: 'Unknown' });
 });
 
+apiRouter.get('/lobbycount/:game', async (req, res) => {
+  const count = await DB.getLobbyCount(req.params.game);
+  if (count >= 0) {
+    res.send({ lobbyCount: count });
+    return;
+  }
+  res.status(404).send({ msg: 'Unknown' });
+});
+
 apiRouter.post('/auth/join', async (req, res) => {
   const host = await DB.getUser(req.body.host);
   if (host) {
