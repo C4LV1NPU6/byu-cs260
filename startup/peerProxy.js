@@ -24,7 +24,6 @@ class PeerProxy {
       ws.on('message', function message(data) {
         connections.forEach((c) => {
           if (c.game === connection.game && c.id !== connection.id) {
-            debugger;
             c.ws.send(data);
           }
         });

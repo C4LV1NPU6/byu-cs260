@@ -154,7 +154,6 @@ class Game {
     addEventListener(
       "keydown",
       function (e) {
-        debugger;
         game.lastKey = keys[e.code];
         if (['start_game'].indexOf(game.lastKey) >= 0 && game.stopped) {
           game.start();
@@ -282,7 +281,6 @@ class Game {
       //displayMsg('system', 'game', 'disconnected');
     };
     this.socket.onmessage = async (event) => {
-      debugger;
       const msg = JSON.parse(await event.data.text());
       if (msg.type === 'start_game') {
         this.start();
