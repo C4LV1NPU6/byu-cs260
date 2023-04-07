@@ -270,7 +270,7 @@ class Game {
 
   // Functionality for peer communication using WebSocket
 
-  //TODO: fix lag.
+  //TODO: fix lag: transfer new bike location history, not new keystrokes (except start+pause?).
   configureWebSocket() {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
     this.socket = new WebSocket(`${protocol}://${window.location.host}/ws/${this.user.game}`);
