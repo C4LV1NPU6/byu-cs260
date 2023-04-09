@@ -63,7 +63,7 @@ class Cycle {
         break;
     }
     if (this.checkCollision(cycle, opponent)) {
-      game.stop(cycle, opponent);
+      game.end(cycle, opponent);
     }
     const coords = this.generateCoords(cycle);
     cycle.history.push(coords);
@@ -122,21 +122,23 @@ class Game {
   context;
   lastKey;
 
-
   constructor () {
     this.initialize();
   }
 
   initialize = async () => {
     const user = await this.getUser(localStorage.getItem('userName'));
+    this.user = user;
+  
+    document.querySelector('#userName').textContent = this.user.username;
+    document.querySelector('#wins').textContent = "Wins: " + this.user.wins;
+    document.querySelector('#losses').textContent = "Losses: " + this.user.losses;
 
     this.canvas = document.getElementById("arena");
     this.context = this.canvas.getContext("2d");
 
     this.stopped = false;
     this.over = true;
-
-    this.user = user;
 
     this.cycle = new Cycle();
     
@@ -146,9 +148,7 @@ class Game {
       this.player = 'red';
     }
   
-    document.querySelector('#userName').textContent = this.user.username;
-    document.querySelector('#wins').textContent = "Wins: " + this.user.wins;
-    document.querySelector('#losses').textContent = "Losses: " + this.user.losses;
+    this.configureWebSocket();
 
     this.lastKey = null;
     addEventListener(
@@ -156,34 +156,24 @@ class Game {
       function (e) {
         game.lastKey = keys[e.code];
         if (['start_game'].indexOf(game.lastKey) >= 0 && game.stopped) {
-          game.start();
           game.broadcastEvent(game.user.username, game.user.game, 'start_game', null);
+          game.start();
         }
         if (['pause_game'].indexOf(game.lastKey) >= 0) {
-          game.pause();
           game.broadcastEvent(game.user.username, game.user.game, 'pause_game', null);
+          game.pause();
         }
-        if (game.player === 'blue' &&
-          ['up', 'down', 'left', 'right'].indexOf(game.lastKey) >= 0 &&
-          game.lastKey != game.inverseDirection(game.cycle.blue, 'up', 'down', 'left', 'right')
-        ) {
+        if (game.player === 'blue' && ['up', 'down', 'left', 'right'].indexOf(game.lastKey) >= 0 && game.lastKey != game.inverseDirection(game.cycle.blue, 'up', 'down', 'left', 'right')) {
           game.cycle.blue.current_direction = game.lastKey;
-          game.broadcastEvent(game.user.username, game.user.game, game.lastKey, null);
         }
-        if (game.player === 'red' &&
-          ['up', 'down', 'left', 'right'].indexOf(game.lastKey) >= 0 &&
-          game.lastKey != game.inverseDirection(game.cycle.red, 'up', 'down', 'left', 'right')
-        ) {
+        if (game.player === 'red' && ['up', 'down', 'left', 'right'].indexOf(game.lastKey) >= 0 && game.lastKey != game.inverseDirection(game.cycle.red, 'up', 'down', 'left', 'right')) {
           game.cycle.red.current_direction = game.lastKey;
-          game.broadcastEvent(game.user.username, game.user.game, game.lastKey, null);
         }
       },
       false
     );
 
     setInterval(this.loop, 100);
-  
-    this.configureWebSocket();
 
     this.pause();
   }
@@ -212,10 +202,15 @@ class Game {
 
   loop() {
     if (game.stopped === false) {
-      game.cycle.move(game.cycle.blue, game.cycle.red, 'up', 'down', 'left', 'right');
-      game.cycle.draw(game.cycle.blue);
-      game.cycle.move(game.cycle.red, game.cycle.blue, 'up', 'down', 'left', 'right');
-      game.cycle.draw(game.cycle.red);
+      if (game.player === 'blue') {
+        game.broadcastEvent(game.user.username, game.user.game, game.cycle.blue.current_direction, null);
+        game.cycle.move(game.cycle.blue, game.cycle.red, 'up', 'down', 'left', 'right');
+        game.cycle.draw(game.cycle.blue);
+      } else if (game.player === 'red') {
+        game.broadcastEvent(game.user.username, game.user.game, game.cycle.red.current_direction, null);
+        game.cycle.move(game.cycle.red, game.cycle.blue, 'up', 'down', 'left', 'right');
+        game.cycle.draw(game.cycle.red);
+      }
     }
   }
 
@@ -227,7 +222,15 @@ class Game {
     game.resetCanvas();
   }
 
-  stop (cycle, opponent) {
+  pause () {
+    if (game.stopped === true && game.over === false) {
+      game.stopped = false;
+    } else {
+      game.stopped = true;
+    }
+  }
+
+  end (cycle, opponent) {
     game.stopped = true;
     game.over = true;
     game.context.fillStyle = "#FFF";
@@ -250,14 +253,6 @@ class Game {
     //TODO: update scores in database.
   }
 
-  pause () {
-    if (game.stopped === true && game.over === false) {
-      game.stopped = false;
-    } else {
-      game.stopped = true;
-    }
-  }
-
   newLevel () {
     game.cycle.resetBlue();
     game.cycle.resetRed();
@@ -270,7 +265,6 @@ class Game {
 
   // Functionality for peer communication using WebSocket
 
-  //TODO: fix lag: transfer new bike location history, not new keystrokes (except start+pause?).
   configureWebSocket() {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
     this.socket = new WebSocket(`${protocol}://${window.location.host}/ws/${this.user.game}`);
@@ -284,19 +278,16 @@ class Game {
       const msg = JSON.parse(await event.data.text());
       if (msg.type === 'start_game') {
         this.start();
-      }
-      if (msg.type === 'pause_game') {
+      } else if (msg.type === 'pause_game') {
         this.pause();
-      }
-      if (this.player === 'blue' &&
-        ['up', 'down', 'left', 'right'].indexOf(msg.type) >= 0
-      ) {
+      } else if (this.player === 'blue') {
         this.cycle.red.current_direction = msg.type;
-      }
-      if (this.player === 'red' &&
-        ['up', 'down', 'left', 'right'].indexOf(msg.type) >= 0
-      ) {
+        game.cycle.move(game.cycle.red, game.cycle.blue, 'up', 'down', 'left', 'right');
+        game.cycle.draw(game.cycle.red);
+      } else if (this.player === 'red') {
         this.cycle.blue.current_direction = msg.type;
+        game.cycle.move(game.cycle.blue, game.cycle.red, 'up', 'down', 'left', 'right');
+        game.cycle.draw(game.cycle.blue);
       }
     };
   }
@@ -329,7 +320,7 @@ function logout() {
     method: 'delete',
   }).then(() => (window.location.href = '/'));
   localStorage.deleteItem('userName');
-  //TODO: run this function when user leaves.?
+  //TODO: run this function when connection is terminated.?
 }
 
 const game = new Game();

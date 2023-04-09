@@ -47,7 +47,7 @@ function logout() {
     method: 'delete',
   }).then(() => (window.location.href = '/'));
   localStorage.deleteItem('userName');
-  //TODO: run this function when user leaves.?
+  //TODO: run this function when connection is terminated.?
 }
 
 function displayPicture(data) {
