@@ -34,20 +34,14 @@ async function joinOrHost(endpoint) {
   const body = await response.json();
 
   if (response?.status === 200) {
-    game();
+    window.location.href = 'game.html';
   }
-}
-
-function game() {
-  window.location.href = 'game.html';
 }
 
 function logout() {
   fetch(`/api/auth/logout/${localStorage.getItem('userName')}`, {
     method: 'delete',
   }).then(() => (window.location.href = '/'));
-  localStorage.deleteItem('userName');
-  //TODO: run this function when connection is terminated.?
 }
 
 function displayPicture(data) {

@@ -1,5 +1,4 @@
 (async () => {
-  localStorage.deleteItem('userName');
   let authenticated = false;
   const userName = localStorage.getItem('userName');
   if (userName) {
@@ -9,29 +8,10 @@
     authenticated = user?.authenticated;
   }
 
-  if (!authenticated) {
-    logreg();
-  } else {
-    menu();
+  if (authenticated) {
+    window.location.href = 'menu.html';
   }
 })();
-
-async function getUser(username) {
-  // See if we have a user with the given username.
-  const response = await fetch(`/api/user/${username}`);
-  if (response.status === 200) {
-    return response.json();
-  }
-  return null;
-}
-
-function logreg() {
-  window.location.href = 'logreg.html';
-}
-
-function menu() {
-  window.location.href = 'menu.html';
-}
 
 async function loginUser() {
   loginOrCreate(`/api/auth/login`);
@@ -58,6 +38,15 @@ async function loginOrCreate(endpoint) {
 
   if (response?.status === 200) {
     localStorage.setItem('userName', userName);
-    menu();
+    window.location.href = 'menu.html';
   }
+}
+
+async function getUser(username) {
+  // See if we have a user with the given username.
+  const response = await fetch(`/api/user/${username}`);
+  if (response.status === 200) {
+    return response.json();
+  }
+  return null;
 }

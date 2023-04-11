@@ -128,6 +128,9 @@ class Game {
 
   initialize = async () => {
     const user = await this.getUser(localStorage.getItem('userName'));
+    if (user.game === '') {
+      window.location.href = 'menu.html';
+    }
     this.user = user;
   
     document.querySelector('#userName').textContent = this.user.username;
@@ -203,11 +206,11 @@ class Game {
   loop() {
     if (game.stopped === false) {
       if (game.player === 'blue') {
-        game.broadcastEvent(game.user.username, game.user.game, game.cycle.blue.current_direction, null);
+        game.broadcastEvent(game.user.username, game.user.game, 'blue_move', game.cycle.blue.current_direction);
         game.cycle.move(game.cycle.blue, game.cycle.red, 'up', 'down', 'left', 'right');
         game.cycle.draw(game.cycle.blue);
       } else if (game.player === 'red') {
-        game.broadcastEvent(game.user.username, game.user.game, game.cycle.red.current_direction, null);
+        game.broadcastEvent(game.user.username, game.user.game, 'red_move', game.cycle.red.current_direction);
         game.cycle.move(game.cycle.red, game.cycle.blue, 'up', 'down', 'left', 'right');
         game.cycle.draw(game.cycle.red);
       }
@@ -250,7 +253,7 @@ class Game {
     }
     document.querySelector('#wins').textContent = "Wins: " + this.user.wins;
     document.querySelector('#losses').textContent = "Losses: " + this.user.losses;
-    //TODO: update scores in database.
+    //OPTIONAL: Update scores in database. Requires head-on collision sync.
   }
 
   newLevel () {
@@ -280,14 +283,18 @@ class Game {
         this.start();
       } else if (msg.type === 'pause_game') {
         this.pause();
-      } else if (this.player === 'blue') {
-        this.cycle.red.current_direction = msg.type;
+      } else if (msg.type === 'red_move') {
+        this.cycle.red.current_direction = msg.value;
         game.cycle.move(game.cycle.red, game.cycle.blue, 'up', 'down', 'left', 'right');
         game.cycle.draw(game.cycle.red);
-      } else if (this.player === 'red') {
-        this.cycle.blue.current_direction = msg.type;
+      } else if (msg.type === 'blue_move') {
+        this.cycle.blue.current_direction = msg.value;
         game.cycle.move(game.cycle.blue, game.cycle.red, 'up', 'down', 'left', 'right');
         game.cycle.draw(game.cycle.blue);
+      } else if (msg.type === 'post_chat') {
+        document.getElementById("chat").innerHTML += "<h3>" + msg.from + ": " + msg.value + "</h3>";
+      } else if (msg.type === 'exit') {
+        exit();
       }
     };
   }
@@ -301,26 +308,23 @@ class Game {
     };
     this.socket.send(JSON.stringify(event));
   }
-
-  /*displayMsg(cls, from, msg) {
-    const chatText = document.querySelector('#player-messages');
-    chatText.innerHTML =
-      `<div class="event"><span class="${cls}-event">${from}</span> ${msg}</div>` + chatText.innerHTML;
-  }*/
 }
 
 function sendMsg() {
   const message = document.querySelector('#chatbox')?.value;
   document.getElementById("chat").innerHTML += "<h3>" + game.user.username + ": " + message + "</h3>";
-  //TODO: send messages to opponent.
+  game.broadcastEvent(game.user.username, game.user.game, 'post_chat', message);
 }
 
-function logout() {
-  fetch(`/api/auth/logout/${game.user.username}`, {
+function exit() {
+  game.broadcastEvent(game.user.username, game.user.game, 'exit', null);
+  fetch(`/api/auth/exit/${game.user.username}`, {
     method: 'delete',
-  }).then(() => (window.location.href = '/'));
-  localStorage.deleteItem('userName');
-  //TODO: run this function when connection is terminated.?
+  }).then(() => (window.location.href = 'menu.html'));
+}
+
+window.onbeforeunload = function(){
+  exit();
 }
 
 const game = new Game();
