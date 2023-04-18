@@ -12164,7 +12164,308 @@ When you have completed the survey, mark that you submitted it in Canvas so that
 
 ## Startup:
 
-### HTML:
+### database.js:
+
+```js
+const { MongoClient } = require('mongodb');
+const bcrypt = require('bcrypt');
+const uuid = require('uuid');
+
+const userName = process.env.MONGOUSER;
+const password = process.env.MONGOPASSWORD;
+const hostname = process.env.MONGOHOSTNAME;
+
+if (!userName) {
+  throw Error('Database not configured. Set environment variables');
+}
+
+const url = `mongodb+srv://${userName}:${password}@${hostname}`;
+
+const client = new MongoClient(url);
+const userCollection = client.db('lightbikebattle').collection('user');
+
+function getUser(username) {
+  return userCollection.findOne({ username: username });
+}
+
+function getUserByToken(token) {
+  return userCollection.findOne({ token: token });
+}
+
+function getLobbyCount(game) {
+  return userCollection.count({ game: game });
+}
+
+async function createUser(username, password) {
+  // Hash the password before we insert it into the database
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  const user = {
+    username: username,
+    password: passwordHash,
+    token: uuid.v4(),
+    wins: 0,
+    losses: 0,
+    game: "",
+  };
+  await userCollection.insertOne(user);
+
+  return user;
+}
+
+async function updateUser(username, wins, losses, game) {
+  const user0 = await getUser(username);
+
+  if (wins === null) {
+    wins = user0.wins;
+  }
+  if (losses === null) {
+    losses = user0.losses;
+  }
+  if (game === null) {
+    game = user0.game;
+  }
+
+  const user = {
+    username: user0.username,
+    password: user0.password,
+    token: user0.token,
+    wins: wins,
+    losses: losses,
+    game: game,
+  };
+  await userCollection.findOneAndReplace({username: user.username}, user);
+
+  return user;
+}
+
+module.exports = {
+  getUser,
+  getUserByToken,
+  getLobbyCount,
+  createUser,
+  updateUser,
+};
+```
+
+### index.js:
+
+```js
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
+const express = require('express');
+const app = express();
+const DB = require('./database.js');
+const { PeerProxy } = require('./peerProxy.js');
+
+const authCookieName = 'token';
+
+// The service port may be set on the command line
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
+
+// JSON body parsing using built-in middleware
+app.use(express.json());
+
+// Use the cookie parser middleware for tracking authentication tokens
+app.use(cookieParser());
+
+// Serve up the applications static content
+app.use(express.static('public'));
+
+// Router for service endpoints
+var apiRouter = express.Router();
+app.use(`/api`, apiRouter);
+
+// CreateAuth token for a new user
+apiRouter.post('/auth/create', async (req, res) => {
+  if (await DB.getUser(req.body.username)) {
+    res.status(409).send({ msg: 'Existing user' });
+  } else {
+    const user = await DB.createUser(req.body.username, req.body.password);
+
+    // Set the cookie
+    setAuthCookie(res, user.token);
+
+    res.send({
+      id: user._id,
+    });
+  }
+});
+
+// GetAuth token for the provided credentials
+apiRouter.post('/auth/login', async (req, res) => {
+  const user = await DB.getUser(req.body.username);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      setAuthCookie(res, user.token);
+      res.send({ id: user._id });
+      return;
+    }
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+// DeleteAuth token if stored in cookie
+apiRouter.delete('/auth/logout/:username', (_req, res) => {
+  res.clearCookie(authCookieName);
+  res.status(204).end();
+});
+
+apiRouter.delete('/auth/exit/:username', async (_req, res) => {
+  const user = await DB.updateUser(_req.params.username, null, null, "");
+  res.status(204).end();
+});
+
+// GetUser returns information about a user
+apiRouter.get('/user/:username', async (req, res) => {
+  const user = await DB.getUser(req.params.username);
+  if (user) {
+    const token = req?.cookies.token;
+    res.send({ username: user.username, authenticated: token === user.token, 
+      wins: user.wins, losses: user.losses, game: user.game});
+    return;
+  }
+  res.status(404).send({ msg: 'Unknown' });
+});
+
+apiRouter.get('/lobbycount/:game', async (req, res) => {
+  const count = await DB.getLobbyCount(req.params.game);
+  if (count >= 0) {
+    res.send({ lobbyCount: count });
+    return;
+  }
+  res.status(404).send({ msg: 'Unknown' });
+});
+
+apiRouter.post('/auth/join', async (req, res) => {
+  const host = await DB.getUser(req.body.host);
+  if (host) {
+    if (host.game === host.username) {
+      const user = await DB.updateUser(req.body.username, null, null, req.body.host);
+      res.send({ id: host._id });
+      return;
+    }
+  }
+  res.status(401).send({ msg: 'Not hosting' });
+});
+
+apiRouter.post('/auth/host', async (req, res) => {
+  const user = await DB.updateUser(req.body.username, null, null, req.body.host);
+  res.send({ id: user._id });
+  return;
+});
+
+// secureApiRouter verifies credentials for endpoints
+var secureApiRouter = express.Router();
+apiRouter.use(secureApiRouter);
+
+secureApiRouter.use(async (req, res, next) => {
+  const authToken = req.cookies[authCookieName];
+  const user = await DB.getUserByToken(authToken);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+});
+
+// Default error handler
+app.use(function (err, req, res, next) {
+  res.status(500).send({ type: err.name, message: err.message });
+});
+
+// Return the application's default page if the path is unknown
+app.use((_req, res) => {
+  res.sendFile('logreg.html', { root: 'public' });
+});
+
+// setAuthCookie in the HTTP response
+function setAuthCookie(res, authToken) {
+  res.cookie(authCookieName, authToken, {
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
+
+const httpService = app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
+
+new PeerProxy(httpService);
+```
+
+### peerProxy.js:
+
+```js
+const { WebSocketServer } = require('ws');
+const uuid = require('uuid');
+
+class PeerProxy {
+  constructor(httpServer) {
+    // Create a websocket object
+    const wss = new WebSocketServer({ noServer: true });
+
+    // Handle the protocol upgrade from HTTP to WebSocket
+    httpServer.on('upgrade', (request, socket, head) => {
+      wss.handleUpgrade(request, socket, head, function done(ws) {
+        wss.emit('connection', ws, request);
+      });
+    });
+
+    // Keep track of all the connections so we can forward messages
+    let connections = [];
+
+    wss.on('connection', (ws, game) => {
+      const connection = { id: uuid.v4(), alive: true, ws: ws, game: game.url };
+      connections.push(connection);
+
+      // Forward messages to everyone except the sender
+      ws.on('message', function message(data) {
+        connections.forEach((c) => {
+          if (c.game === connection.game && c.id !== connection.id) {
+            c.ws.send(data);
+          }
+        });
+      });
+
+      // Remove the closed connection so we don't try to forward anymore
+      ws.on('close', () => {
+        connections.findIndex((o, i) => {
+          if (o.id === connection.id) {
+            connections.splice(i, 1);
+            return true;
+          }
+        });
+      });
+
+      // Respond to pong messages by marking the connection alive
+      ws.on('pong', () => {
+        connection.alive = true;
+      });
+    });
+
+    // Keep active connections alive
+    setInterval(() => {
+      connections.forEach((c) => {
+        // Kill any connection that didn't respond to the ping last time
+        if (!c.alive) {
+          c.ws.terminate();
+        } else {
+          c.alive = false;
+          c.ws.ping();
+        }
+      });
+    }, 10000);
+  }
+}
+
+module.exports = { PeerProxy };
+```
+
+### public:
+
+### logreg.html:
 
 ```html
 <!DOCTYPE html>
@@ -12172,7 +12473,7 @@ When you have completed the survey, mark that you submitted it in Canvas so that
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="all.css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="monospace" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
 </head>
 
@@ -12182,43 +12483,139 @@ When you have completed the survey, mark that you submitted it in Canvas so that
   </header>
 
   <main>
-    <section id="logregform">
-      <form onsubmit="return login()">
-        <div class="form-floating">
-          <input type="username" class="form-control" id="logusername" placeholder="Username">
-        </div>
-        <div class="form-floating">
-          <input type="password" class="form-control" id="logpassword" placeholder="Password">
-        </div>
-        <button class="button" type="submit">Login</button>
-      </form>
-      <form onsubmit="return register()">
-        <div class="form-floating">
-          <input type="username" class="form-control" id="regusername" placeholder="Username">
-        </div>
-        <div class="form-floating">
-          <input type="password" class="form-control" id="regpassword" placeholder="Password">
-        </div>
-        <button class="button" type="submit">Register</button>
-      </form>
+    <section id="logreg">
+      <div class="form-floating">
+        <input type="username" class="form-control" id="username" placeholder="Username">
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" id="password" placeholder="Password">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="loginUser()">Login</button>
+      <button type="button" class="btn btn-primary" onclick="createUser()">Register</button>
     </section>
   </main>
 
   <footer>
-    <h2 class="text" style="--tn: 2.5s; --sn: 31; --en: 6; --wn: 21.2em;">From C4LV1NPU6</h2>
+    <h2 class="text" style="--tn: 2.5s; --sn: 14; --en: 3; --wn: 9.6em;">From C4LV1NPU6</h2>
     <a class="text" href="https://github.com/C4LV1NPU6/byu-cs260/tree/main/startup">Source</a>
   </footer>
 
   <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
   </script> -->
 
-  <script src="index.js"></script>
+  <script src="logreg.js"></script>
 </body>
 
 </html>
 ```
 
-### CSS:
+### menu.html:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="all.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="monospace" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+</head>
+
+<body>
+  <header>
+    <h1 class="text" style="--tn: 2.5s; --sn: 19; --en: 6; --wn: 13em;">Welcome to the Grid</h1>
+  </header>
+
+  <main>
+    <section id="lobby">
+      <div class="form-floating">
+        <input type="host" class="form-control" id="host" placeholder="Host's Username">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="joinLobby()">Join</button>
+      <button type="button" class="btn btn-primary" onclick="hostLobby()">Host</button>
+      <div class="form-floating">
+        <button type="button" class="btn btn-primary" onclick="logout()">Logout</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <h2 class="text" style="--tn: 2.5s; --sn: 14; --en: 3; --wn: 9.6em;">From C4LV1NPU6</h2>
+    <a class="text" href="https://github.com/C4LV1NPU6/byu-cs260/tree/main/startup">Source</a>
+  </footer>
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+  </script> -->
+
+  <script src="menu.js"></script>
+</body>
+
+</html>
+```
+
+### game.html:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="all.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="monospace" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+</head>
+
+<body>
+  <header>
+    <h1 class="text" style="--tn: 2.5s; --sn: 19; --en: 6; --wn: 13em;">Welcome to the Grid</h1>
+  </header>
+
+  <main>
+    <section id="stats">
+      <h2 class="text" style="--tn: 1s; --sn: 5; --en: 3; --wn: 3.4em;">Stats</h2>
+      <h2 class="text" id="wins" style="--tn: 1s; --sn: 5; --en: 3; --wn: 3.4em;">Wins: </h2>
+      <h2 class="text" id="losses" style="--tn: 1s; --sn: 5; --en: 3; --wn: 3.4em;">Losses: </h2>
+    </section>
+    <section id="game">
+      <div class="form-floating">
+        <h2 class="text" id="userName"></h2>
+      </div>
+      <div class="form-floating">
+        <canvas id="arena" width="800" height="800">
+      </div>
+      <div class="form-floating" id="controls">
+        <h2 class="text">W,A,S,D: direction.</h2>
+        <h2 class="text">Enter: (re)start game.</h2>
+        <h2 class="text">Shift: pause/resume game.</h2>
+      </div>
+      <div class="form-floating" id="exit">
+        <button type="button" class="btn btn-primary" onclick="exit()">Exit</button>
+      </div>
+    </section>
+    <section id="chat">
+      <h2 class="text" style="--tn: 1s; --sn: 4; --en: 3; --wn: 2.7em;">Chat</h2>
+      <div class="form-floating">
+        <input type="chat" class="form-control" id="chatbox" placeholder="Chat">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="sendMsg()">Send</button>
+    </section>
+  </main>
+
+  <footer>
+    <h2 class="text" style="--tn: 2.5s; --sn: 14; --en: 3; --wn: 9.6em;">From C4LV1NPU6</h2>
+    <a class="text" href="https://github.com/C4LV1NPU6/byu-cs260/tree/main/startup">Source</a>
+  </footer>
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+  </script> -->
+
+  <script src="game.js"></script>
+</body>
+
+</html>
+```
+
+### all.css:
 
 ```css
 * {
@@ -12260,14 +12657,18 @@ section:nth-child(1) {
 }
 section:nth-child(2) {
   flex: 4;
-  background-color: #333;
+  background-color: #222;
 }
 section:nth-child(3) {
   flex: 1;
   background-color: #222;
 }
 
-#game {
+#userName {
+  background-color: #333;
+}
+
+#arena {
   background-color: #000;
   margin-top: auto;
   margin-bottom: auto;
@@ -12275,9 +12676,10 @@ section:nth-child(3) {
   margin-right: auto;
 }
 
-form {
-  padding-top: 1em;
+#controls {
+  background-color: #333;
 }
+
 input {
   background: #000;
   font-size: 18px;
@@ -12333,244 +12735,189 @@ button {
 }
 ```
 
-### JS:
+### logreg.js:
 
 ```js
-class User {
-  constructor(username, password) {
-    this.username = username;
-    this.password = password;
+(async () => {
+  let authenticated = false;
+  const userName = localStorage.getItem('userName');
+  if (userName) {
+    const nameEl = document.querySelector('#username');
+    nameEl.value = userName;
+    const user = await getUser(nameEl.value);
+    authenticated = user?.authenticated;
   }
 
-  getUsername() {
-    return this.username;
+  if (authenticated) {
+    window.location.href = 'menu.html';
   }
+})();
 
-  setUsername(username) {
-    this.username = username;
+async function loginUser() {
+  loginOrCreate(`/api/auth/login`);
+}
+
+async function createUser() {
+  loginOrCreate(`/api/auth/create`);
+}
+
+async function loginOrCreate(endpoint) {
+  const userName = document.querySelector('#username')?.value;
+  const password = document.querySelector('#password')?.value;
+  if (userName === "" || password === "") {
+    return;
   }
+  const response = await fetch(endpoint, {
+    method: 'post',
+    body: JSON.stringify({ username: userName, password: password }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  });
+  const body = await response.json();
 
-  getPassword() {
-    return this.password;
-  }
-
-  setPassword(password) {
-    this.password = password;
+  if (response?.status === 200) {
+    localStorage.setItem('userName', userName);
+    window.location.href = 'menu.html';
   }
 }
 
-function login() {
-  try {
-    arguments = [];
+async function getUser(username) {
+  // See if we have a user with the given username.
+  const response = await fetch(`/api/user/${username}`);
+  if (response.status === 200) {
+    return response.json();
+  }
+  return null;
+}
+```
 
-    logregfirst(arguments, "log");
+### menu.js:
 
-    let user = null;
-    const userCont = localStorage.getItem(arguments[0]);
-    if (userCont) {
-      user = JSON.parse(userCont);
-    }
+```js
+async function joinLobby() {
+  if (localStorage.getItem('userName') === document.querySelector('#host')?.value) {
+    return;
+  }
+  joinOrHost(`/api/auth/join`);
+}
 
-    if (user === null) {
-      throw "User not found.";
-    }
+async function hostLobby() {
+  if (localStorage.getItem('userName') !== document.querySelector('#host')?.value) {
+    return;
+  }
+  joinOrHost(`/api/auth/host`);
+}
 
-    if (user.password !== arguments[1]) {
-      throw "Incorrect password.";
-    }
+async function joinOrHost(endpoint) {
+  const host = document.querySelector('#host')?.value;
+  if (host === "") {
+    return;
+  }
 
-    logreglast();
-  } catch (err) {
-    console.log(err);
-  } finally {
-    return false;
+  const response0 = await fetch(`/api/lobbycount/${host}`);
+  const body0 = await response0.json();
+  if (body0.lobbyCount >= 2) {
+    return;
+  }
+
+  const response = await fetch(endpoint, {
+    method: 'post',
+    body: JSON.stringify({ username: localStorage.getItem('userName'), host: host }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  });
+  const body = await response.json();
+
+  if (response?.status === 200) {
+    window.location.href = 'game.html';
   }
 }
 
-function register() {
-  try {
-    arguments = [];
-
-    logregfirst(arguments, "reg");
-
-    let user = null;
-    const userCont = localStorage.getItem(arguments[0]);
-    if (userCont) {
-      user = JSON.parse(userCont);
-    }
-
-    if (user !== null) {
-      throw "User already exists.";
-    }
-
-    user = new User(arguments[0], arguments[1]);
-    localStorage.setItem(arguments[0], JSON.stringify(user));
-
-    logreglast();
-  } catch (err) {
-    console.log(err);
-  } finally {
-    return false;
-  }
+function logout() {
+  fetch(`/api/auth/logout/${localStorage.getItem('userName')}`, {
+    method: 'delete',
+  }).then(() => (window.location.href = '/'));
 }
 
-function logregfirst(arguments, prefix) {
-  arguments.push(document.getElementById(prefix + "username").value);
-  arguments.push(document.getElementById(prefix + "password").value);
+function displayPicture(data) {
+  const containerEl = document.querySelector("#lobby");
 
-  for (let i = 0; i < arguments.length; i++) {
-    if (arguments[i] === "") {
-      throw "Entry needed.";
-    }
-  }
+  const width = containerEl.offsetWidth;
+  const height = containerEl.offsetHeight;
+
+  const imgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${width}x${height}&data=${data.url}`;
+  const imgEl = document.createElement("img");
+  imgEl.setAttribute("src", imgUrl);
+  containerEl.appendChild(imgEl);
+}
+  
+function callService(url, displayCallback) {
+  fetch(url)
+    .then((response) => response)
+    .then((data) => {
+      displayCallback(data);
+    });
 }
 
-function logreglast() {
-  const el = document.getElementById("logregform");
-  const base = el.parentElement;
+const random = Math.floor(Math.random() * 1000);
+callService(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${localStorage.getItem('userName')}`, displayPicture);
+```
 
-  base.removeChild(el);
-  base.setHTML(`
-    <!-- <section>
-      <h2 class="text" style="--tn: 1s; --sn: 5; --en: 3; --wn: 3.4em;">Stats \n 0 : 0</h2>
-    </section> -->
-    <section>
-      <canvas id="game" width="800" height="800">
-    </section>
-    <!-- <section>
-      <h2 class="text" style="--tn: 1s; --sn: 4; --en: 3; --wn: 2.7em;">Chat</h2>
-    </section> -->`);
+### game.js:
 
-  initialize();
-}
-
-//////////////////////////////////////////////////////////////////////////////////
-
-function initialize() {
-  canvas = document.getElementById("game");
-  //scoreboard = document.getElementById("text");
-  context = canvas.getContext("2d");
-  //scores = scoreboard.getContext("2d");
-  setInterval(loop, 100);
-  lastKey = null;
-  //playerScores = new score(0, 0);
-}
-
-/*function score(player, enemy) {
-  this.player = player;
-  this.enemy = enemy;
-  scores.font = canvas.height / 18 + "px sans-serif";
-  scores.fillStyle = "F4E";
-  scores.fillText("Player" + player + "\n" + "Enemy" + enemy, 40, 80);
-}*/
-
-enemy = {
-  type: "enemy",
-  width: 8,
-  height: 8,
-  color: "#F00",
-  history: [],
-  current_direction: null
+```js
+const keys = {
+  'Enter': 'start_game',
+  'ShiftRight': 'pause_game',
+  'KeyW': 'up',
+  'KeyS': 'down',
+  'KeyA': 'left',
+  'KeyD': 'right',
 };
 
-player = {
-  type: "player",
-  width: 8,
-  height: 8,
-  color: "#00F",
-  history: [],
-  current_direction: null
-};
+class Cycle {
+  blue;
+  red;
 
-keys = {
-  up: [38],
-  down: [40],
-  left: [37],
-  right: [39],
-
-  start_game: [13],
-
-  e_up: [87],
-  e_down: [83],
-  e_left: [65],
-  e_right: [68]
-};
-
-game = {
-  over: false,
-
-  start: function () {
-    cycle.resetPlayer();
-    cycle.resetEnemy();
-    game.over = false;
-    game.resetCanvas();
-  },
-
-  stop: function (cycle) {
-    game.over = true;
-    context.fillStyle = "#FFF";
-    context.font = canvas.height / 18 + "px sans-serif";
-    context.textAlign = "center";
-    winner = cycle.type == "enemy" ? "PLAYER" : "ENEMY";
-    /*if (winner === "PLAYER") {
-      playerScores.player += 1;
-    } else {
-      playerScores.enemy += 1;
-    }*/
-    context.fillText(
-      "GAME OVER - " + winner + " WINS",
-      canvas.width / 2,
-      canvas.height / 2
-    );
-    context.fillText(
-      "press enter to contine",
-      canvas.width / 2,
-      canvas.height / 2 + cycle.height * 3
-    );
-    cycle.color = "#FFF";
-  },
-
-  pause: function () {
-    game.over = true;
-    context.fillStyle = "#FFF";
-    context.font = canvas.height / 18 + "px sans-serif";
-    context.textAlign = "center";
-    context.fillText(
-      "Game paused, press enter to restart",
-      canvas.width / 2,
-      canvas.height / 2
-    );
-  },
-
-  newLevel: function () {
-    cycle.resetPlayer();
-    cycle.resetEnemy();
-    this.resetCanvas();
-  },
-
-  resetCanvas: function () {
-    context.clearRect(0, 0, canvas.width, canvas.height);
+  constructor () {
+    this.blue = {
+      type: "blue",
+      width: 8,
+      height: 8,
+      color: "#00F",
+      history: [],
+      current_direction: null
+    };
+    
+    this.red = {
+      type: "red",
+      width: 8,
+      height: 8,
+      color: "#F00",
+      history: [],
+      current_direction: null
+    };
   }
-};
+  
+  resetBlue () {
+    this.blue.x = game.canvas.width - (game.canvas.width / (this.blue.width / 2) + 4);
+    this.blue.y = game.canvas.height / 2 + this.blue.height / 2;
+    this.blue.color = "#00E0FF";
+    this.blue.history = [];
+    this.blue.current_direction = "left";
+  }
 
-cycle = {
-  resetPlayer: function () {
-    player.x = canvas.width - (canvas.width / (player.width / 2) + 4);
-    player.y = canvas.height / 2 + player.height / 2;
-    player.color = "#1EF";
-    player.history = [];
-    player.current_direction = "left";
-  },
+  resetRed () {
+    this.red.x = game.canvas.width / (this.red.width / 2) - 4;
+    this.red.y = game.canvas.height / 2 + this.red.height / 2;
+    this.red.color = "#FF8000";
+    this.red.history = [];
+    this.red.current_direction = "right";
+  }
 
-  resetEnemy: function () {
-    enemy.x = canvas.width / (enemy.width / 2) - 4;
-    enemy.y = canvas.height / 2 + enemy.height / 2;
-    enemy.color = "#EB0";
-    enemy.history = [];
-    enemy.current_direction = "e_right";
-  },
-
-  move: function (cycle, opponent, u, d, l, r) {
+  move (cycle, opponent, u, d, l, r) {
     switch (cycle.current_direction) {
       case u:
         cycle.y -= cycle.height;
@@ -12586,416 +12933,612 @@ cycle = {
         break;
     }
     if (this.checkCollision(cycle, opponent)) {
-      game.stop(cycle);
+      game.end(cycle, opponent);
     }
-    coords = this.generateCoords(cycle);
+    const coords = this.generateCoords(cycle);
     cycle.history.push(coords);
-  },
+  }
 
-  checkCollision: function (cycle, opponent) {
+  checkCollision (cycle, opponent) {
     if (
       cycle.x < cycle.width / 2 ||
-      cycle.x > canvas.width - cycle.width / 2 ||
+      cycle.x > game.canvas.width - cycle.width / 2 ||
       cycle.y < cycle.height / 2 ||
-      cycle.y > canvas.height - cycle.height / 2 ||
+      cycle.y > game.canvas.height - cycle.height / 2 ||
       cycle.history.indexOf(this.generateCoords(cycle)) >= 0 ||
       opponent.history.indexOf(this.generateCoords(cycle)) >= 0
     ) {
       return true;
     }
-  },
+  }
 
-  isCollision: function (x, y) {
+  isCollision (x, y) {
     coords = x + "," + y;
     if (
-      x < enemy.width / 2 ||
-      x > canvas.width - enemy.width / 2 ||
-      y < enemy.height / 2 ||
-      y > canvas.height - enemy.height / 2 ||
-      enemy.history.indexOf(coords) >= 0 ||
-      player.history.indexOf(coords) >= 0
+      x < this.red.width / 2 ||
+      x > game.canvas.width - this.red.width / 2 ||
+      y < this.red.height / 2 ||
+      y > game.canvas.height - this.red.height / 2 ||
+      this.red.history.indexOf(coords) >= 0 ||
+      this.blue.history.indexOf(coords) >= 0
     ) {
       return true;
     }
-  },
+  }
 
-  generateCoords: function (cycle) {
+  generateCoords (cycle) {
     return cycle.x + "," + cycle.y;
-  },
-
-  draw: function (cycle) {
-    context.fillStyle = cycle.color;
-    context.beginPath();
-    context.moveTo(cycle.x - cycle.width / 2, cycle.y - cycle.height / 2);
-    context.lineTo(cycle.x + cycle.width / 2, cycle.y - cycle.height / 2);
-    context.lineTo(cycle.x + cycle.width / 2, cycle.y + cycle.height / 2);
-    context.lineTo(cycle.x - cycle.width / 2, cycle.y + cycle.height / 2);
-    context.closePath();
-    context.fill();
   }
-};
 
-function inverseDirection(cycle, u, d, l, r) {
-  switch (cycle.current_direction) {
-    case u:
-      return d;
-      break;
-    case d:
-      return u;
-      break;
-    case r:
-      return l;
-      break;
-    case l:
-      return r;
-      break;
+  draw (cycle) {
+    game.context.fillStyle = cycle.color;
+    game.context.beginPath();
+    game.context.moveTo(cycle.x - cycle.width / 2, cycle.y - cycle.height / 2);
+    game.context.lineTo(cycle.x + cycle.width / 2, cycle.y - cycle.height / 2);
+    game.context.lineTo(cycle.x + cycle.width / 2, cycle.y + cycle.height / 2);
+    game.context.lineTo(cycle.x - cycle.width / 2, cycle.y + cycle.height / 2);
+    game.context.closePath();
+    game.context.fill();
   }
 }
 
-Object.prototype.getKey = function (value) {
-  for (var key in this) {
-    if (this[key] instanceof Array && this[key].indexOf(value) >= 0) {
-      return key;
+class Game {
+  stopped;
+  over;
+  user;
+  cycle;
+  player;
+  canvas;
+  context;
+  lastKey;
+
+  constructor () {
+    this.initialize();
+  }
+
+  initialize = async () => {
+    const user = await this.getUser(localStorage.getItem('userName'));
+    if (user.game === '') {
+      window.location.href = 'menu.html';
+    }
+    this.user = user;
+  
+    document.querySelector('#userName').textContent = this.user.username;
+    document.querySelector('#wins').textContent = "Wins: " + this.user.wins;
+    document.querySelector('#losses').textContent = "Losses: " + this.user.losses;
+
+    this.canvas = document.getElementById("arena");
+    this.context = this.canvas.getContext("2d");
+
+    this.stopped = false;
+    this.over = true;
+
+    this.cycle = new Cycle();
+    
+    if (this.user.username === this.user.game) {
+      this.player = 'blue';
+    } else {
+      this.player = 'red';
+    }
+  
+    this.configureWebSocket();
+
+    this.lastKey = null;
+    addEventListener(
+      "keydown",
+      function (e) {
+        game.lastKey = keys[e.code];
+        if (['start_game'].indexOf(game.lastKey) >= 0 && game.stopped) {
+          game.broadcastEvent(game.user.username, game.user.game, 'start_game', null);
+          game.start();
+        }
+        if (['pause_game'].indexOf(game.lastKey) >= 0) {
+          game.broadcastEvent(game.user.username, game.user.game, 'pause_game', null);
+          game.pause();
+        }
+        if (game.player === 'blue' && ['up', 'down', 'left', 'right'].indexOf(game.lastKey) >= 0 && game.lastKey != game.inverseDirection(game.cycle.blue, 'up', 'down', 'left', 'right')) {
+          game.cycle.blue.current_direction = game.lastKey;
+        }
+        if (game.player === 'red' && ['up', 'down', 'left', 'right'].indexOf(game.lastKey) >= 0 && game.lastKey != game.inverseDirection(game.cycle.red, 'up', 'down', 'left', 'right')) {
+          game.cycle.red.current_direction = game.lastKey;
+        }
+      },
+      false
+    );
+
+    setInterval(this.loop, 100);
+
+    this.pause();
+  }
+    
+  async getUser(username) {
+    // See if we have a user with the given username.
+    const response = await fetch(`/api/user/${username}`);
+    if (response.status === 200) {
+      return response.json();
+    }
+    return null;
+  }
+  
+  inverseDirection(cycle, u, d, l, r) {
+    switch (cycle.current_direction) {
+      case u:
+        return d;
+      case d:
+        return u;
+      case r:
+        return l;
+      case l:
+        return r;
     }
   }
-  return null;
-};
 
-addEventListener(
-  "keydown",
-  function (e) {
-    lastKey = keys.getKey(e.keyCode);
-    if (
-      ["up", "down", "left", "right"].indexOf(lastKey) >= 0 &&
-      lastKey != inverseDirection(player, "up", "down", "left", "right")
-    ) {
-      player.current_direction = lastKey;
+  loop() {
+    if (game.stopped === false) {
+      if (game.player === 'blue') {
+        game.broadcastEvent(game.user.username, game.user.game, 'blue_move', game.cycle.blue.current_direction);
+        game.cycle.move(game.cycle.blue, game.cycle.red, 'up', 'down', 'left', 'right');
+        game.cycle.draw(game.cycle.blue);
+      } else if (game.player === 'red') {
+        game.broadcastEvent(game.user.username, game.user.game, 'red_move', game.cycle.red.current_direction);
+        game.cycle.move(game.cycle.red, game.cycle.blue, 'up', 'down', 'left', 'right');
+        game.cycle.draw(game.cycle.red);
+      }
     }
-    if (
-      ["e_up", "e_down", "e_left", "e_right"].indexOf(lastKey) >= 0 &&
-      lastKey != inverseDirection(enemy, "e_up", "e_down", "e_left", "e_right")
-    ) {
-      enemy.current_direction = lastKey;
-    }
-    if (["start_game"].indexOf(lastKey) >= 0 && game.over) {
-      game.start();
-    }
-    if (e.key === "Escape") {
-      game.pause();
-    }
-  },
-  false
-);
+  }
 
-function loop() {
-  if (game.over === false) {
-    cycle.move(player, enemy, "up", "down", "left", "right");
-    cycle.draw(player);
-    cycle.move(enemy, player, "e_up", "e_down", "e_left", "e_right");
-    cycle.draw(enemy);
+  start () {
+    game.cycle.resetBlue();
+    game.cycle.resetRed();
+    game.stopped = false;
+    game.over = false;
+    game.resetCanvas();
+  }
+
+  pause () {
+    if (game.stopped === true && game.over === false) {
+      game.stopped = false;
+    } else {
+      game.stopped = true;
+    }
+  }
+
+  end (cycle, opponent) {
+    game.stopped = true;
+    game.over = true;
+    game.context.fillStyle = "#FFF";
+    game.context.font = game.canvas.height / 18 + "px sans-serif";
+    game.context.textAlign = "center";
+    game.context.fillText(
+      "GAME OVER - " + opponent.type.toUpperCase() + " WINS",
+      game.canvas.width / 2,
+      game.canvas.height / 2
+    );
+    cycle.color = "#FFF";
+
+    if (game.player === opponent.type) {
+      game.user.wins += 1;
+    } else {
+      game.user.losses += 1;
+    }
+    document.querySelector('#wins').textContent = "Wins: " + this.user.wins;
+    document.querySelector('#losses').textContent = "Losses: " + this.user.losses;
+    //OPTIONAL: Update scores in database. Requires head-on collision sync.
+  }
+
+  newLevel () {
+    game.cycle.resetBlue();
+    game.cycle.resetRed();
+    game.resetCanvas();
+  }
+
+  resetCanvas () {
+    game.context.clearRect(0, 0, game.canvas.width, game.canvas.height);
+  }
+
+  // Functionality for peer communication using WebSocket
+
+  configureWebSocket() {
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    this.socket = new WebSocket(`${protocol}://${window.location.host}/ws/${this.user.game}`);
+    this.socket.onopen = (event) => {
+      //displayMsg('system', 'game', 'connected');
+    };
+    this.socket.onclose = (event) => {
+      //displayMsg('system', 'game', 'disconnected');
+    };
+    this.socket.onmessage = async (event) => {
+      const msg = JSON.parse(await event.data.text());
+      if (msg.type === 'start_game') {
+        this.start();
+      } else if (msg.type === 'pause_game') {
+        this.pause();
+      } else if (msg.type === 'red_move') {
+        this.cycle.red.current_direction = msg.value;
+        game.cycle.move(game.cycle.red, game.cycle.blue, 'up', 'down', 'left', 'right');
+        game.cycle.draw(game.cycle.red);
+      } else if (msg.type === 'blue_move') {
+        this.cycle.blue.current_direction = msg.value;
+        game.cycle.move(game.cycle.blue, game.cycle.red, 'up', 'down', 'left', 'right');
+        game.cycle.draw(game.cycle.blue);
+      } else if (msg.type === 'post_chat') {
+        document.getElementById("chat").innerHTML += "<h3>" + msg.from + ": " + msg.value + "</h3>";
+      } else if (msg.type === 'exit') {
+        exit();
+      }
+    };
+  }
+
+  broadcastEvent(from, to, type, value) {
+    const event = {
+      from: from,
+      to: to,
+      type: type,
+      value: value,
+    };
+    this.socket.send(JSON.stringify(event));
   }
 }
+
+function sendMsg() {
+  const message = document.querySelector('#chatbox')?.value;
+  document.getElementById("chat").innerHTML += "<h3>" + game.user.username + ": " + message + "</h3>";
+  game.broadcastEvent(game.user.username, game.user.game, 'post_chat', message);
+}
+
+function exit() {
+  game.broadcastEvent(game.user.username, game.user.game, 'exit', null);
+  fetch(`/api/auth/exit/${game.user.username}`, {
+    method: 'delete',
+  }).then(() => (window.location.href = 'menu.html'));
+}
+
+window.onbeforeunload = function(){
+  exit();
+}
+
+const game = new Game();
 ```
 
 
 
 ## Simon:
 
-### HTML:
+### public:
 
-#### about:
+### index.html:
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About</title>
-    <link rel="icon" href="favicon.ico" />
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
 
-    <link rel="stylesheet" href="main.css" />
-
-    <!-- Include bootstrap CSS framework -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body class="bg-dark text-light">
-    <header class="container-fluid">
-      <nav class="navbar fixed-top navbar-dark">
-        <a class="navbar-brand" href="#">Simon<sup>&reg;</sup></a>
-        <menu class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="play.html">Play</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="scores.html">Scores</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="about.html">About</a>
-          </li>
-        </menu>
-      </nav>
-    </header>
-
-    <main class="container-fluid bg-secondary text-center">
-      <div>
-        <p>
-          Simon is a repetitive memory game where you follow the demonstrated
-          color sequence until you make a mistake. The longer the sequence you
-          repeat, the greater your score.
-        </p>
-
-        <p>
-          The name Simon is a registered trademark owned by Milton-Bradley. Our
-          use of the name and the game is for non-profit educational use only.
-          No part of this code or program should be used outside of that
-          definition.
-        </p>
-      </div>
-    </main>
-
-    <footer class="bg-dark text-dark text-muted">
-      <div class="container-fluid">
-        <span class="text-reset">C4LV1NPU6</span>
-        <a
-          class="text-reset"
-          href="https://github.com/C4LV1NPU6/byu-cs260/tree/main/simon"
-          >Source</a
-        >
-      </div>
-    </footer>
-  </body>
-</html>
-```
-
-#### index:
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- Tell browsers not to scale the viewport automatically -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Simon</title>
-    <link rel="icon" href="favicon.ico" />
-
-    <script src="login.js"></script>
-    <link rel="stylesheet" href="main.css" />
-
-    <!-- Include bootstrap CSS framework -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-      crossorigin="anonymous"
-    />
   </head>
-  <body class="bg-dark text-light">
-    <header class="container-fluid">
-      <nav class="navbar fixed-top navbar-dark">
-        <a class="navbar-brand" href="#">Simon<sup>&reg;</sup></a>
-        <menu class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active" href="index.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="play.html">Play</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="scores.html">Scores</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about.html">About</a>
-          </li>
-        </menu>
-      </nav>
-    </header>
-
-    <main class="container-fluid bg-secondary text-center">
-      <div>
-        <h1>Welcome</h1>
-        <p>Login to play</p>
-        <div>
-          <input type="text" id="name" placeholder="Your name here" />
-          <button class="btn btn-primary" onclick="login()">Login</button>
-        </div>
-      </div>
-    </main>
-
-    <footer class="bg-dark text-dark text-muted">
-      <div class="container-fluid">
-        <span class="text-reset">C4LV1NPU6</span>
-        <a
-          class="text-reset"
-          href="https://github.com/C4LV1NPU6/byu-cs260/tree/main/simon"
-          >Source</a
-        >
-      </div>
-    </footer>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
   </body>
 </html>
 ```
 
-#### play:
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- Tell browsers not to scale the viewport automatically -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simon</title>
-    <link rel="icon" href="favicon.ico" />
+### manifest.json:
 
-    <link rel="stylesheet" href="main.css" />
-
-    <!-- Include bootstrap CSS framework -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body class="bg-dark text-light">
-    <header class="container-fluid">
-      <nav class="navbar fixed-top navbar-dark">
-        <a class="navbar-brand" href="#">Simon<sup>&reg;</sup></a>
-        <menu class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="play.html">Play</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="scores.html">Scores</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about.html">About</a>
-          </li>
-        </menu>
-      </nav>
-    </header>
-
-    <main class="bg-secondary">
-      <div class="players">
-        Player:
-        <span class="player-name"></span>
-      </div>
-      <div class="game">
-        <div class="button-container">
-          <!-- buttons are discovered in the JavaScript by selecting the game-button class -->
-          <!-- onclick triggers a button push interaction -->
-          <button id="green" class="game-button button-top-left" onclick="game.pressButton(this)"></button>
-          <button id="red" class="game-button button-top-right" onclick="game.pressButton(this)"></button>
-          <button id="yellow" class="game-button button-bottom-left" onclick="game.pressButton(this)"></button>
-          <button id="blue" class="game-button button-bottom-right" onclick="game.pressButton(this)"></button>
-          <div class="controls center">
-            <div class="game-name">Simon<sup>&reg;</sup></div>
-            <div id="score" class="score center">--</div>
-            <button class="btn btn-primary" onclick="game.reset()">Reset</button>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <footer class="bg-dark text-dark text-muted">
-      <div class="container-fluid">
-        <span class="text-reset">C4LV1NPU6</span>
-        <a class="text-reset" href="https://github.com/C4LV1NPU6/byu-cs260/tree/main/simon">Source</a>
-      </div>
-    </footer>
-
-    <!-- Script is located at the bottom because it references HTML elements during initialization -->
-    <script src="play.js"></script>
-  </body>
-</html>
+```json
+{
+  "short_name": "Simon",
+  "name": "Simon",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
 ```
 
-#### scores:
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Scores</title>
-    <link rel="icon" href="favicon.ico" />
+### service:
 
-    <link rel="stylesheet" href="main.css" />
+### database.js:
 
-    <!-- Include bootstrap CSS framework -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body class="bg-dark text-light">
-    <header class="container-fluid">
-      <nav class="navbar fixed-top navbar-dark">
-        <a class="navbar-brand" href="#">Simon<sup>&reg;</sup></a>
-        <menu class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="play.html">Play</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="scores.html">Scores</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about.html">About</a>
-          </li>
-        </menu>
-      </nav>
-    </header>
+```js
+const { MongoClient } = require('mongodb');
+const bcrypt = require('bcrypt');
+const uuid = require('uuid');
 
-    <main class="container-fluid bg-secondary text-center">
-      <table class="table table-warning table-striped-columns">
-        <thead class="table-dark">
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Score</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody id="scores"></tbody>
-      </table>
-    </main>
+const userName = process.env.MONGOUSER;
+const password = process.env.MONGOPASSWORD;
+const hostname = process.env.MONGOHOSTNAME;
 
-    <footer class="bg-dark text-dark text-muted">
-      <div class="container-fluid">
-        <span class="text-reset">C4LV1NPU6</span>
-        <a
-          class="text-reset"
-          href="https://github.com/C4LV1NPU6/byu-cs260/tree/main/simon"
-          >Source</a
-        >
-      </div>
-    </footer>
+if (!userName) {
+  throw Error('Database not configured. Set environment variables');
+}
 
-    <script src="scores.js"></script>
-  </body>
-</html>
+const url = `mongodb+srv://${userName}:${password}@${hostname}`;
+
+const client = new MongoClient(url);
+const userCollection = client.db('simon').collection('user');
+const scoreCollection = client.db('simon').collection('score');
+
+function getUser(email) {
+  return userCollection.findOne({ email: email });
+}
+
+function getUserByToken(token) {
+  return userCollection.findOne({ token: token });
+}
+
+async function createUser(email, password) {
+  // Hash the password before we insert it into the database
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  const user = {
+    email: email,
+    password: passwordHash,
+    token: uuid.v4(),
+  };
+  await userCollection.insertOne(user);
+
+  return user;
+}
+
+function addScore(score) {
+  scoreCollection.insertOne(score);
+}
+
+function getHighScores() {
+  const query = {};
+  const options = {
+    sort: { score: -1 },
+    limit: 10,
+  };
+  const cursor = scoreCollection.find(query, options);
+  return cursor.toArray();
+}
+
+module.exports = {
+  getUser,
+  getUserByToken,
+  createUser,
+  addScore,
+  getHighScores,
+};
 ```
 
-### CSS:
+### index.js:
 
-#### main:
+```js
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
+const express = require('express');
+const app = express();
+const DB = require('./database.js');
+const { peerProxy } = require('./peerProxy.js');
+
+const authCookieName = 'token';
+
+// The service port may be set on the command line
+const port = process.argv.length > 2 ? process.argv[2] : 3000;
+
+// JSON body parsing using built-in middleware
+app.use(express.json());
+
+// Use the cookie parser middleware for tracking authentication tokens
+app.use(cookieParser());
+
+// Serve up the applications static content
+app.use(express.static('public'));
+
+// Router for service endpoints
+const apiRouter = express.Router();
+app.use(`/api`, apiRouter);
+
+// CreateAuth token for a new user
+apiRouter.post('/auth/create', async (req, res) => {
+  if (await DB.getUser(req.body.email)) {
+    res.status(409).send({ msg: 'Existing user' });
+  } else {
+    const user = await DB.createUser(req.body.email, req.body.password);
+
+    // Set the cookie
+    setAuthCookie(res, user.token);
+
+    res.send({
+      id: user._id,
+    });
+  }
+});
+
+// GetAuth token for the provided credentials
+apiRouter.post('/auth/login', async (req, res) => {
+  const user = await DB.getUser(req.body.email);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      setAuthCookie(res, user.token);
+      res.send({ id: user._id });
+      return;
+    }
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+});
+
+// DeleteAuth token if stored in cookie
+apiRouter.delete('/auth/logout', (_req, res) => {
+  res.clearCookie(authCookieName);
+  res.status(204).end();
+});
+
+// GetUser returns information about a user
+apiRouter.get('/user/:email', async (req, res) => {
+  const user = await DB.getUser(req.params.email);
+  if (user) {
+    const token = req?.cookies.token;
+    res.send({ email: user.email, authenticated: token === user.token });
+    return;
+  }
+  res.status(404).send({ msg: 'Unknown' });
+});
+
+// secureApiRouter verifies credentials for endpoints
+const secureApiRouter = express.Router();
+apiRouter.use(secureApiRouter);
+
+secureApiRouter.use(async (req, res, next) => {
+  const authToken = req.cookies[authCookieName];
+  const user = await DB.getUserByToken(authToken);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+});
+
+// GetScores
+secureApiRouter.get('/scores', async (req, res) => {
+  const scores = await DB.getHighScores();
+  res.send(scores);
+});
+
+// SubmitScore
+secureApiRouter.post('/score', async (req, res) => {
+  await DB.addScore(req.body);
+  const scores = await DB.getHighScores();
+  res.send(scores);
+});
+
+// Default error handler
+app.use(function (err, req, res, next) {
+  res.status(500).send({ type: err.name, message: err.message });
+});
+
+// Return the application's default page if the path is unknown
+app.use((_req, res) => {
+  res.sendFile('index.html', { root: 'public' });
+});
+
+// setAuthCookie in the HTTP response
+function setAuthCookie(res, authToken) {
+  res.cookie(authCookieName, authToken, {
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
+
+const httpService = app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
+
+peerProxy(httpService);
+```
+
+### peerProxy.js:
+
+```js
+const { WebSocketServer } = require('ws');
+const uuid = require('uuid');
+
+function peerProxy(httpServer) {
+  // Create a websocket object
+  const wss = new WebSocketServer({ noServer: true });
+
+  // Handle the protocol upgrade from HTTP to WebSocket
+  httpServer.on('upgrade', (request, socket, head) => {
+    wss.handleUpgrade(request, socket, head, function done(ws) {
+      wss.emit('connection', ws, request);
+    });
+  });
+
+  // Keep track of all the connections so we can forward messages
+  let connections = [];
+
+  wss.on('connection', (ws) => {
+    const connection = { id: uuid.v4(), alive: true, ws: ws };
+    connections.push(connection);
+
+    // Forward messages to everyone except the sender
+    ws.on('message', function message(data) {
+      connections.forEach((c) => {
+        if (c.id !== connection.id) {
+          c.ws.send(data);
+        }
+      });
+    });
+
+    // Remove the closed connection so we don't try to forward anymore
+    ws.on('close', () => {
+      connections.findIndex((o, i) => {
+        if (o.id === connection.id) {
+          connections.splice(i, 1);
+          return true;
+        }
+        return false;
+      });
+    });
+
+    // Respond to pong messages by marking the connection alive
+    ws.on('pong', () => {
+      connection.alive = true;
+    });
+  });
+
+  // Keep active connections alive
+  setInterval(() => {
+    connections.forEach((c) => {
+      // Kill any connection that didn't respond to the ping last time
+      if (!c.alive) {
+        c.ws.terminate();
+      } else {
+        c.alive = false;
+        c.ws.ping();
+      }
+    });
+  }, 10000);
+}
+
+module.exports = { peerProxy };
+```
+
+### package.json:
+
+```json
+{
+  "name": "simon-service",
+  "version": "1.0.0",
+  "description": "This demonstrates a service for a web application.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "mongodb": "^4.12.0",
+    "uuid": "^9.0.0",
+    "ws": "^8.12.0"
+  }
+}
+```
+
+### src:
+
+### app.css:
+
 ```css
-body {
+.body {
   display: flex;
   flex-direction: column;
   min-width: 375px;
@@ -13038,18 +13581,444 @@ footer a {
   float: right;
 }
 
-#count {
-  color: rgb(246, 239, 158);
+@media (max-height: 600px) {
+  header {
+    display: none;
+  }
+  footer {
+    display: none;
+  }
+  main {
+    flex: 1 100vh;
+  }
+}
+```
+
+### app.jsx:
+
+```jsx
+import React from 'react';
+
+import { NavLink, Route, Routes } from 'react-router-dom';
+import { Login } from './login/login';
+import { Play } from './play/play';
+import { Scores } from './scores/scores';
+import { About } from './about/about';
+import { AuthState } from './login/authState';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './app.css';
+
+function App() {
+  const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
+
+  // Asynchronously determine if the user is authenticated by calling the service
+  const [authState, setAuthState] = React.useState(AuthState.Unknown);
+  React.useEffect(() => {
+    if (userName) {
+      fetch(`/api/user/${userName}`)
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
+        })
+        .then((user) => {
+          const state = user?.authenticated ? AuthState.Authenticated : AuthState.Unauthenticated;
+          setAuthState(state);
+        });
+    } else {
+      setAuthState(AuthState.Unauthenticated);
+    }
+  }, [userName]);
+
+  return (
+    <div className='body bg-dark text-light'>
+      <header className='container-fluid'>
+        <nav className='navbar fixed-top navbar-dark'>
+          <div className='navbar-brand'>
+            Simon<sup>&reg;</sup>
+          </div>
+          <menu className='navbar-nav'>
+            <li className='nav-item'>
+              <NavLink className='nav-link' to=''>
+                Login
+              </NavLink>
+            </li>
+            {authState === AuthState.Authenticated && (
+              <li className='nav-item'>
+                <NavLink className='nav-link' to='play'>
+                  Play
+                </NavLink>
+              </li>
+            )}
+            {authState === AuthState.Authenticated && (
+              <li className='nav-item'>
+                <NavLink className='nav-link' to='scores'>
+                  Scores
+                </NavLink>
+              </li>
+            )}
+            <li className='nav-item'>
+              <NavLink className='nav-link' to='about'>
+                About
+              </NavLink>
+            </li>
+          </menu>
+        </nav>
+      </header>
+
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <Login
+              userName={userName}
+              authState={authState}
+              onAuthChange={(userName, authState) => {
+                setAuthState(authState);
+                setUserName(userName);
+              }}
+            />
+          }
+          exact
+        />
+        <Route path='/play' element={<Play userName={userName} />} />
+        <Route path='/scores' element={<Scores />} />
+        <Route path='/about' element={<About />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+
+      <footer className='bg-dark text-dark text-muted'>
+        <div className='container-fluid'>
+          <span className='text-reset'>C4LV1NPU6</span>
+          <a className='text-reset' href='https://github.com/C4LV1NPU6/byu-cs260/tree/main/simon'>
+            Source
+          </a>
+        </div>
+      </footer>
+    </div>
+  );
 }
 
-.players {
-  flex: 1;
+function NotFound() {
+  return <main className='container-fluid bg-secondary text-center'>404: Return to sender. Address unknown.</main>;
+}
+
+export default App;
+```
+
+### index.jsx:
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './app';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
+```
+
+#### about:
+
+#### about.css:
+
+```css
+.picture-box {
+  height: calc(100px + 1em);
+  margin-bottom: 1em;
+  padding: 0.5em;
+  background: rgb(86, 89, 93);
+  border-radius: 5px;
+}
+
+.quote-box {
+  margin-top: 1em;
+  padding: 0.5em;
+  border-radius: 5px;
+}
+
+.quote {
+  font-style: italic;
+}
+
+.author {
+  font-weight: bold;
+  text-align: right;
+}
+
+.author::before {
+  content: " - ";
+}
+
+#picture img {
   width: 100%;
+  height: 100%;
+}
+```
+
+#### about.jsx:
+
+```jsx
+import React from 'react';
+import './about.css';
+
+export function About(props) {
+  const [imageUrl, setImageUrl] = React.useState('');
+  const [quote, setQuote] = React.useState('Loading...');
+  const [quoteAuthor, setQuoteAuthor] = React.useState('unknown');
+
+  // We only want this to render the first time the component is created and so we provide an empty dependency list.
+  React.useEffect(() => {
+    const random = Math.floor(Math.random() * 1000);
+    fetch(`https://picsum.photos/v2/list?page=${random}&limit=1`)
+      .then((response) => response.json())
+      .then((data) => {
+        const containerEl = document.querySelector('#picture');
+
+        const width = containerEl.offsetWidth;
+        const height = containerEl.offsetHeight;
+        const apiUrl = `https://picsum.photos/id/${data[0].id}/${width}/${height}?grayscale`;
+        setImageUrl(apiUrl);
+      })
+      .catch();
+
+    fetch('https://api.quotable.io/random')
+      .then((response) => response.json())
+      .then((data) => {
+        setQuote(data.content);
+        setQuoteAuthor(data.author);
+      })
+      .catch();
+  }, []);
+
+  let imgEl = '';
+
+  if (imageUrl) {
+    imgEl = <img src={imageUrl} alt='stock background' />;
+  }
+
+  return (
+    <main className='container-fluid bg-secondary text-center'>
+      <div>
+        <div id='picture' className='picture-box'>
+          {imgEl}
+        </div>
+
+        <p>
+          Simon is a repetitive memory game where you follow the demonstrated color sequence until you make a mistake.
+          The longer the sequence you repeat, the greater your score.
+        </p>
+
+        <p>
+          The name Simon is a registered trademark of Milton-Bradley. Our use of the name and the game is for non-profit
+          educational use only. No part of this code or application may be used outside of that definition.
+        </p>
+
+        <div className='quote-box bg-light text-dark'>
+          <p className='quote'>{quote}</p>
+          <p className='author'>{quoteAuthor}</p>
+        </div>
+      </div>
+    </main>
+  );
+}
+```
+
+#### login:
+
+#### authenticated.css:
+
+```css
+.playerName {
+  color: rgb(118, 190, 210);
+  font-size: 1.5em;
   padding: 0.5em;
 }
+```
 
-.player-name {
-  color: rgb(118, 190, 210);
+#### authState.js:
+
+```js
+export class AuthState {
+  static Unknown = new AuthState('unknown');
+  static Authenticated = new AuthState('authenticated');
+  static Unauthenticated = new AuthState('unauthenticated');
+
+  constructor(name) {
+    this.name = name;
+  }
+}
+```
+
+#### login.jsx:
+
+```jsx
+import React from 'react';
+
+import { Unauthenticated } from './Unauthenticated';
+import { Authenticated } from './authenticated';
+import { AuthState } from './authState';
+
+export function Login({ userName, authState, onAuthChange }) {
+  return (
+    <main className='container-fluid bg-secondary text-center'>
+      <div>
+        {authState !== AuthState.Unknown && <h1>Welcome to Simon</h1>}
+        {authState === AuthState.Authenticated && (
+          <Authenticated userName={userName} onLogout={() => onAuthChange(userName, AuthState.Unauthenticated)} />
+        )}
+        {authState === AuthState.Unauthenticated && (
+          <Unauthenticated
+            userName={userName}
+            onLogin={(loginUserName) => {
+              onAuthChange(loginUserName, AuthState.Authenticated);
+            }}
+          />
+        )}
+      </div>
+    </main>
+  );
+}
+```
+
+#### authenticated.jsx:
+
+```jsx
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import Button from 'react-bootstrap/Button';
+
+import './authenticated.css';
+
+export function Authenticated(props) {
+  const navigate = useNavigate();
+
+  function logout() {
+    fetch(`/api/auth/logout`, {
+      method: 'delete',
+    }).then(() => props.onLogout());
+  }
+
+  return (
+    <div>
+      <div className='playerName'>{props.userName}</div>
+      <Button variant='primary' onClick={() => navigate('/play')}>
+        Play
+      </Button>
+      <Button variant='secondary' onClick={() => logout()}>
+        Logout
+      </Button>
+    </div>
+  );
+}
+```
+
+#### Unauthenticated.jsx:
+
+```jsx
+import { useState } from 'react';
+
+import Button from 'react-bootstrap/Button';
+import { MessageDialog } from './messageDialog';
+
+export function Unauthenticated(props) {
+  const [userName, setUserName] = useState(props.userName);
+  const [password, setPassword] = useState('');
+  const [displayError, setDisplayError] = useState(null);
+
+  async function loginUser() {
+    loginOrCreate(`/api/auth/login`);
+  }
+
+  async function createUser() {
+    loginOrCreate(`/api/auth/create`);
+  }
+
+  async function loginOrCreate(endpoint) {
+    const response = await fetch(endpoint, {
+      method: 'post',
+      body: JSON.stringify({ email: userName, password: password }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+    if (response?.status === 200) {
+      localStorage.setItem('userName', userName);
+      props.onLogin(userName);
+    } else {
+      const body = await response.json();
+      setDisplayError(`⚠ Error: ${body.msg}`);
+    }
+  }
+
+  return (
+    <>
+      <div>
+        <div className='input-group mb-3'>
+          <span className='input-group-text'>@</span>
+          <input
+            className='form-control'
+            type='text'
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            placeholder='your@email.com'
+          />
+        </div>
+        <div className='input-group mb-3'>
+          <span className='input-group-text'>🔒</span>
+          <input
+            className='form-control'
+            type='password'
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder='password'
+          />
+        </div>
+        <Button variant='primary' onClick={() => loginUser()}>
+          Login
+        </Button>
+        <Button variant='secondary' onClick={() => createUser()}>
+          Create
+        </Button>
+      </div>
+
+      <MessageDialog message={displayError} onHide={() => setDisplayError(null)} />
+    </>
+  );
+}
+```
+
+#### messageDialog.jsx:
+
+```jsx
+import React from 'react';
+
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
+export function MessageDialog(props) {
+  return (
+    <Modal {...props} show={props.message} centered>
+      <Modal.Body>{props.message}</Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+```
+
+#### play:
+
+#### simonGame.css:
+
+```css
+#count {
+  color: rgb(246, 239, 158);
 }
 
 .game {
@@ -13059,8 +14028,8 @@ footer a {
   width: 80vw;
   height: 80vw;
   position: absolute;
-  min-width: 350px;
-  min-height: 350px;
+  min-width: 300px;
+  min-height: 300px;
   max-width: min(80vmin, 1000px);
   max-height: min(80vmin, 1000px);
 }
@@ -13071,6 +14040,10 @@ footer a {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+}
+
+.game-button {
+  filter: brightness(50%);
 }
 
 .button-top-left {
@@ -13091,7 +14064,7 @@ footer a {
   border-radius: 0 0 0 100%;
   margin: 0 0 20px 20px;
   background-color: yellow;
-  border: thick solid rgb(130, 124, 13);
+  border: thick solid rgb(94, 90, 10);
 }
 
 .button-bottom-right {
@@ -13099,6 +14072,10 @@ footer a {
   margin: 0 20px 20px 0;
   background-color: blue;
   border: thick solid rgb(27, 14, 100);
+}
+
+.light-on {
+  filter: brightness(100%);
 }
 
 .controls {
@@ -13116,8 +14093,12 @@ footer a {
 
 .game-name {
   font-size: 2em;
-  font-weight: bold;
+  font-weight: normal;
   margin-bottom: 0.5em;
+}
+
+.game-name sup {
+  font-weight: 100;
 }
 
 .score {
@@ -13140,181 +14121,126 @@ footer a {
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
 }
-
-@media (max-height: 600px) {
-  header {
-    display: none;
-  }
-  footer {
-    display: none;
-  }
-  main {
-    flex: 1 100vh;
-  }
-}
 ```
 
-### JS:
+#### simonGame.jsx:
 
-#### login:
-```js
-function login() {
-  const nameEl = document.querySelector("#name");
-  localStorage.setItem("userName", nameEl.value);
-  window.location.href = "play.html";
-}
-```
+```jsx
+import React from 'react';
 
-#### play:
-```js
-const btnDescriptions = [
-  {file: 'sound1.mp3', hue: 120},
-  {file: 'sound2.mp3', hue: 0},
-  {file: 'sound3.mp3', hue: 60},
-  {file: 'sound4.mp3', hue: 240},
-];
+import { Button } from 'react-bootstrap';
+import { SimonButton } from './simonButton';
+import { delay } from './delay';
+import { GameEvent, GameNotifier } from './gameNotifier';
+import './simonGame.css';
 
-class Button {
-  constructor(description, el) {
-    this.el = el;
-    this.hue = description.hue;
-    this.sound = loadSound(description.file);
-    this.sound.playbackRate = 2.0;
-    this.paint(25);
-  }
+export function SimonGame(props) {
+  const userName = props.userName;
+  const buttons = new Map();
+  const mistakeSound = new Audio(`/error.mp3`);
 
-  paint(level) {
-    const background = `hsl(${this.hue}, 100%, ${level}%)`;
-    this.el.style.backgroundColor = background;
-  }
+  const [allowPlayer, setAllowPlayer] = React.useState(false);
+  const [sequence, setSequence] = React.useState([]);
+  const [playbackPos, setPlaybackPos] = React.useState(0);
 
-  async press(playSound) {
-    this.paint(50);
-    if (playSound) {
-      await new Promise((resolve) => {
-        this.sound.onended = resolve;
-        this.sound.play();
-      });
-    } else {
-      await delay(100);
-    }
-    this.paint(25);
-    await delay(100);
-  }
-}
+  async function onPressed(buttonPosition) {
+    if (allowPlayer) {
+      setAllowPlayer(false);
+      await buttons.get(buttonPosition).ref.current.press();
 
-class Game {
-  buttons;
-  allowPlayer;
-  sequence;
-  playerPlaybackPos;
-  mistakeSound;
-
-  constructor() {
-    this.buttons = new Map();
-    this.allowPlayer = false;
-    this.sequence = [];
-    this.playerPlaybackPos = 0;
-    this.mistakeSound = loadSound('error.mp3');
-
-    document.querySelectorAll('.game-button').forEach((el, i) => {
-      if (i < btnDescriptions.length) {
-        this.buttons.set(el.id, new Button(btnDescriptions[i], el));
-      }
-    });
-
-    const playerNameEl = document.querySelector('.player-name');
-    playerNameEl.textContent = this.getPlayerName();
-  }
-
-  async pressButton(button) {
-    if (this.allowPlayer) {
-      this.allowPlayer = false;
-      await this.buttons.get(button.id).press(true);
-
-      if (this.sequence[this.playerPlaybackPos].el.id === button.id) {
-        this.playerPlaybackPos++;
-        if (this.playerPlaybackPos === this.sequence.length) {
-          this.playerPlaybackPos = 0;
-          this.addButton();
-          this.updateScore(this.sequence.length - 1);
-          await this.playSequence(500);
+      if (sequence[playbackPos].position === buttonPosition) {
+        if (playbackPos + 1 === sequence.length) {
+          setPlaybackPos(0);
+          increaseSequence(sequence);
+        } else {
+          setPlaybackPos(playbackPos + 1);
+          setAllowPlayer(true);
         }
-        this.allowPlayer = true;
       } else {
-        this.saveScore(this.sequence.length - 1);
-        this.mistakeSound.play();
-        await this.buttonDance();
+        saveScore(sequence.length - 1);
+        mistakeSound.play();
+        await buttonDance();
       }
     }
   }
 
-  async reset() {
-    this.allowPlayer = false;
-    this.playerPlaybackPos = 0;
-    this.sequence = [];
-    this.updateScore('--');
-    await this.buttonDance(1);
-    this.addButton();
-    await this.playSequence(500);
-    this.allowPlayer = true;
+  async function reset() {
+    setAllowPlayer(false);
+    setPlaybackPos(0);
+    await buttonDance(1);
+    increaseSequence([]);
+
+    // Let other players know a new game has started
+    GameNotifier.broadcastEvent(userName, GameEvent.Start, {});
   }
 
-  getPlayerName() {
-    return localStorage.getItem('userName') ?? 'Mystery player';
+  function increaseSequence(previousSequence) {
+    const newSequence = [...previousSequence, getRandomButton()];
+    setSequence(newSequence);
   }
 
-  async playSequence(delayMs = 0) {
-    if (delayMs > 0) {
-      await delay(delayMs);
+  // Demonstrates updating state objects based on changes to other state.
+  // All setState calls are asynchronous and so you need to wait until
+  // that state is updated before you can update dependent functionality.
+  React.useEffect(() => {
+    if (sequence.length > 0) {
+      const playSequence = async () => {
+        await delay(500);
+        for (const btn of sequence) {
+          await btn.ref.current.press();
+        }
+        setAllowPlayer(true);
+      };
+      playSequence();
     }
-    for (const btn of this.sequence) {
-      await btn.press(true);
-    }
-  }
+  }, [sequence]);
 
-  addButton() {
-    const btn = this.getRandomButton();
-    this.sequence.push(btn);
-  }
-
-  updateScore(score) {
-    const scoreEl = document.querySelector('#score');
-    scoreEl.textContent = score;
-  }
-
-  async buttonDance(laps = 5) {
+  async function buttonDance(laps = 5) {
     for (let step = 0; step < laps; step++) {
-      for (const btn of this.buttons.values()) {
-        await btn.press(false);
+      for (const btn of buttons.values()) {
+        await btn.ref.current.press(100, false);
       }
     }
   }
 
-  getRandomButton() {
-    let buttons = Array.from(this.buttons.values());
-    return buttons[Math.floor(Math.random() * this.buttons.size)];
+  function getRandomButton() {
+    let b = Array.from(buttons.values());
+    return b[Math.floor(Math.random() * b.length)];
   }
 
-  saveScore(score) {
-    const userName = this.getPlayerName();
+  async function saveScore(score) {
+    const date = new Date().toLocaleDateString();
+    const newScore = { name: userName, score: score, date: date };
+
+    try {
+      const response = await fetch('/api/score', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(newScore),
+      });
+
+      // Let other players know the game has concluded
+      GameNotifier.broadcastEvent(userName, GameEvent.End, newScore);
+
+      // Store what the service gave us as the high scores
+      const scores = await response.json();
+      localStorage.setItem('scores', JSON.stringify(scores));
+    } catch {
+      // If there was an error then just track scores locally
+      updateScoresLocal(newScore);
+    }
+  }
+
+  function updateScoresLocal(newScore) {
     let scores = [];
     const scoresText = localStorage.getItem('scores');
     if (scoresText) {
       scores = JSON.parse(scoresText);
     }
-    scores = this.updateScores(userName, score, scores);
-
-    localStorage.setItem('scores', JSON.stringify(scores));
-  }
-
-  updateScores(userName, score, scores) {
-    const date = new Date().toLocaleDateString();
-    const newScore = {name: userName, score: score, date: date};
 
     let found = false;
     for (const [i, prevScore] of scores.entries()) {
-      if (score > prevScore.score) {
+      if (newScore > prevScore.score) {
         scores.splice(i, 0, newScore);
         found = true;
         break;
@@ -13329,63 +14255,341 @@ class Game {
       scores.length = 10;
     }
 
-    return scores;
+    localStorage.setItem('scores', JSON.stringify(scores));
+  }
+
+  // We use React refs so the game can drive button press events
+  buttons.set('button-top-left', { position: 'button-top-left', ref: React.useRef() });
+  buttons.set('button-top-right', { position: 'button-top-right', ref: React.useRef() });
+  buttons.set('button-bottom-left', { position: 'button-bottom-left', ref: React.useRef() });
+  buttons.set('button-bottom-right', { position: 'button-bottom-right', ref: React.useRef() });
+
+  const buttonArray = Array.from(buttons, ([key, value]) => {
+    return <SimonButton key={key} ref={value.ref} position={key} onPressed={() => onPressed(key)}></SimonButton>;
+  });
+
+  return (
+    <div className='game'>
+      <div className='button-container'>
+        <>{buttonArray}</>
+        <div className='controls center'>
+          <div className='game-name'>
+            Simon<sup>&reg;</sup>
+          </div>
+          <div className='score center'>{sequence.length === 0 ? '--' : sequence.length - 1}</div>
+          <Button variant='primary' onClick={() => reset()}>
+            Reset
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+#### players.css:
+
+```css
+.players {
+  flex: 1;
+  width: 100%;
+  padding: 0.5em;
+}
+
+.player-name {
+  color: rgb(118, 190, 210);
+  margin: 0 0.25em;
+}
+
+#player-messages {
+  padding-top: 0.25em;
+  opacity: 0.7;
+}
+
+.event {
+  color: rgb(69, 69, 69);
+}
+
+.player-event {
+  color: rgb(165, 220, 235);
+  margin: 0 0.25em;
+}
+
+.system-event {
+  color: rgb(221, 148, 40);
+  margin: 0 0.25em;
+}
+```
+
+#### players.jsx:
+
+```jsx
+import React from 'react';
+
+import { GameEvent, GameNotifier } from './gameNotifier';
+import './players.css';
+
+export function Players(props) {
+  const userName = props.userName;
+
+  const [events, setEvent] = React.useState([]);
+
+  React.useEffect(() => {
+    GameNotifier.addHandler(handleGameEvent);
+
+    return () => {
+      GameNotifier.removeHandler(handleGameEvent);
+    };
+  });
+
+  function handleGameEvent(event) {
+    setEvent([...events, event]);
+  }
+
+  function createMessageArray() {
+    const messageArray = [];
+    for (const [i, event] of events.entries()) {
+      let message = 'unknown';
+      if (event.type === GameEvent.End) {
+        message = `scored ${event.value.score}`;
+      } else if (event.type === GameEvent.Start) {
+        message = `started a new game`;
+      } else if (event.type === GameEvent.System) {
+        message = event.value.msg;
+      }
+
+      messageArray.push(
+        <div key={i} className='event'>
+          <span className={'player-event'}>{event.from.split('@')[0]}</span>
+          {message}
+        </div>
+      );
+    }
+    return messageArray;
+  }
+
+  return (
+    <div className='players'>
+      Player
+      <span className='player-name'>{userName}</span>
+      <div id='player-messages'>{createMessageArray()}</div>
+    </div>
+  );
+}
+```
+
+#### play.jsx:
+
+```jsx
+import React from 'react';
+
+import { Players } from './players';
+import { SimonGame } from './simonGame';
+
+export function Play(props) {
+  return (
+    <main className='bg-secondary'>
+      <Players userName={props.userName} />
+      <SimonGame userName={props.userName} />
+    </main>
+  );
+}
+```
+
+#### simonButton.js:
+
+```js
+import React from 'react';
+import { delay } from './delay';
+
+export const SimonButton = React.forwardRef(({ position, onPressed }, ref) => {
+  const [lightOn, setLightOn] = React.useState(true);
+  const sound = new Audio(`/${position}.mp3`);
+
+  // Use "React Refs" to allow the parent to reach into the button component
+  // and simulate a button press. This is necessary to play the sequence that
+  // the player must copy.
+  React.useImperativeHandle(ref, () => ({
+    async press(delayMs = 500, playSound = true) {
+      setLightOn(false);
+      if (playSound) {
+        sound.play();
+      }
+      await delay(delayMs);
+      setLightOn(true);
+      await delay(100);
+    },
+  }));
+
+  return (
+    <button
+      id={position}
+      className={`game-button ${position} ${lightOn ? 'light-on' : ''}`}
+      onClick={() => onPressed(position)}
+    ></button>
+  );
+});
+```
+
+#### gameNotifier.js:
+
+```js
+const GameEvent = {
+  System: 'system',
+  End: 'gameEnd',
+  Start: 'gameStart',
+};
+
+class EventMessage {
+  constructor(from, type, value) {
+    this.from = from;
+    this.type = type;
+    this.value = value;
   }
 }
 
-const game = new Game();
+class GameEventNotifier {
+  events = [];
+  handlers = [];
 
-function delay(milliseconds) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log('delay completed');
-      resolve(true);
-    }, milliseconds);
-  });
+  constructor() {
+    // When dev debugging we need to talk to the service and not the React debugger
+    let port = window.location.port;
+    if (process.env.NODE_ENV !== 'production') {
+      port = 3000;
+    }
+
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    this.socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+    this.socket.onopen = (event) => {
+      this.receiveEvent(new EventMessage('Simon', GameEvent.System, { msg: 'connected' }));
+    };
+    this.socket.onclose = (event) => {
+      this.receiveEvent(new EventMessage('Simon', GameEvent.System, { msg: 'disconnected' }));
+    };
+    this.socket.onmessage = async (msg) => {
+      try {
+        const event = JSON.parse(await msg.data.text());
+        this.receiveEvent(event);
+      } catch {}
+    };
+  }
+
+  broadcastEvent(from, type, value) {
+    const event = new EventMessage(from, type, value);
+    this.socket.send(JSON.stringify(event));
+  }
+
+  addHandler(handler) {
+    this.handlers.push(handler);
+  }
+
+  removeHandler(handler) {
+    this.handlers.filter((h) => h !== handler);
+  }
+
+  receiveEvent(event) {
+    this.events.push(event);
+
+    this.events.forEach((e) => {
+      this.handlers.forEach((handler) => {
+        handler(e);
+      });
+    });
+  }
 }
 
-function loadSound(filename) {
-  return new Audio('assets/' + filename);
+const GameNotifier = new GameEventNotifier();
+export { GameEvent, GameNotifier };
+```
+
+#### delay.js:
+
+```js
+export function delay(milliseconds) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
 }
 ```
 
 #### scores:
-```js
-function loadScores() {
-  let scores = [];
-  const scoresText = localStorage.getItem('scores');
-  if (scoresText) {
-    scores = JSON.parse(scoresText);
-  }
 
-  const tableBodyEl = document.querySelector('#scores');
+#### scores.css:
 
+```css
+td {
+  max-width: 40vw;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+```
+
+#### scores.jsx:
+
+```jsx
+import React from 'react';
+
+import './scores.css';
+
+export function Scores() {
+  const [scores, setScores] = React.useState([]);
+
+  // Demonstrates calling a service asynchronously so that
+  // React can properly update state objects with the results.
+  React.useEffect(() => {
+    fetch('/api/scores')
+      .then((response) => response.json())
+      .then((scores) => {
+        setScores(scores);
+        localStorage.setItem('scores', JSON.stringify(scores));
+      })
+      .catch(() => {
+        const scoresText = localStorage.getItem('scores');
+        if (scoresText) {
+          setScores(JSON.parse(scoresText));
+        }
+      });
+  }, []);
+
+  // Demonstrates rendering an array with React
+  const scoreRows = [];
   if (scores.length) {
     for (const [i, score] of scores.entries()) {
-      const positionTdEl = document.createElement('td');
-      const nameTdEl = document.createElement('td');
-      const scoreTdEl = document.createElement('td');
-      const dateTdEl = document.createElement('td');
-
-      positionTdEl.textContent = i + 1;
-      nameTdEl.textContent = score.name;
-      scoreTdEl.textContent = score.score;
-      dateTdEl.textContent = score.date;
-
-      const rowEl = document.createElement('tr');
-      rowEl.appendChild(positionTdEl);
-      rowEl.appendChild(nameTdEl);
-      rowEl.appendChild(scoreTdEl);
-      rowEl.appendChild(dateTdEl);
-
-      tableBodyEl.appendChild(rowEl);
+      scoreRows.push(
+        <tr key={i}>
+          <td>{i}</td>
+          <td>{score.name.split('@')[0]}</td>
+          <td>{score.score}</td>
+          <td>{score.date}</td>
+        </tr>
+      );
     }
   } else {
-    tableBodyEl.innerHTML = '<tr><td colSpan=4>Be the first to score</td></tr>';
+    scoreRows.push(
+      <tr key='0'>
+        <td colSpan='4'>Be the first to score</td>
+      </tr>
+    );
   }
-}
 
-loadScores();
+  return (
+    <main className='container-fluid bg-secondary text-center'>
+      <table className='table table-warning table-striped-columns'>
+        <thead className='table-dark'>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id='scores'>{scoreRows}</tbody>
+      </table>
+    </main>
+  );
+}
 ```
 
 
