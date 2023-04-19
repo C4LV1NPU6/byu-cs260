@@ -17692,6 +17692,7 @@ ReactDOM.render(<App />, document.getElementById("root"));
 ![learning](README/1.PNG)
 
 v True
+
 x False
 
 ### 2. How will the "hello world" text be oriented?
@@ -17699,8 +17700,11 @@ x False
 ![learning](README/2.PNG)
 
 x One line saying Hello World
+
 x Two lines, with the first line saying Hello and the second saying World
+
 v Two lines, with the first line saying World and the second saying Hello
+
 x One line saying World Hello
 
 ### 3. The CSS property padding:
@@ -17708,8 +17712,11 @@ x One line saying World Hello
 ![learning](README/3.PNG)
 
 v Puts space around the content of selected elements
+
 x Puts space around the border of selected elements
+
 x Puts space around the margin of selected elements
+
 x Puts space around the HTML document
 
 ### 4. Executing the following will output:
@@ -17717,22 +17724,31 @@ x Puts space around the HTML document
 ![learning](README/4.PNG)
 
 x 3
+
 v 4
+
 x undefined
+
 x 2
 
 ### 5. In HTML, what does <div> do?
 
 v Creates a division element
+
 x Creates a dividend element
+
 x Creates a divider element
+
 x Creates a divinity element
 
 ### 6. What is the order of the CSS box model, starting from the outside going in?
 
 x border, padding, margin, content
+
 x content, margin, border, padding
+
 x padding, margin, border, content
+
 v margin, border, padding, content
 
 ### 7. What does the following code output?
@@ -17740,8 +17756,11 @@ v margin, border, padding, content
 ![learning](README/7.PNG)
 
 x ['cow', 'rat', fish']
+
 x ['fish']
+
 x ['cow', 'fish']
+
 v ['rat', 'fish']
 
 ### 8. What does the following code output?
@@ -17749,8 +17768,11 @@ v ['rat', 'fish']
 ![learning](README/8.PNG)
 
 x cowratfish
+
 x cow,rat,fish
+
 v cow:rat:fish
+
 x ['cow', 'rat', 'fish']
 
 ### 9. What does the following code output?
@@ -17758,8 +17780,11 @@ x ['cow', 'rat', 'fish']
 ![learning](README/9.PNG)
 
 x [1, 2, 3]
+
 x ['1', '2', '3']
+
 v ['a1', 'a2', 'a3']
+
 x [66, 67, 68]
 
 ### 10. What does the following code do?
@@ -17767,50 +17792,71 @@ x [66, 67, 68]
 ![learning](README/10.PNG)
 
 v Adds a mouseover event listener to a p element
+
 x Adds a mouseover event listener to all p elements
+
 x Adds a mouseover event listener to console.log events on a p element
+
 x Adds p.mouseover events to the console.log
 
 ### 11. What is the HTML tag for an unordered list?
 
 x <ol>
+
 v <ul>
+
 x <dt>
+
 x <li>
 
 ### 12. Which of the following is not a valid JavaScript function?
 
 v function f(x) = {}
+
 x const f = (x) => {}
+
 x function f(x) {}
+
 x const f = function(x) {}
 
 ### 13. Which of the following is not a valid way to include JavaScript in HTML?
 
 x <script>1+1</script>
+
 x <script src='main.js' />
+
 x <div onclick='1+1' />
+
 v <javascript>1+1</javascript>
 
 ### 14. Which of the following is a valid JavaScript object?
 
 v { n:1 }
+
 x { n=1 }
+
 x { "n"=1 }
+
 x { "n"="1" }
 
 ### 15. What does the DOM textContent property do?
 
 x Sets the Child HTML for an element
+
 v Sets the child text for the an element
+
 x Sets the content spacing for the element
+
 x Sets the text content for the entire DOM
 
 ### 16. Which HTML will create a valid hyperlink?
 
 x <a src='https://c.com'>x</a>
+
 x <link src='https://c.com'>x</link>
+
 v <a href='https://c.com'>x</a>
+
 x <link href='https://c.com'>x</link>
 
 ### 17. Using CSS, how would you turn only the BYU text blue?
@@ -17818,36 +17864,51 @@ x <link href='https://c.com'>x</link>
 ![learning](README/17.PNG)
 
 x div { color: blue; }
+
 v div.header { color: blue; }
+
 x div#header { color: blue; }
+
 x header { color: blue; }
 
 ### 18. Which of the following is valid JSON?
 
 x {'x':3}
+
 x {"x":undefined}
+
 x {x:3}
+
 v {"x":3}
 
 ### 19. The following console command makes a script executable:
 
 v chmod +x deploy.sh
+
 x ls -la deploy.sh
+
 x ssh deploy.sh
+
 x sudo deploy.sh
 
 ### 20. Which of the following is a DNS subdomain?
 
 x byu.edu
+
 x edu
+
 y c260.cs.byu.edu
+
 x byu
 
 ### 21. To point to another DNS record, you should use the following DNS record type:
 
 x A
+
 v CNAME
+
 x SOA
+
 x TXT
 
 ### 22. What will the following output?
@@ -17855,8 +17916,11 @@ x TXT
 ![learning](README/22.PNG)
 
 x taco burger shake salad noodles fries
+
 v buger fries taco shake noodles
+
 x burger fires taco shake salad noodles
+
 x taco burger shake salad noodles salad fries
 
 ### 23. What will the following output?
@@ -17864,6 +17928,9 @@ x taco burger shake salad noodles salad fries
 ![learning](README/23.PNG)
 
 x A D B C
+
 y A D B
+
 x A B D
+
 x A B D C
