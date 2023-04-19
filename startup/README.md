@@ -17934,3 +17934,175 @@ y A D B
 x A B D
 
 x A B D C
+
+
+
+## Final:
+
+### 1. Port 80 is reserved for?
+
+v HTTP
+
+x HTTPS
+
+x FTP
+
+x SSH
+
+### 2. HTTP status codes in the 300 range are for?
+
+x Server errors
+
+x Client errors
+
+v Content redirects or caching
+
+x Success
+
+### 3. Which is NOT a standard HTTP header?
+
+x Content-Type
+
+x Host
+
+x Cookie
+
+v Language
+
+### 4. Cookies allow:
+
+v A server to store data on the client
+
+x A client to store data on the server
+
+x A client or server to store data on either
+
+x For cache control
+
+### 5. For the request [GET] /fav/george what is logged?
+
+![learning](README/5f.PNG)
+
+x paul ringo george john
+
+x paul john
+
+x paul ringo john
+
+v paul george john
+
+### 6. Which Express middleware will match this fetch request?
+
+![learning](README/6f.PNG)
+
+x app.get('/fav/:id', () => {})
+
+x app.delete('/favorite/:id', () => {})
+
+v app.delete(/fav\/(.*)/, () => {})
+
+x app.get('/ringo', () => {})
+
+### 7. What document matches this MongoDB query?
+
+![learning](README/7f.PNG)
+
+x { name: "harry", score: 5 }
+
+x { name: "bud", score:3 }
+
+x { name: john, score: 337 }
+
+v { name: "Walke", score: -55 }
+
+### 8. Why is hashing stored passwords important?
+
+x It improves performance
+
+x It makes it so a use can retrieve their password
+
+v It improves security by making the password unreadable
+
+x It validates how good the password is
+
+### 9. Given the following code what will console.log print?
+
+![learning](README/9f.PNG)
+
+v Client:Server:Hello
+
+x Hello:Client:Server
+
+x Hello:Server:Client
+
+x Server:Client:Hello
+
+### 10. What value does WebSocket add to HTTP?
+
+v It is peer to peer instead of client to server
+
+x It runs using Token Ring
+
+x It uses proof of work to demonstrate security
+
+x It removes the need keep a connection open
+
+### 11. What is NOT a purpose of JSX?
+
+v To combine CSS, HTML, and JavaScript
+
+x To inject your HTML into your JavaScript
+
+x To componentize your HTML
+
+x To allow for composability of your HTML
+
+### 12. What will component A initially display?
+
+![learning](README/12f.PNG)
+
+x burgerfish
+
+v tacofish
+
+x burgerburger
+
+x tacoburger
+
+### 13. What component will the URL `/burger` render?
+
+![learning](README/13f.PNG)
+
+x A
+
+v B
+
+x C
+
+x D
+
+### 14. What does the command "NPM install ws" NOT do?
+
+x Locks the version of the websocket package for your application
+
+x Adds the websocket source code to the node_modules directory
+
+v Adds template code for websockets to your JavaScript
+
+x Adds a dependency to your package.json file
+
+### 15. You can use fetch in front-end and back-end code.
+
+v True
+
+x False
+
+### 16. Which of the following is NOT true about a Linux daemon?
+
+x Executes independent of a user
+
+x Starts when the computer is rebooted
+
+x PM2 is an example of a daemon
+
+v Cannot fork other processes`
