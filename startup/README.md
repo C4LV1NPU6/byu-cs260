@@ -14594,6 +14594,490 @@ export function Scores() {
 
 
 
+## Webserver Node.js:
+
+### main.js:
+
+```js
+const http = require('http');
+const server = http.createServer(function (req, res) {
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.write('<h1>You\'re too late Tron, I\'m already forklift certified!</h1>');
+  res.end();
+});
+
+server.listen(8080, () => {
+  console.log(`Web service listening on port 8080`);
+});
+```
+
+### package.json:
+
+```json
+{
+  "name": "webservice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http": "^0.0.1-security"
+  }
+}
+```
+
+
+
+## Webserver Express:
+
+### index.js:
+
+```js
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const app = express();
+
+// Third party middleware - Cookies
+app.use(cookieParser());
+
+app.post('/cookie/:name/:value', (req, res, next) => {
+  res.cookie(req.params.name, req.params.value);
+  res.send({ cookie: `${req.params.name}:${req.params.value}` });
+});
+
+app.get('/cookie', (req, res, next) => {
+  res.send({ cookie: req.cookies });
+});
+
+// Creating your own middleware - logging
+app.use((req, res, next) => {
+  console.log(req.originalUrl);
+  next();
+});
+
+// Built in middleware - Static file hosting
+app.use(express.static('public'));
+
+// Routing middleware
+app.get('/store/:storeName', (req, res) => {
+  res.send({ name: req.params.storeName });
+});
+
+app.put('/st*/:storeName', (req, res) => res.send({ update: req.params.storeName }));
+
+app.delete(/\/store\/(.+)/, (req, res) => res.send({ delete: req.params[0] }));
+
+// Error middleware
+app.get('/error', (req, res, next) => {
+  throw new Error('Trouble in river city');
+});
+
+app.use(function (err, req, res, next) {
+  res.status(500).send({ type: err.name, message: err.message });
+});
+
+// Listening to a network port
+const port = 8080;
+app.listen(port, function () {
+  console.log(`Listening on port ${port}`);
+});
+```
+
+### package.json:
+
+```json
+{
+  "name": "express",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2"
+  }
+}
+```
+
+### public:
+
+#### index.html:
+
+```html
+Unable to initialize device PRN
+```
+
+
+
+## MongoDB:
+
+### main.js:
+
+```js
+const { MongoClient } = require('mongodb');
+
+// Read the credentials from environment variables so that you do not accidentally check in your credentials
+const userName = process.env.MONGOUSER;
+const password = process.env.MONGOPASSWORD;
+const hostname = process.env.MONGOHOSTNAME;
+
+if (!userName) {
+  throw Error("Database not configured. Set environment variables");
+}
+
+async function main() {
+  // Connect to the database cluster
+  const url = `mongodb+srv://${userName}:${password}@${hostname}`;
+  const client = new MongoClient(url);
+  const collection = client.db('rental').collection('house');
+
+  // Insert a document
+  const house = {
+    name: 'Beachfront views',
+    summary: 'From your bedroom to the beach, no shoes required',
+    property_type: 'Condo',
+    beds: 1,
+  };
+  await collection.insertOne(house);
+
+  // Query the documents
+  const query = { property_type: 'Condo', beds: { $lt: 2 } };
+  const options = {
+    sort: { score: -1 },
+    limit: 10,
+  };
+
+  const cursor = collection.find(query, options);
+  const rentals = await cursor.toArray();
+  rentals.forEach((i) => console.log(i));
+}
+
+main().catch(console.error);
+```
+
+### package.json:
+
+```json
+{
+  "name": "mongodb",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^5.1.0"
+  },
+  "description": ""
+}
+```
+
+
+
+## React-CLI:
+
+### package.json:
+
+```json
+{
+  "name": "react-cli",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
+```
+
+### public:
+
+### index.html:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html>
+```
+
+### manifest.json:
+
+```json
+{
+  "short_name": "React App",
+  "name": "Create React App Sample",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
+```
+
+### robots.txt:
+
+```txt
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow:
+```
+
+### src:
+
+### App.css:
+
+```css
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+```
+
+### App.js:
+
+```js
+import logo from './logo.svg';
+import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+```
+
+### index.css:
+
+```css
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+```
+
+### index.js:
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+```
+
+### App.test.js:
+
+```js
+import { render, screen } from '@testing-library/react';
+import App from './App';
+
+test('renders learn react link', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/learn react/i);
+  expect(linkElement).toBeInTheDocument();
+});
+```
+
+### setupTests.js:
+
+```js
+// jest-dom adds custom jest matchers for asserting on DOM nodes.
+// allows you to do things like:
+// expect(element).toHaveTextContent(/react/i)
+// learn more: https://github.com/testing-library/jest-dom
+import '@testing-library/jest-dom';
+```
+
+### reportWebVitals.js:
+
+```js
+const reportWebVitals = onPerfEntry => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
+    });
+  }
+};
+
+export default reportWebVitals;
+```
+
+
+
 # CodePen notes:
 
 
@@ -16616,6 +17100,568 @@ function orderFailure(order) {
 
 
 
+## webServices: Fetch:
+
+### HTML:
+```html
+<pre></pre>
+```
+
+### CSS:
+```css
+pre {
+  font-size: 2em;
+}
+```
+
+### JS:
+```js
+const url = "https://api.quotable.io/random";
+fetch(url)
+  .then((x) => x.json())
+  .then((response) => {
+    document.querySelector("pre").textContent = JSON.stringify(response, null, "  ");
+  });
+```
+
+
+
+## WebServices Node.js:
+
+### JS:
+```js
+const http = require('http');
+const server = http.createServer(function (req, res) {
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.write('<h1>You\'re too late Tron, I\'m already forklift certified!</h1>');
+  res.end();
+});
+
+server.listen(8080, () => {
+  console.log(`Web service listening on port 8080`);
+});
+```
+
+
+
+## react: Components:
+
+### HTML:
+```html
+<div id="root"></div>
+```
+
+### CSS:
+```css
+* {
+  font-family: Arial;
+  padding: 0.5em;
+}
+
+.component {
+  border: solid thick #888;
+  margin: 0.5em 0;
+  width: 500px;
+}
+```
+
+### JS:
+```js
+import React from "https://cdn.skypack.dev/react";
+import ReactDOM from "https://cdn.skypack.dev/react-dom";
+
+// Top level component that contains child components
+function App() {
+  return (
+    <div>
+      Function Style Component: <FunctionDemo who="function" color="yellow" />
+    </div>
+  );
+}
+
+// Function style component
+const FunctionDemo = ({ who, initialColor }) => {
+  const [color, setColor] = React.useState(initialColor);
+  const [outlook, setOutlook] = React.useState("beautiful");
+
+  function changeOutlook() {
+    setOutlook(outlook === "exciting" ? "beautiful" : "exciting");
+  }
+
+  function changeColor() {
+    var randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    setColor("#" + randomColor);
+  }
+
+  return (
+    <div
+      className="component"
+      onMouseOver={changeColor}
+      style={{ background: color }}
+    >
+      <p>
+        Hello {outlook} {who}
+      </p>
+      <button onClick={changeOutlook}>change</button>
+    </div>
+  );
+};
+
+// ========================================
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
+
+
+## react: Reactivity:
+
+### HTML:
+```html
+<div id="root"></div>
+```
+
+### CSS:
+```css
+* {
+  font-family: Arial;
+  background-color: #222;
+  color: white;
+}
+```
+
+### JS:
+```js
+import React from "https://cdn.skypack.dev/react";
+import ReactDOM from "https://cdn.skypack.dev/react-dom";
+
+// The Survey component
+const Survey = () => {
+  const [text, updateText] = React.useState("");
+
+  const onChange = (e) => {
+    updateText(e.target.value);
+  };
+  return (
+    <div>
+      <h1>Survey</h1>
+      <Question text={text} />
+
+      <p>
+        <span>Type some text: </span>
+        <input
+          type="text"
+          onChange={(e) => onChange(e)}
+          placeholder="type here"
+        />
+      </p>
+    </div>
+  );
+};
+
+// The Question component
+const Question = ({ text }) => {
+  return (
+    <div>
+      <p>You typed: {text}</p>
+    </div>
+  );
+};
+
+ReactDOM.render(<Survey />, document.getElementById("root"));
+```
+
+
+
+## React Tic-Tac-Toe:
+
+### styles.css:
+```css
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 20px;
+  padding: 0;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 22px;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+h3 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+h4 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+h5 {
+  margin-top: 0;
+  font-size: 14px;
+}
+
+h6 {
+  margin-top: 0;
+  font-size: 12px;
+}
+
+code {
+  font-size: 1.2em;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 20px;
+  padding: 0;
+}
+
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 34px;
+}
+
+.board-row:after {
+  clear: both;
+  content: '';
+  display: table;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+.game {
+  display: flex;
+  flex-direction: row;
+}
+
+.game-info {
+  margin-left: 20px;
+}
+```
+
+### App.js:
+```js
+import { useState } from 'react';
+
+function Square({ value, onSquareClick }) {
+  return (
+    <button className="square" onClick={onSquareClick}>
+      {value}
+    </button>
+  );
+}
+
+function Board({ xIsNext, squares, onPlay }) {
+  function handleClick(i) {
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+    const nextSquares = squares.slice();
+    if (xIsNext) {
+      nextSquares[i] = 'X';
+    } else {
+      nextSquares[i] = 'O';
+    }
+    onPlay(nextSquares);
+  }
+
+  const winner = calculateWinner(squares);
+  let status;
+  if (winner) {
+    status = 'Winner: ' + winner;
+  } else {
+    status = 'Next player: ' + (xIsNext ? 'X' : 'O');
+  }
+
+  return (
+    <>
+      <div className="status">{status}</div>
+      <div className="board-row">
+        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
+        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
+      </div>
+      <div className="board-row">
+        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
+        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
+        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
+      </div>
+      <div className="board-row">
+        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
+        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
+        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
+      </div>
+    </>
+  );
+}
+
+export default function Game() {
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;
+  const currentSquares = history[currentMove];
+
+  function handlePlay(nextSquares) {
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length - 1);
+  }
+
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+  }
+
+  const moves = history.map((squares, move) => {
+    let description;
+    if (move > 0) {
+      description = 'Go to move #' + move;
+    } else {
+      description = 'Go to game start';
+    }
+    return (
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+    );
+  });
+
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      </div>
+      <div className="game-info">
+        <ol>{moves}</ol>
+      </div>
+    </div>
+  );
+}
+
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
+```
+
+### index.js:
+```js
+import React, { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./styles.css";
+
+import App from "./App";
+
+const root = createRoot(document.getElementById("root"));
+root.render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
+```
+
+### package.json:
+```json
+{
+  "dependencies": {
+    "react": "*18.0.0"
+    "react-dom": "*18.0.0"
+    "react-scripts": "*4.0.0"
+  },
+  "main": "/index.js",
+  "devDependencies": {},
+  "keywords": [],
+  "name": "react-tic-tac-toe",
+  "description": ""
+}
+```
+
+### public:
+
+### index.html:
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.8">
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+```
+
+
+
+## react: React-router-dom v6:
+
+### HTML:
+```html
+<div id="root"></div>
+```
+
+### CSS:
+```css
+.app {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial;
+}
+
+nav {
+  flex: 0;
+  background: #ddd;
+  margin: 1em;
+  text: white;
+}
+
+main {
+  flex: 1;
+}
+
+a {
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+  margin: 0.5em;
+  padding: 0.5em;
+  font-size: 18px;
+}
+
+a.active {
+  color: green;
+}
+
+.comp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: thick dashed black;
+  border-radius: 15px;
+  margin: 1em;
+  padding: 2em;
+  font-size: 26px;
+}
+
+.home {
+  border-color: #4f4;
+  background-color: #dfd;
+}
+
+.users {
+  border-color: #f44;
+  background-color: #fdd;
+}
+
+.about {
+  border-color: #44f;
+  background-color: #ddf;
+}
+```
+
+### Babel/js:
+```js
+import React from "https://cdn.skypack.dev/react";
+import ReactDOM from "https://cdn.skypack.dev/react-dom";
+import {
+  BrowserRouter,
+  NavLink,
+  Routes,
+  Navigate,
+  Route
+} from "https://cdn.skypack.dev/react-router-dom";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <div className="app">
+        <nav>
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/users">Users</NavLink>
+          <NavLink to="/about">About</NavLink>
+        </nav>
+
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} exact />
+            <Route path="/about" element={<About />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+      </div>
+    </BrowserRouter>
+  );
+}
+
+function Home() {
+  return (
+    <div index className="home comp">
+      Home Component
+    </div>
+  );
+}
+
+function About() {
+  return <div className="about comp">About Component</div>;
+}
+
+function Users() {
+  return <div className="users comp">Users Component</div>;
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
+
+
 ## :
 
 ### HTML:
@@ -16632,3 +17678,192 @@ function orderFailure(order) {
 ```js
 
 ```
+
+
+
+# Kahoot notes:
+
+
+
+## Midterm:
+
+### 1. You can use this CSS to load fonts from Google
+
+![learning](README/1.PNG)
+
+v True
+x False
+
+### 2. How will the "hello world" text be oriented?
+
+![learning](README/2.PNG)
+
+x One line saying Hello World
+x Two lines, with the first line saying Hello and the second saying World
+v Two lines, with the first line saying World and the second saying Hello
+x One line saying World Hello
+
+### 3. The CSS property padding:
+
+![learning](README/3.PNG)
+
+v Puts space around the content of selected elements
+x Puts space around the border of selected elements
+x Puts space around the margin of selected elements
+x Puts space around the HTML document
+
+### 4. Executing the following will output:
+
+![learning](README/4.PNG)
+
+x 3
+v 4
+x undefined
+x 2
+
+### 5. In HTML, what does <div> do?
+
+v Creates a division element
+x Creates a dividend element
+x Creates a divider element
+x Creates a divinity element
+
+### 6. What is the order of the CSS box model, starting from the outside going in?
+
+x border, padding, margin, content
+x content, margin, border, padding
+x padding, margin, border, content
+v margin, border, padding, content
+
+### 7. What does the following code output?
+
+![learning](README/7.PNG)
+
+x ['cow', 'rat', fish']
+x ['fish']
+x ['cow', 'fish']
+v ['rat', 'fish']
+
+### 8. What does the following code output?
+
+![learning](README/8.PNG)
+
+x cowratfish
+x cow,rat,fish
+v cow:rat:fish
+x ['cow', 'rat', 'fish']
+
+### 9. What does the following code output?
+
+![learning](README/9.PNG)
+
+x [1, 2, 3]
+x ['1', '2', '3']
+v ['a1', 'a2', 'a3']
+x [66, 67, 68]
+
+### 10. What does the following code do?
+
+![learning](README/10.PNG)
+
+v Adds a mouseover event listener to a p element
+x Adds a mouseover event listener to all p elements
+x Adds a mouseover event listener to console.log events on a p element
+x Adds p.mouseover events to the console.log
+
+### 11. What is the HTML tag for an unordered list?
+
+x <ol>
+v <ul>
+x <dt>
+x <li>
+
+### 12. Which of the following is not a valid JavaScript function?
+
+v function f(x) = {}
+x const f = (x) => {}
+x function f(x) {}
+x const f = function(x) {}
+
+### 13. Which of the following is not a valid way to include JavaScript in HTML?
+
+x <script>1+1</script>
+x <script src='main.js' />
+x <div onclick='1+1' />
+v <javascript>1+1</javascript>
+
+### 14. Which of the following is a valid JavaScript object?
+
+v { n:1 }
+x { n=1 }
+x { "n"=1 }
+x { "n"="1" }
+
+### 15. What does the DOM textContent property do?
+
+x Sets the Child HTML for an element
+v Sets the child text for the an element
+x Sets the content spacing for the element
+x Sets the text content for the entire DOM
+
+### 16. Which HTML will create a valid hyperlink?
+
+x <a src='https://c.com'>x</a>
+x <link src='https://c.com'>x</link>
+v <a href='https://c.com'>x</a>
+x <link href='https://c.com'>x</link>
+
+### 17. Using CSS, how would you turn only the BYU text blue?
+
+![learning](README/17.PNG)
+
+x div { color: blue; }
+v div.header { color: blue; }
+x div#header { color: blue; }
+x header { color: blue; }
+
+### 18. Which of the following is valid JSON?
+
+x {'x':3}
+x {"x":undefined}
+x {x:3}
+v {"x":3}
+
+### 19. The following console command makes a script executable:
+
+v chmod +x deploy.sh
+x ls -la deploy.sh
+x ssh deploy.sh
+x sudo deploy.sh
+
+### 20. Which of the following is a DNS subdomain?
+
+x byu.edu
+x edu
+y c260.cs.byu.edu
+x byu
+
+### 21. To point to another DNS record, you should use the following DNS record type:
+
+x A
+v CNAME
+x SOA
+x TXT
+
+### 22. What will the following output?
+
+![learning](README/22.PNG)
+
+x taco burger shake salad noodles fries
+v buger fries taco shake noodles
+x burger fires taco shake salad noodles
+x taco burger shake salad noodles salad fries
+
+### 23. What will the following output?
+
+![learning](README/23.PNG)
+
+x A D B C
+y A D B
+x A B D
+x A B D C
