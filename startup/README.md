@@ -17731,7 +17731,7 @@ x undefined
 
 x 2
 
-### 5. In HTML, what does ```html <div> ``` do?
+### 5. In HTML, what does ``` <div> ``` do?
 
 v Creates a division element
 
@@ -17771,7 +17771,7 @@ x cowratfish
 
 x cow,rat,fish
 
-v cow : rat : fish
+v ```cow:rat:fish```
 
 x ['cow', 'rat', 'fish']
 
@@ -17801,13 +17801,13 @@ x Adds p.mouseover events to the console.log
 
 ### 11. What is the HTML tag for an unordered list?
 
-x ```html <ol> ```
+x ``` <ol> ```
 
-v ```html <ul> ```
+v ``` <ul> ```
 
-x ```html <dt> ```
+x ``` <dt> ```
 
-x ```html <li> ```
+x ``` <li> ```
 
 ### 12. Which of the following is not a valid JavaScript function?
 
@@ -17821,13 +17821,13 @@ x const f = function(x) {}
 
 ### 13. Which of the following is not a valid way to include JavaScript in HTML?
 
-x ```html <script>1+1</script> ```
+x ``` <script>1+1</script> ```
 
-x ```html <script src='main.js' /> ```
+x ``` <script src='main.js' /> ```
 
-x ```html <div onclick='1+1' /> ```
+x ``` <div onclick='1+1' /> ```
 
-v ```html <javascript>1+1</javascript> ```
+v ``` <javascript>1+1</javascript> ```
 
 ### 14. Which of the following is a valid JavaScript object?
 
@@ -17851,13 +17851,13 @@ x Sets the text content for the entire DOM
 
 ### 16. Which HTML will create a valid hyperlink?
 
-x ```html <a src='https://c.com'>x</a> ```
+x ``` <a src='https://c.com'>x</a> ```
 
-x ```html <link src='https://c.com'>x</link> ```
+x ``` <link src='https://c.com'>x</link> ```
 
-v ```html <a href='https://c.com'>x</a> ```
+v ``` <a href='https://c.com'>x</a> ```
 
-x ```html <link href='https://c.com'>x</link> ```
+x ``` <link href='https://c.com'>x</link> ```
 
 ### 17. Using CSS, how would you turn only the BYU text blue?
 
