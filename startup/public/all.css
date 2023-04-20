@@ -48,6 +48,10 @@ section:nth-child(3) {
   background-color: #333;
 }
 
+#arenaborder {
+  background-color: #333;
+}
+
 #arena {
   background-color: #000;
   margin-top: auto;
