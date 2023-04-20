@@ -70,6 +70,12 @@ async function updateUser(username, wins, losses, game) {
   return user;
 }
 
+setInterval(gameClearLoop, 300000);
+
+function gameClearLoop () {
+  userCollection.updateMany({ },{$set:{game:''}});
+}
+
 module.exports = {
   getUser,
   getUserByToken,

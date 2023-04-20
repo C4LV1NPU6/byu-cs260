@@ -45,7 +45,7 @@ function logout() {
 }
 
 function displayPicture(data) {
-  const containerEl = document.querySelector("#lobby");
+  const containerEl = document.querySelector("#nameplate");
 
   const width = containerEl.offsetWidth;
   const height = containerEl.offsetHeight;
